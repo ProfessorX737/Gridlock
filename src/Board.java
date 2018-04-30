@@ -10,7 +10,12 @@ public class Board {
 	private Collection<Vehicle> vehicleList;
 	private char[][] board;
 
+	static String red_car = "🚗";
+	static String road = "⬛";
+
 	public Board(int sizeX, int sizeY, Collection<Vehicle> vehicleList) {
+		this.sizeX = sizeX;
+		this.sizeY = sizeY;
 		this.vehicleList = vehicleList;//need to fix this as it requires copy constructor
 		board = new char[sizeX][sizeY];
 		for (int y = 0; y < sizeY; y++) {
@@ -38,7 +43,13 @@ public class Board {
 	void showBoard() {
 		for (int y = 0; y < sizeY; y++) {
 			for (int x = 0; x < sizeX; x++) {
-				System.out.print(board[x][y]);
+				if (board[x][y] == '0') {
+					System.out.print(red_car + "\t");
+				} else if (board[x][y] == '#') {
+					System.out.print(road + "\t");
+				} else {
+					System.out.print(board[x][y] + "\t");
+				}
 			}
 			System.out.println("");
 		}

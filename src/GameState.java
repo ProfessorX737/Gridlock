@@ -15,7 +15,8 @@ public class GameState {
 	 * Initialize with no parameters
 	 */
 	public GameState() {
-		board = new Board();
+		Collection<Vehicle> vehicleList = new ArrayList<Vehicle>();
+		board = new Board(5, 5, vehicleList);
 		turns = 0;
 		previousMoves = new ArrayList<Board>();
 	}
