@@ -10,7 +10,7 @@ public class Vehicle {
 	private final int id;
 	private final boolean isVertical;
 	private final int length;
-	private final Point pos; //might change this to own class because it doesn't really work
+	private Point pos; //might change this to own class because it doesn't really work
 	private final String color;
 	
 	/**
@@ -68,13 +68,17 @@ public class Vehicle {
 		Collection<Point> takenPos = new ArrayList<Point>();
 		if (getIsVertical()) {
 			for (int i = 0; i < length; i++) {
-				takenPos.add(new Point(getRow(), getCol() + i));
+				takenPos.add(new Point(getRow() + i, getCol()));
 			}
 		} else {
 			for (int i = 0; i < length; i++) {
-				takenPos.add(new Point(getRow() + i, getCol()));
+				takenPos.add(new Point(getRow(), getCol() + i));
 			}
 		}
 		return takenPos;
+	}
+	
+	public void setPos(int row, int col) {
+		pos = new Point(row, col);
 	}
 }
