@@ -10,7 +10,8 @@ public class Vehicle {
 	private final int id;
 	private final boolean isVertical;
 	private final int length;
-	private Point pos; //might change this to own class because it doesn't really work
+	private int row;
+	private int col;
 	private final String color;
 	
 	/**
@@ -27,7 +28,8 @@ public class Vehicle {
 		this.id = id;
 		this.isVertical = isVertical;
 		this.length = length;
-		this.pos = new Point(row, col);
+		this.row = row;
+		this.col = col;
 		this.color = color;
 	}
 	
@@ -43,20 +45,16 @@ public class Vehicle {
 		return length;
 	}
 	
-	public Point getPosition() {
-		return pos;
-	}
-	
 	public String getColor() {
 		return color;
 	}
 	
-	public Integer getRow() {
-		return (int) pos.getX();
+	public int getRow() {
+		return this.row;
 	}
 	
-	public Integer getCol() {
-		return (int) pos.getY();
+	public int getCol() {
+		return this.col;
 	}
 	
 	/**
@@ -79,6 +77,7 @@ public class Vehicle {
 	}
 	
 	public void setPos(int row, int col) {
-		pos = new Point(row, col);
+		this.row = row;
+		this.col = col;
 	}
 }

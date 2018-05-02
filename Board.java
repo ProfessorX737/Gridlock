@@ -53,11 +53,14 @@ public class Board {
 				board[y][x]= -1;
 			}
 		}
-		for (Map.Entry<Integer, Vehicle> entry : vehicleMap.entrySet()) {
-			Collection<Point> takenPos = entry.getValue().getTakenPos();
-			for(Point point : takenPos) {
-				board[(int)point.getX()][(int)point.getY()] = entry.getKey();
-			}
+//		for (Map.Entry<Integer, Vehicle> entry : vehicleMap.entrySet()) {
+//			Collection<Point> takenPos = entry.getValue().getTakenPos();
+//			for(Point point : takenPos) {
+//				board[(int)point.getX()][(int)point.getY()] = entry.getKey();
+//			}
+//		}
+		for(Vehicle v : this.vehicleMap.values()) {
+			board[v.getRow()][v.getCol()] = v.getID();
 		}
 	}
 	
