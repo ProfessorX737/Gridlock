@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * keep track of the current state of the game 
@@ -15,7 +17,7 @@ public class GameState {
 	 * Initialize with no parameters
 	 */
 	public GameState() {
-		Collection<Vehicle> vehicleList = new ArrayList<Vehicle>();
+		Map<Integer, Vehicle> vehicleList = new HashMap<Integer, Vehicle>();
 		board = new Board(5, 5, vehicleList);
 		turns = 0;
 		previousMoves = new ArrayList<Board>();

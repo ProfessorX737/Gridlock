@@ -1,25 +1,48 @@
 import java.awt.Point;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- * represent the current board of the game
+ * Represent the current board of the game
  */
 public class Board {
+	//sizeRow and sizeCol keeps track of the size of the board
 	private int sizeRow;
 	private int sizeCol;
+	//vehicleMap is a map of all the vehicles on the board with their ID as the key.
 	private Map<Integer, Vehicle> vehicleMap;
+	//a matrix which represents the board. Where their ID represents their location on the board
 	private int[][] board;
 
-	static String red_car = "🚗";
-	static String road = "⬛";
-	static String wall = "🚧";
+	/**
+	 * Constructor for the board, when only the size of the board is provided.
+	 * @param sizeRow, the number of rows in the board
+	 * @param sizeCol, the number of columns in the board
+	 */
+	public Board(int sizeRow, int sizeCol) {
+		this.sizeRow = sizeRow;
+		this.sizeCol = sizeCol;
+		this.vehicleMap = new HashMap<Integer, Vehicle>();
+		this.board = new int[sizeRow][sizeCol];
+		for (int y = 0; y < sizeRow; y++) {
+			for (int x = 0; x < sizeCol; x++) {
+				board[y][x]= -1;
+			}
+		}
+	}
 
+	/**
+	 * Constructor for the board, when the size of the board and map of vehicles is provided
+	 * @param sizeRow, the number of rows in the board
+	 * @param sizeCol, the number of columns in the board
+	 * @param vehicleMap, a map of all the vehicles on the board
+	 */
 	public Board(int sizeRow, int sizeCol, Map<Integer, Vehicle> vehicleMap) {
 		this.sizeRow = sizeRow;
 		this.sizeCol = sizeCol;
-		this.vehicleMap = vehicleMap;//need to fix this as it requires copy constructor
+		this.vehicleMap = vehicleMap;//does this work
 		board = new int[sizeRow][sizeCol];
 		for (int y = 0; y < sizeRow; y++) {
 			for (int x = 0; x < sizeCol; x++) {
@@ -32,6 +55,21 @@ public class Board {
 				board[(int)point.getX()][(int)point.getY()] = entry.getKey();
 			}
 		}
+	}
+	
+	/**
+	 * Constructor for the board, when the size of the board, map of the vehicles and
+	 * a board is provided. Assumes the map of vehicles is consistent with the board.
+	 * @param sizeRow, the number of rows in the board
+	 * @param sizeCol, the number of columns in the board
+	 * @param vehicleMap, a map of all the vehicles on the board with the ID as the key
+	 * @param board, the representation of the vehicles on a matrix
+	 */
+	public Board(int sizeRow, int sizeCol, Map<Integer, Vehicle> vehicleMap, int[][] board) {
+		this.sizeRow = sizeRow;
+		this.sizeCol = sizeCol;
+		this.vehicleMap = vehicleMap;
+		this.board = board;
 	}
 	
 	public boolean isOccupied(int row, int col) {
@@ -130,6 +168,10 @@ public class Board {
 		}
 	}
 	
+	//Used for printing out to the console
+	private final static String red_car = "🚗";
+	private final static String road = "⬛";
+	private final static String wall = "🚧";
 	void showBoard() {
 		for (int y = -1; y <= sizeRow; y++) {
 			for (int x = -1; x <= sizeCol; x++) {
