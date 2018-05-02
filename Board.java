@@ -71,13 +71,84 @@ public class Board {
 		this.vehicleMap = vehicleMap;
 		this.board = board;
 	}
-	
+
+	/**
+	 * @pre row < this.sizeRow, col < this.sizeCol
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public boolean isOccupied(int row, int col) {
 		if (board[row][col] == -1) {
-			return true;
+			return false;
 		} else {
+			return true;
+		}
+	}
+
+	public boolean isOutOfBounds(int row, int col) {
+		if(row < this.sizeRow && col < this.sizeCol && row >= 0 && col >= 0) {
 			return false;
 		}
+		return true;
+	}
+	
+	public int canMoveUp(int id) {
+		Vehicle v = this.vehicleMap.get(id);
+		if(!v.getIsVertical()) return 0;
+		int row = v.getRow() - 1;
+		int col = v.getCol();
+		int numLegal = 0;
+		while(!this.isOutOfBounds(row, col)) {
+			if(this.isOccupied(row,col)) break;
+			row--;
+			numLegal++;
+		}
+		return numLegal;
+	}
+
+	public int canMoveDown(int id) {
+		Vehicle v = this.vehicleMap.get(id);
+		if(!v.getIsVertical()) return 0;
+		int row = v.getRow() + v.getLength();
+		int col = v.getCol();
+		int numLegal = 0;
+		while(!this.isOutOfBounds(row, col)) {
+			if(this.isOccupied(row, col)) {
+				break;
+			}
+			row++;
+			numLegal++;
+		}
+		return numLegal;
+	}
+	
+	public int canMoveLeft(int id) {
+		Vehicle v = this.vehicleMap.get(id);
+		if(v.getIsVertical()) return 0;
+		int row = v.getRow();
+		int col = v.getCol() - 1;
+		int numLegal = 0;
+		while(!this.isOutOfBounds(row, col)) {
+			if(this.isOccupied(row, col)) break;
+			col--;
+			numLegal++;
+		}
+		return numLegal;
+	}
+
+	public int canMoveRight(int id) {
+		Vehicle v = this.vehicleMap.get(id);
+		if(v.getIsVertical()) return 0;
+		int row = v.getRow();
+		int col = v.getCol() + v.getLength();
+		int numLegal = 0;
+		while(!this.isOutOfBounds(row, col)) {
+			if(this.isOccupied(row, col)) break;
+			col++;
+			numLegal++;
+		}
+		return numLegal;
 	}
 	
 	/**
@@ -169,9 +240,9 @@ public class Board {
 	}
 	
 	//Used for printing out to the console
-	private final static String red_car = "🚗";
-	private final static String road = "⬛";
-	private final static String wall = "🚧";
+	private final static String red_car = "r";
+	private final static String road = "-";
+	private final static String wall = "W";
 	void showBoard() {
 		for (int y = -1; y <= sizeRow; y++) {
 			for (int x = -1; x <= sizeCol; x++) {

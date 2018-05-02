@@ -25,8 +25,29 @@ public class BoardTest {
 		System.out.println("");
 	}
 	
+	public static void testCanMove() {
+		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
+		Vehicle v1 = new Vehicle(0, true, 2, 1, 0, "Red");
+		Vehicle v2 = new Vehicle(1, false, 2, 1, 1, "Red");
+		vehicleMap.put(0, v1);
+		vehicleMap.put(1, v2);
+		Board foo = new Board(5,5, vehicleMap);
+		foo.showBoard();
+		System.out.printf("canMoveUp %d%n", foo.canMoveUp(v1.getID()));
+		System.out.printf("canMoveDown %d%n", foo.canMoveDown(v1.getID()));
+		System.out.printf("canMoveLeft %d%n", foo.canMoveLeft(v1.getID()));
+		System.out.printf("canMoveRight %d%n", foo.canMoveRight(v1.getID()));
+		System.out.println("");
+		System.out.printf("canMoveUp %d%n", foo.canMoveUp(v2.getID()));
+		System.out.printf("canMoveDown %d%n", foo.canMoveDown(v2.getID()));
+		System.out.printf("canMoveLeft %d%n", foo.canMoveLeft(v2.getID()));
+		System.out.printf("canMoveRight %d%n", foo.canMoveRight(v2.getID()));
+		
+	}
+	
 	public static void main(String[] args) {
-		test();
+		//test();
+		testCanMove();
 	}
 
 }
