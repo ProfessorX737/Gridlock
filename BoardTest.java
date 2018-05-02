@@ -55,10 +55,20 @@ public class BoardTest {
 		
 	}
 	
+	public static void testIsSolved() {
+		Board foo = new Board(5,5,2,4);
+		foo.addVehicle(false, 2, 2, 3, "Red");
+		foo.showBoard();
+		if(foo.isSolved()) {
+			System.out.println("is solved");
+		}
+	}
+	
 	public static void main(String[] args) {
 		//test();
 		//testCanMove();
-		testAddVehicle();
+		//testAddVehicle();
+		testIsSolved();
 	}
 
 }

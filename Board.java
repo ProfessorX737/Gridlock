@@ -1,4 +1,3 @@
-import java.awt.Point;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +24,10 @@ public class Board {
 	public Board(int sizeRow, int sizeCol, int exitRow, int exitCol) {
 		this.sizeRow = sizeRow;
 		this.sizeCol = sizeCol;
+		this.exitRow = exitRow;
+		this.exitCol = exitCol;
 		this.vehicleMap = new HashMap<Integer, Vehicle>();
-		this.board = new int[sizeRow][sizeCol];
-		for (int y = 0; y < sizeRow; y++) {
-			for (int x = 0; x < sizeCol; x++) {
-				board[y][x]= -1;
-			}
-		}
+		this.initBoard();
 	}
 
 	/**
@@ -46,36 +42,19 @@ public class Board {
 		this.exitRow = exitRow;
 		this.exitCol = exitCol;
 		this.vehicleMap = vehicleMap;//does this work
-		board = new int[sizeRow][sizeCol];
+		this.initBoard();
+		for(Vehicle v : this.vehicleMap.values()) {
+			this.fillVehicleSpace(v, v.getID());
+		}
+	}
+	
+	private void initBoard() {
+		this.board = new int[sizeRow][sizeCol];
 		for (int y = 0; y < sizeRow; y++) {
 			for (int x = 0; x < sizeCol; x++) {
 				board[y][x]= -1;
 			}
 		}
-//		for (Map.Entry<Integer, Vehicle> entry : vehicleMap.entrySet()) {
-//			Collection<Point> takenPos = entry.getValue().getTakenPos();
-//			for(Point point : takenPos) {
-//				board[(int)point.getX()][(int)point.getY()] = entry.getKey();
-//			}
-//		}
-		for(Vehicle v : this.vehicleMap.values()) {
-			board[v.getRow()][v.getCol()] = v.getID();
-		}
-	}
-	
-	/**
-	 * Constructor for the board, when the size of the board, map of the vehicles and
-	 * a board is provided. Assumes the map of vehicles is consistent with the board.
-	 * @param sizeRow, the number of rows in the board
-	 * @param sizeCol, the number of columns in the board
-	 * @param vehicleMap, a map of all the vehicles on the board with the ID as the key
-	 * @param board, the representation of the vehicles on a matrix
-	 */
-	public Board(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap, int[][] board) {
-		this.sizeRow = sizeRow;
-		this.sizeCol = sizeCol;
-		this.vehicleMap = vehicleMap;
-		this.board = board;
 	}
 	
 	/**
@@ -88,12 +67,8 @@ public class Board {
 	 */
 	public void addVehicle(boolean isVertical, int length, int row, int col, String color) {
 		int id = vehicleMap.size();
-		Vehicle vehicle = new Vehicle(id, isVertical, length, row, col, color);
-		vehicleMap.put(id, vehicle);
-		Collection<Point> takenPos = vehicle.getTakenPos();
-		for(Point point : takenPos) {
-			board[(int)point.getX()][(int)point.getY()] = id;
-		}
+		Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
+		this.fillVehicleSpace(v, id);
 	}
 
 	/**
@@ -235,27 +210,51 @@ public class Board {
 	 * @param direction
 	 */
 	public void moveVehicle(int id, int newRow, int newCol) {
-		//Remove from current spot
-		Vehicle vehicle = vehicleMap.get(id);
-		for (Point point : vehicle.getTakenPos()) {
-			board[(int)point.getX()][(int)point.getY()] = -1;
-		}
-		//Update position
-		vehicle.setPos(newRow, newCol);
-		//Update board
-		for (Point point : vehicle.getTakenPos()) {
-			board[(int)point.getX()][(int)point.getY()] = id;
+		Vehicle v = this.vehicleMap.get(id);
+		this.fillVehicleSpace(v, -1);
+		this.fillVehicleSpace(v, id);
+	}
+	
+	private void fillVehicleSpace(Vehicle v, int id) {
+		int row = v.getRow();
+		int col = v.getCol();
+		if(v.getIsVertical()) {
+			for(int i = 0; i < v.getLength(); i++) {
+				this.board[row+i][col] = id;
+			}
+		} else {
+			for(int i = 0; i < v.getLength(); i++) {
+				this.board[row][col+i] = id;
+			}
 		}
 	}
 	
+	/**
+	 * @pre main car has id 0 and is added to the class
+	 * @return
+	 */
 	public boolean isSolved() {
-		Vehicle vehicle = vehicleMap.get(0);
-		Collection<Point> points = vehicle.getTakenPos();
-		return points.contains(new Point(exitRow, exitCol));
+		if(this.board[exitRow][exitCol] == 0) {
+			return true;
+		}
+		return false;
 	}
 	
-	public int getVehicleAtLocation(int row, int col) {
+	/**
+	 * @pre this.isOutOfBounds(row,col) == false
+	 * @return 
+	 */
+	public int getVehicleIDAtLocation(int row, int col) {
 		return board[row][col];
+	}
+	
+	/**
+	 * @pre this.isOutOfBounds(row,col) == false
+	 * @pre board[row][col] is in this.vehicleMap.keys()
+	 * @return 
+	 */
+	public Vehicle getVehicleAtLocation(int row, int col) {
+		return this.vehicleMap.get(board[row][col]);
 	}
 	
 	public Vehicle getMainVehicle() {
