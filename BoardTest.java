@@ -27,6 +27,14 @@ public class BoardTest {
 		System.out.println(foo.isSolved());
 	}
 	
+	public static void testAddVehicle() {
+		Board bah = new Board(5,5,0,0);
+		bah.addVehicle(true, 2, 2, 2, "red");
+		bah.showBoard();
+		bah.addVehicle(false, 3, 0, 0, "blue");
+		bah.showBoard();
+	}
+	
 	public static void testCanMove() {
 		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
 		Vehicle v1 = new Vehicle(0, true, 2, 1, 0, "Red");
@@ -49,7 +57,8 @@ public class BoardTest {
 	
 	public static void main(String[] args) {
 		//test();
-		testCanMove();
+		//testCanMove();
+		testAddVehicle();
 	}
 
 }

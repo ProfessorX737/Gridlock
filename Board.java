@@ -1,7 +1,6 @@
 import java.awt.Point;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -77,6 +76,24 @@ public class Board {
 		this.sizeCol = sizeCol;
 		this.vehicleMap = vehicleMap;
 		this.board = board;
+	}
+	
+	/**
+	 * Add vehicle to the board.
+	 * @param isVertical
+	 * @param length
+	 * @param row
+	 * @param col
+	 * @param color
+	 */
+	public void addVehicle(boolean isVertical, int length, int row, int col, String color) {
+		int id = vehicleMap.size();
+		Vehicle vehicle = new Vehicle(id, isVertical, length, row, col, color);
+		vehicleMap.put(id, vehicle);
+		Collection<Point> takenPos = vehicle.getTakenPos();
+		for(Point point : takenPos) {
+			board[(int)point.getX()][(int)point.getY()] = id;
+		}
 	}
 
 	/**
