@@ -12,17 +12,19 @@ public class BoardTest {
 	public static void test() {
 		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
 		vehicleMap.put(0, new Vehicle(0, true, 2, 0, 0, "Red"));
-		Board foo = new Board(5,5, vehicleMap);
+		vehicleMap.put(1, new Vehicle(1, false, 2, 3, 0, "Blue"));
+		Board foo = new Board(5, 5, 4, 0, vehicleMap);
 		foo.showBoard();
 		System.out.println("");
 		//assertFalse(foo.checkMove(0, 0, 1));
 		//assertTrue(foo.checkMove(0, 2, 1));
-		foo.moveVehicle(0, 2, 1);
+		foo.moveVehicle(0, 2, 0);
 		foo.showBoard();
 		System.out.println("");
-		foo.moveVehicle(0, 2, 2);
+		foo.moveVehicle(0, 3, 0);
 		foo.showBoard();
 		System.out.println("");
+		System.out.println(foo.isSolved());
 	}
 	
 	public static void testCanMove() {
@@ -31,7 +33,7 @@ public class BoardTest {
 		Vehicle v2 = new Vehicle(1, false, 2, 1, 1, "Red");
 		vehicleMap.put(0, v1);
 		vehicleMap.put(1, v2);
-		Board foo = new Board(5,5, vehicleMap);
+		Board foo = new Board(5,5,0,0,vehicleMap);
 		foo.showBoard();
 		System.out.printf("canMoveUp %d%n", foo.canMoveUp(v1.getID()));
 		System.out.printf("canMoveDown %d%n", foo.canMoveDown(v1.getID()));

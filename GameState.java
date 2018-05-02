@@ -18,7 +18,7 @@ public class GameState {
 	 */
 	public GameState() {
 		Map<Integer, Vehicle> vehicleList = new HashMap<Integer, Vehicle>();
-		board = new Board(5, 5, vehicleList);
+		board = new Board(5, 5, 2, 4,vehicleList);
 		turns = 0;
 		previousMoves = new ArrayList<Board>();
 	}
