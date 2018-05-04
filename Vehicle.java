@@ -1,12 +1,11 @@
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.swing.JPanel;
 
 /**
  * Represents vehicles on the board 
  *
  */
-public class Vehicle {
+public class Vehicle extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private final int id;
 	private final boolean isVertical;
 	private final int length;
@@ -55,25 +54,6 @@ public class Vehicle {
 	
 	public int getCol() {
 		return this.col;
-	}
-	
-	/**
-	 * Return a collection of points which represents the positions that are
-	 * taken by the vehicle.
-	 * @return
-	 */
-	public Collection<Point> getTakenPos() {
-		Collection<Point> takenPos = new ArrayList<Point>();
-		if (getIsVertical()) {
-			for (int i = 0; i < length; i++) {
-				takenPos.add(new Point(getRow() + i, getCol()));
-			}
-		} else {
-			for (int i = 0; i < length; i++) {
-				takenPos.add(new Point(getRow(), getCol() + i));
-			}
-		}
-		return takenPos;
 	}
 	
 	public void setPos(int row, int col) {

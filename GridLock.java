@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 public class GridLock{
@@ -6,7 +8,9 @@ public class GridLock{
 		JFrame f = new JFrame("GridLock");
 		f.setLayout(new BorderLayout());
 		
-		
+		f.setPreferredSize(new Dimension(400,300));
+		f.setLayout(new BorderLayout());
+        f.add(new GridlockBoard(), BorderLayout.CENTER);
 		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
