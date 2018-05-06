@@ -1,17 +1,16 @@
-import javax.swing.JPanel;
+import java.awt.Color;
 
 /**
  * Represents vehicles on the board 
  *
  */
-public class Vehicle extends JPanel {
-	private static final long serialVersionUID = 1L;
+public class Vehicle {
 	private final int id;
 	private final boolean isVertical;
 	private final int length;
 	private int row;
 	private int col;
-	private final String color;
+	private final Color color;
 	
 	/**
 	 * Constructor for vehicles, takes the parameters
@@ -23,7 +22,7 @@ public class Vehicle extends JPanel {
 	 * @param col, column coordinate
 	 * @param color, color of the car
 	 */
-	public Vehicle(int id, boolean isVertical, int length, int row, int col, String color) {
+	public Vehicle(int id, boolean isVertical, int length, int row, int col, Color color) {
 		this.id = id;
 		this.isVertical = isVertical;
 		this.length = length;
@@ -44,7 +43,7 @@ public class Vehicle extends JPanel {
 		return length;
 	}
 	
-	public String getColor() {
+	public Color getColor() {
 		return color;
 	}
 	

@@ -2,10 +2,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.awt.Color;
+
 /**
  * Represent the current board of the game
  */
-public class Board {
+public class Game {
 	//sizeRow and sizeCol keeps track of the size of the board
 	private int sizeRow;
 	private int sizeCol;
@@ -21,7 +23,7 @@ public class Board {
 	 * @param sizeRow, the number of rows in the board
 	 * @param sizeCol, the number of columns in the board
 	 */
-	public Board(int sizeRow, int sizeCol, int exitRow, int exitCol) {
+	public Game(int sizeRow, int sizeCol, int exitRow, int exitCol) {
 		this.sizeRow = sizeRow;
 		this.sizeCol = sizeCol;
 		this.exitRow = exitRow;
@@ -36,7 +38,7 @@ public class Board {
 	 * @param sizeCol, the number of columns in the board
 	 * @param vehicleMap, a map of all the vehicles on the board
 	 */
-	public Board(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
+	public Game(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
 		this.sizeRow = sizeRow;
 		this.sizeCol = sizeCol;
 		this.exitRow = exitRow;
@@ -65,9 +67,10 @@ public class Board {
 	 * @param col
 	 * @param color
 	 */
-	public void addVehicle(boolean isVertical, int length, int row, int col, String color) {
+	public void addVehicle(boolean isVertical, int length, int row, int col, Color color) {
 		int id = vehicleMap.size();
 		Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
+		this.vehicleMap.put(id, v);
 		this.fillVehicleSpace(v, id);
 	}
 
@@ -212,6 +215,7 @@ public class Board {
 	public void moveVehicle(int id, int newRow, int newCol) {
 		Vehicle v = this.vehicleMap.get(id);
 		this.fillVehicleSpace(v, -1);
+		v.setPos(newRow, newCol);
 		this.fillVehicleSpace(v, id);
 	}
 	
@@ -242,10 +246,13 @@ public class Board {
 	
 	/**
 	 * @pre this.isOutOfBounds(row,col) == false
-	 * @return 
+	 * @return the vehicle id if the position, if not valid return -1
 	 */
 	public int getVehicleIDAtLocation(int row, int col) {
-		return board[row][col];
+		if(!this.isOutOfBounds(row, col)) {
+			return board[row][col];
+		} 	
+		return -1;
 	}
 	
 	/**
@@ -257,12 +264,27 @@ public class Board {
 		return this.vehicleMap.get(board[row][col]);
 	}
 	
+	public boolean isVehicleVertical(int id) {
+		Vehicle v = this.vehicleMap.get(id);
+		if(v == null) return false;
+		if(v.getIsVertical()) return true;
+		return false;
+	}
+	
 	public Vehicle getMainVehicle() {
 		return vehicleMap.get(0);
 	}
 	
 	public Collection<Vehicle> getVehicles() {
 		return vehicleMap.values();
+	}
+	
+	public int getNumRows() {
+		return this.sizeRow;
+	}
+	
+	public int getNumCols() {
+		return this.sizeCol;
 	}
 	
 	//Used for printing out to the console

@@ -1,5 +1,6 @@
 //import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.awt.Color;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +12,9 @@ public class BoardTest {
 	//@Test
 	public static void test() {
 		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
-		vehicleMap.put(0, new Vehicle(0, true, 2, 0, 0, "Red"));
-		vehicleMap.put(1, new Vehicle(1, false, 2, 3, 0, "Blue"));
-		Board foo = new Board(5, 5, 4, 0, vehicleMap);
+		vehicleMap.put(0, new Vehicle(0, true, 2, 0, 0, Color.RED));
+		vehicleMap.put(1, new Vehicle(1, false, 2, 3, 0, Color.BLUE));
+		Game foo = new Game(5, 5, 4, 0, vehicleMap);
 		foo.showBoard();
 		System.out.println("");
 		//assertFalse(foo.checkMove(0, 0, 1));
@@ -28,20 +29,20 @@ public class BoardTest {
 	}
 	
 	public static void testAddVehicle() {
-		Board bah = new Board(5,5,0,0);
-		bah.addVehicle(true, 2, 2, 2, "red");
+		Game bah = new Game(5,5,0,0);
+		bah.addVehicle(true, 2, 2, 2, Color.RED);
 		bah.showBoard();
-		bah.addVehicle(false, 3, 0, 0, "blue");
+		bah.addVehicle(false, 3, 0, 0, Color.BLUE);
 		bah.showBoard();
 	}
 	
 	public static void testCanMove() {
 		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
-		Vehicle v1 = new Vehicle(0, true, 2, 1, 0, "Red");
-		Vehicle v2 = new Vehicle(1, false, 2, 1, 1, "Red");
+		Vehicle v1 = new Vehicle(0, true, 2, 1, 0, Color.RED);
+		Vehicle v2 = new Vehicle(1, false, 2, 1, 1, Color.BLUE);
 		vehicleMap.put(0, v1);
 		vehicleMap.put(1, v2);
-		Board foo = new Board(5,5,0,0,vehicleMap);
+		Game foo = new Game(5,5,0,0,vehicleMap);
 		foo.showBoard();
 		System.out.printf("canMoveUp %d%n", foo.canMoveUp(v1.getID()));
 		System.out.printf("canMoveDown %d%n", foo.canMoveDown(v1.getID()));
@@ -56,8 +57,8 @@ public class BoardTest {
 	}
 	
 	public static void testIsSolved() {
-		Board foo = new Board(5,5,2,4);
-		foo.addVehicle(false, 2, 2, 3, "Red");
+		Game foo = new Game(5,5,2,4);
+		foo.addVehicle(false, 2, 2, 3, Color.RED);
 		foo.showBoard();
 		if(foo.isSolved()) {
 			System.out.println("is solved");
