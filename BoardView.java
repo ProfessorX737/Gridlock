@@ -1,9 +1,6 @@
-import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -11,6 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.JComponent;
 
+/**
+ * The V in the MVC, creates all the visual vehicle components from the vehicles stored in the game
+ * @author ProfessorX
+ *
+ */
 public class BoardView extends JPanel {
 	private Game game;
 	private int width;
@@ -26,7 +28,6 @@ public class BoardView extends JPanel {
 		this.vehicles = new HashMap<>();
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(this.width, this.height));
-		//this.setSize(new Dimension(this.width, this.height));
 		this.setBackground(Color.white);
 
 		for(Vehicle v : game.getVehicles()) {
@@ -46,7 +47,7 @@ public class BoardView extends JPanel {
 			this.add(dc);
 		}
 	}
-
+	
 	public void setController(MouseAdapter controller) {
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);

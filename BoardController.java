@@ -3,35 +3,48 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
+/**
+ * The C in the MVC, controls the board by listening to mouse input and mouse motion input
+ */
 public class BoardController extends MouseAdapter {
 	private BoardView view;
 	private Game game;
 	private final int cellSize;
+// variables for the currently selected vehicle which is set when the mouse is pressed
+// ===========================
 	private int currentVehicleID;
+	// freedom of movement of the current vehicle:
 	private int rightSpace;
 	private int leftSpace; 
 	private int upSpace;
 	private int downSpace;
+	// The orientation of the current vehicle
+	private boolean isVertical;
+	// Store the position of the current vehicle when the mouse is pressed
 	private int x;
 	private int y;
+// ===========================
+// Store the position of the mouse on the screen when the mouse is pressed
 	private int screenX;
 	private int screenY;
-	private boolean isVertical;
 
 	public BoardController(Game game, BoardView boardView) {
 		this.view = boardView;
 		this.game = game;
 		this.cellSize = boardView.getCellLength();
-		this.screenX = 0;
-		this.screenY = 0;
+		// set current vehicle id to -1, meaning no vehicle is currently selected
+		this.currentVehicleID = -1;
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(this.currentVehicleID == -1) return;
+		// Calculate how much the mouse has moved while mouse is pressed
         int deltaX = e.getXOnScreen() - screenX;
         int deltaY = e.getYOnScreen() - screenY;
 		JComponent vc = this.view.getVehicle(this.currentVehicleID);
+		
+		// Set the new vehicle location on the board view
         if(this.isVertical) {
         		if(deltaY <= this.downSpace && deltaY >= -this.upSpace) {
         			this.view.setVehicleLocation(this.currentVehicleID, this.x, this.y + deltaY);
@@ -68,7 +81,13 @@ public class BoardController extends MouseAdapter {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	/**
+	 * When the mouse is pressed:
+	 * Set the current vehicle id and position
+	 * Calculate the freedom of movement of the current vehicle
+	 * @param e
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		this.screenX = e.getXOnScreen();
@@ -87,7 +106,12 @@ public class BoardController extends MouseAdapter {
         this.downSpace = this.game.canMoveDown(this.currentVehicleID) * this.cellSize;
         this.isVertical = this.game.isVehicleVertical(this.currentVehicleID);
 	}
-
+	
+	/**
+	 * When the mouse is released:
+	 * snap the current vehicle's location to the closest matching cells in the view and update the game
+	 * @param e
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(this.currentVehicleID == -1) return;
