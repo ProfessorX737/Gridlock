@@ -13,24 +13,24 @@ import javax.swing.JComponent;
  * @author ProfessorX
  *
  */
-public class BoardView extends JPanel {
-	private Game game;
+public class PuzzleView extends JPanel {
+	private PuzzleGame puzzleGame;
 	private int width;
 	private int height;
 	private int cellLength;
 	private Map<Integer,JComponent> vehicles;
 
-	public BoardView(Game game, int cellLength) {
-		this.game = game;
+	public PuzzleView(PuzzleGame puzzleGame, int cellLength) {
+		this.puzzleGame = puzzleGame;
 		this.cellLength = cellLength;
-		this.width = game.getNumCols() * cellLength;
-		this.height = game.getNumRows() * cellLength;
+		this.width = puzzleGame.getNumCols() * cellLength;
+		this.height = puzzleGame.getNumRows() * cellLength;
 		this.vehicles = new HashMap<>();
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(this.width, this.height));
 		this.setBackground(Color.white);
 
-		for(Vehicle v : game.getVehicles()) {
+		for(Vehicle v : puzzleGame.getVehicles()) {
 			JComponent dc = new JPanel();
 			int vWidth = this.cellLength;
 			int vHeight = this.cellLength;

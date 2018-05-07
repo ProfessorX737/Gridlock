@@ -6,9 +6,9 @@ import javax.swing.JComponent;
 /**
  * The C in the MVC, controls the board by listening to mouse input and mouse motion input
  */
-public class BoardController extends MouseAdapter {
-	private BoardView view;
-	private Game game;
+public class PuzzleController extends MouseAdapter {
+	private PuzzleView view;
+	private PuzzleGame puzzleGame;
 	private final int cellSize;
 // variables for the currently selected vehicle which is set when the mouse is pressed
 // ===========================
@@ -28,10 +28,10 @@ public class BoardController extends MouseAdapter {
 	private int screenX;
 	private int screenY;
 
-	public BoardController(Game game, BoardView boardView) {
-		this.view = boardView;
-		this.game = game;
-		this.cellSize = boardView.getCellLength();
+	public PuzzleController(PuzzleGame puzzleGame, PuzzleView puzzleView) {
+		this.view = puzzleView;
+		this.puzzleGame = puzzleGame;
+		this.cellSize = puzzleView.getCellLength();
 		// set current vehicle id to -1, meaning no vehicle is currently selected
 		this.currentVehicleID = -1;
 	}
@@ -94,17 +94,17 @@ public class BoardController extends MouseAdapter {
 		this.screenY = e.getYOnScreen();
         int row = e.getY() / this.view.getCellLength();
         int col = e.getX() / this.view.getCellLength();
-        if((this.currentVehicleID = this.game.getVehicleIDAtLocation(row, col)) == -1) {
+        if((this.currentVehicleID = this.puzzleGame.getVehicleIDAtLocation(row, col)) == -1) {
         		return;
         }
         JComponent vc = this.view.getVehicle(this.currentVehicleID);
         this.x = vc.getX();
         this.y = vc.getY();
-        this.rightSpace = this.game.canMoveRight(this.currentVehicleID) * this.cellSize;
-        this.leftSpace = this.game.canMoveLeft(this.currentVehicleID) * this.cellSize;
-        this.upSpace = this.game.canMoveUp(this.currentVehicleID) * this.cellSize;
-        this.downSpace = this.game.canMoveDown(this.currentVehicleID) * this.cellSize;
-        this.isVertical = this.game.isVehicleVertical(this.currentVehicleID);
+        this.rightSpace = this.puzzleGame.canMoveRight(this.currentVehicleID) * this.cellSize;
+        this.leftSpace = this.puzzleGame.canMoveLeft(this.currentVehicleID) * this.cellSize;
+        this.upSpace = this.puzzleGame.canMoveUp(this.currentVehicleID) * this.cellSize;
+        this.downSpace = this.puzzleGame.canMoveDown(this.currentVehicleID) * this.cellSize;
+        this.isVertical = this.puzzleGame.isVehicleVertical(this.currentVehicleID);
 	}
 	
 	/**
@@ -121,19 +121,19 @@ public class BoardController extends MouseAdapter {
 		if(this.isVertical) {
 			if(vc.getY() % this.cellSize <= this.cellSize / 2) {
 				this.view.setVehicleLocation(this.currentVehicleID, vc.getX(), row * this.cellSize);
-				this.game.moveVehicle(this.currentVehicleID, row, col);
+				this.puzzleGame.moveVehicle(this.currentVehicleID, row, col);
 			} else {
 				this.view.setVehicleLocation(this.currentVehicleID, vc.getX(), (row+1)* this.cellSize);
-				this.game.moveVehicle(this.currentVehicleID, row+1, col);
+				this.puzzleGame.moveVehicle(this.currentVehicleID, row+1, col);
 			}
 		} else {
 			if(vc.getX() % this.cellSize <= this.cellSize / 2) {
 				this.view.setVehicleLocation(this.currentVehicleID, col * this.cellSize, vc.getY());
-				this.game.moveVehicle(this.currentVehicleID, row, col);
+				this.puzzleGame.moveVehicle(this.currentVehicleID, row, col);
 				//System.out.printf("same %d %d%n",row, col);
 			} else {
 				this.view.setVehicleLocation(this.currentVehicleID, (col+1) * this.cellSize, vc.getY());
-				this.game.moveVehicle(this.currentVehicleID, row, col+1);
+				this.puzzleGame.moveVehicle(this.currentVehicleID, row, col+1);
 				//System.out.printf("next %d %d%n",row, col+1);
 			}
 		}
