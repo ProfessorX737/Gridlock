@@ -7,7 +7,7 @@ import java.awt.Color;
 /**
  * Represent the current board of the game
  */
-public class Game {
+public class PuzzleGame {
 	//sizeRow and sizeCol keeps track of the size of the board
 	private int sizeRow;
 	private int sizeCol;
@@ -23,7 +23,7 @@ public class Game {
 	 * @param sizeRow, the number of rows in the board
 	 * @param sizeCol, the number of columns in the board
 	 */
-	public Game(int sizeRow, int sizeCol, int exitRow, int exitCol) {
+	public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol) {
 		this.sizeRow = sizeRow;
 		this.sizeCol = sizeCol;
 		this.exitRow = exitRow;
@@ -38,7 +38,7 @@ public class Game {
 	 * @param sizeCol, the number of columns in the board
 	 * @param vehicleMap, a map of all the vehicles on the board
 	 */
-	public Game(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
+	public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
 		this.sizeRow = sizeRow;
 		this.sizeCol = sizeCol;
 		this.exitRow = exitRow;
