@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -20,7 +21,7 @@ public class ButtonPanel extends JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton jResetBtn;
     private javax.swing.JLabel jTimeLabel;
-    // End of variables declaration
+
 
     /**
      * Creates new form NewJFrame
@@ -72,7 +73,7 @@ public class ButtonPanel extends JPanel {
         UndoBtn.setText("Undo");
 
         RedoBtn.setText("Redo");
-        RedoBtn.addActionListener(new java.awt.event.ActionListener() {
+        RedoBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RedoBtnActionPerformed(evt);
             }
@@ -82,21 +83,21 @@ public class ButtonPanel extends JPanel {
 
         DifficultyBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Novice", "Intermediate", "Expert" }));
 
-        LevelLabel.setText("Level:");
+        LevelLabel.setText("Puzzle: ");
 
         LevelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Puzzle 1", "Puzzle 2", "Puzzle 100" }));
 
         jButton1.setText("Create Randomized Game");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(this);
+        javax.swing.GroupLayout ButtonPanelLayout = new GroupLayout(this);
         this.setLayout(ButtonPanelLayout);
         ButtonPanelLayout.setHorizontalGroup(
-                ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(ButtonPanelLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
