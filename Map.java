@@ -2,35 +2,16 @@ import java.awt.Image;
 import java.io.File;
 import java.util.Scanner;
 
-import javax.swing.ImageIcon;
-
 public class Map {
 	
 	private Scanner m;
 	
 	private String Map[] = new String[6];
-		
-	private Image vehicle,
-	              car;
 	
-	public Map() {
-		
-		ImageIcon img = new ImageIcon("car.png");
-		car = img.getImage();
-		img = new ImageIcon("vehicle2.png");
-		vehicle = img.getImage();
-		
+	public Map() {		
 		openFile();
 		readFile();
 		closeFile();
-	}
-	
-	public Image getCar() {
-		return car;
-	}
-	
-	public Image getVehicle() {
-		return vehicle;
 	}
 	
 	public String getMap(int x, int y) {
@@ -58,3 +39,4 @@ public class Map {
 		m.close();
 	}
 }
+
