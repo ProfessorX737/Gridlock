@@ -60,6 +60,30 @@ public class PuzzleGame {
 	}
 	
 	/**
+	 * Check whether the vehicle can be added to the location.
+	 * @param row
+	 * @param col
+	 * @param vehicle
+	 * @return
+	 */
+	public boolean canAddVehicle(boolean isVertical, int length, int row, int col) {
+		if (isVertical){
+			for (int i = 0; i < length; i++) {
+				if (isOccupied(row + i, col)) {
+					return false;
+				}
+			}
+		} else {
+			for (int i = 0; i < length; i++) {
+				if (isOccupied(row, col + i)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Add vehicle to the board.
 	 * @param isVertical
 	 * @param length

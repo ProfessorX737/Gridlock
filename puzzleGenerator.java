@@ -10,6 +10,6 @@ public interface puzzleGenerator {
 	 * @param moves, the number of moves required to solve the puzzle
 	 * @return
 	 */
-	public Puzzle generatePuzzle(int width, int height, int exitRow, int exitCol, int numVehicle, int moves);
+	public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int numVehicle, int moves);
 	
 }

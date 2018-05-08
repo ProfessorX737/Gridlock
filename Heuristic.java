@@ -5,5 +5,5 @@ public interface Heuristic {
 	 * @param puzzle
 	 * @return
 	 */
-	int calculate (Puzzle puzzle);
+	int calculate (PuzzleGame puzzle);
 }
