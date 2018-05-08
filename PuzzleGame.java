@@ -106,6 +106,9 @@ public class PuzzleGame {
 			row--;
 			numLegal++;
 		}
+		if(this.exitRow == 0 && id == 0 && row == -1) {
+			return numLegal + 1;
+		}
 		return numLegal;
 	}
 
@@ -122,6 +125,9 @@ public class PuzzleGame {
 			row++;
 			numLegal++;
 		}
+		if(this.exitRow == this.sizeRow - 1 && id == 0 && row == this.sizeRow) {
+			return numLegal + 1;
+		}
 		return numLegal;
 	}
 	
@@ -135,6 +141,9 @@ public class PuzzleGame {
 			if(this.isOccupied(row, col)) break;
 			col--;
 			numLegal++;
+		}
+		if(this.exitCol == 0 && id == 0 && col == -1) {
+			return numLegal + 1;
 		}
 		return numLegal;
 	}
@@ -150,61 +159,12 @@ public class PuzzleGame {
 			col++;
 			numLegal++;
 		}
+		if(this.exitCol == this.sizeCol - 1 && id == 0 && col == this.sizeCol) {
+			return numLegal + 1;
+		}
 		return numLegal;
 	}
 	
-	/**
-	 * Check whether the move is valid given vehicle id, direction and distance of move
-	 * Distance is 0-North, 1-East, 2-South, 3-West
-	 * @param id
-	 * @param direction
-	 * @param distance
-	 */
-	public boolean checkMove(int id, int direction, int distance) {
-		Vehicle vehicle = vehicleMap.get(id);
-		//Check that the direction is correct
-		if (direction % 2 == 0 && vehicle.getIsVertical() == false) {
-			return false;
-		} else if (direction % 2 == 1 && vehicle.getIsVertical() == true) {
-			return false;
-		}
-		//Check that it's within bounds
-		int row = vehicle.getRow();
-		int col = vehicle.getCol();
-		int length = vehicle.getLength();
-			switch(direction) {
-				case 0:
-					if (row - distance < 0) return false;
-					break;
-				case 1:
-					if (col + length + distance > sizeCol) return false;
-					break;
-				case 2:
-					if (row + length + distance > sizeRow) return false;
-					break;
-				case 3:
-					if (col - distance < 0) return false;
-					break;
-			}
-		//Check space is unoccupied
-		for (int i = 1; i <= distance; i++) {
-			switch(direction) {
-				case 0:
-					if (isOccupied(row - i, col) == false) return false;
-					break;
-				case 1:
-					if (isOccupied(row, col + length + i) == false) return false;
-					break;
-				case 2:
-					if (isOccupied(row + length + i, col) == false) return false;
-					break;
-				case 3:
-					if (isOccupied(row, col - i) == false) return false;
-					break;
-			}
-		}
-		return true;
-	}
 	
 	/**
 	 * To move a vehicle specify the vehicle, direction and distance.
@@ -224,10 +184,12 @@ public class PuzzleGame {
 		int col = v.getCol();
 		if(v.getIsVertical()) {
 			for(int i = 0; i < v.getLength(); i++) {
+				if(this.isOutOfBounds(row+i, col)) return;
 				this.board[row+i][col] = id;
 			}
 		} else {
 			for(int i = 0; i < v.getLength(); i++) {
+				if(this.isOutOfBounds(row, col+i)) return;
 				this.board[row][col+i] = id;
 			}
 		}
