@@ -28,7 +28,6 @@ public class GridLock{
 		container.setLayout(new GridLayout(1,2));
 		container.add(bv,BorderLayout.CENTER);
 		container.add(panelTwo, BorderLayout.EAST);
-		
 
 		
 		bv.setController(bc);
