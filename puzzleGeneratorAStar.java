@@ -92,8 +92,13 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 			do {
 				isVertical = randomGenerator.nextBoolean();
 				len = carLength[randomGenerator.nextInt(carLength.length)];
-				carRow = randomGenerator.nextInt(height - len + 1);
-				carCol = randomGenerator.nextInt(width - len + 1);
+				if (isVertical) {
+					carRow = randomGenerator.nextInt(height - len + 1);
+					carCol = randomGenerator.nextInt(width);
+				} else {
+					carRow = randomGenerator.nextInt(height);
+					carCol = randomGenerator.nextInt(width - len + 1);
+				}
 			} while (!puzzle.canAddVehicle(isVertical, len, carRow, carCol));
 			col0 = randomGenerator.nextInt(256);
 			col1 = randomGenerator.nextInt(256);
