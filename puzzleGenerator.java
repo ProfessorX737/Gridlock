@@ -12,10 +12,4 @@ public interface puzzleGenerator {
 	 */
 	public Puzzle generatePuzzle(int width, int height, int exitRow, int exitCol, int numVehicle, int moves);
 	
-	/**
-	 * Returns the optimal solution for solving a puzzle.
-	 * @param puzzle
-	 * @return
-	 */
-	public Collection<Puzzle> optimalSolution(Puzzle puzzle);
 }
