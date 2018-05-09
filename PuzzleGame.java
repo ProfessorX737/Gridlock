@@ -2,6 +2,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 
 /**
@@ -177,6 +179,16 @@ public class PuzzleGame {
 		this.fillVehicleSpace(v, -1);
 		v.setPos(newRow, newCol);
 		this.fillVehicleSpace(v, id);
+		// when moving the red car to exit position 2 , 4
+		if(v.getColor().equals(Color.RED) && newRow == 2 && newCol == 4) {
+			// show the result dialog when finish the game
+			int i = JOptionPane.showConfirmDialog(null, "You win the game in n moves!\n" + "Continue to paly？","Result:", JOptionPane.YES_NO_OPTION);
+			if(i==JOptionPane.OK_OPTION) {
+				System.out.println("play next puzzle");
+			}else {
+				System.out.println("exit");
+			}
+		}
 	}
 	
 	private void fillVehicleSpace(Vehicle v, int id) {
