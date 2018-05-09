@@ -4,11 +4,16 @@ import java.util.Scanner;
 
 public class Map {
 	
+	private String fileName;
+	
 	private Scanner m;
 	
 	private String Map[] = new String[6];
 	
-	public Map() {		
+	public Map(String fileName) {
+		
+		this.fileName = fileName;
+		
 		openFile();
 		readFile();
 		closeFile();
@@ -21,7 +26,7 @@ public class Map {
 	
 	public void openFile() {
 		try {
-			m = new Scanner(new File("puzzle.txt"));
+			m = new Scanner(new File(fileName));
 		}catch(Exception e) {
 			System.out.println("error");
 		}

@@ -1,12 +1,23 @@
 
 import javax.swing.*;
+
+import java.awt.ItemSelectable;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  *
  *
  */
 public class ButtonPanel extends JPanel {
+	
+	//selected level string
+	static private String selectedLevelString(ItemSelectable is) {   
+	    Object selected[] = is.getSelectedObjects();   
+	    return ((selected.length == 0) ? "null" : (String) selected[0]);   
+	  } 
 
     // Variables declaration
     private javax.swing.JComboBox<String> DifficultyBox;
@@ -22,16 +33,17 @@ public class ButtonPanel extends JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton jResetBtn;
     private javax.swing.JLabel jTimeLabel;
-
-
+    private JFrame f;
+    
     /**
      * Creates new form NewJFrame
      */
-    public ButtonPanel(JPanel container) {
-        initComponents(container);
-    }
+    public ButtonPanel(JPanel container, JFrame f) {
+        this.f = f;
+    		initComponents(container);
+	}
 
-    /**
+	/**
      * This method is called from within the constructor to initialize the form.
      */
 
@@ -86,8 +98,28 @@ public class ButtonPanel extends JPanel {
 
         LevelLabel.setText("Puzzle: ");
 
-        LevelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Puzzle 1", "Puzzle 2", "Puzzle 100" }));
-
+        LevelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a level","Puzzle 1", "Puzzle 2", "Puzzle 100" }));
+ 
+        // listen select
+        LevelBox.addItemListener(new ItemListener(){
+         @Override
+         	public void itemStateChanged(ItemEvent e){
+        	 		// if selected one item
+        	 		if (e.getStateChange() == ItemEvent.SELECTED){
+        	 			// read the level name  
+        	 			String text=(String) LevelBox.getSelectedItem(); 
+        	 			System.out.println(text);
+        	 			// dispose the frame
+        	 			f.dispose();
+        	 			// generate a new frame
+        	 			JFrame Newf = new JFrame("GridLock");
+        	 			String[] s = text.split(" ");;
+        	 			String fileName = "puzzle"+s[1]+".txt";
+        	 			GridLock.board(Newf,fileName);
+        	 		}
+         	}
+        });   
+        
         jButton1.setText("Create Randomized Game");
         jButton1.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

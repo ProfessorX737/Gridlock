@@ -5,15 +5,20 @@ import javax.swing.*;
 public class GridLock{
 	public static void main(String args[]) {
 		JFrame f = new JFrame("GridLock");
+		String fileName = "puzzle1.txt";
+		board(f,fileName);
+	}
+	
+	public static void board(JFrame f, String fileName) {
 		JPanel container = new JPanel();
-		ButtonPanel panelTwo = new ButtonPanel(container);
+		ButtonPanel panelTwo = new ButtonPanel(container, f);
 		
 		f.setLayout(new BorderLayout());
 		f.setBackground(Color.BLACK);
 		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
 		
 		//map the text file
-		Map m = new Map();
+		Map m = new Map(fileName);
 		
 		//add the vehicle by reading the text file
 		for(int y = 0; y < 6; y++) {
