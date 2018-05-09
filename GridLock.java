@@ -6,8 +6,7 @@ public class GridLock{
 	public static void main(String args[]) {
 		JFrame f = new JFrame("GridLock");
 		JPanel container = new JPanel();
-		ButtonPanel panelTwo = new ButtonPanel(container);
-		
+
 		f.setLayout(new BorderLayout());
 		f.setBackground(Color.BLACK);
 		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
@@ -22,7 +21,10 @@ public class GridLock{
 
 
 		PuzzleView bv = new PuzzleView(puzzleGame,50);
+		ButtonController buttonController = new ButtonController(bv, puzzleGame);
 		PuzzleController bc = new PuzzleController(puzzleGame,bv);
+
+		ButtonPanel panelTwo = new ButtonPanel(container, buttonController);
 
 
 		container.setLayout(new GridLayout(1,2));

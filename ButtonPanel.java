@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 /**
  *
@@ -22,12 +23,15 @@ public class ButtonPanel extends JPanel {
     private javax.swing.JButton jResetBtn;
     private javax.swing.JLabel jTimeLabel;
 
+    private ButtonController buttonController;
+
 
     /**
      * Creates new form NewJFrame
      */
-    public ButtonPanel(JPanel container) {
+    public ButtonPanel(JPanel container, ButtonController buttonController) {
         initComponents(container);
+        this.buttonController = buttonController;
     }
 
     /**
@@ -60,7 +64,8 @@ public class ButtonPanel extends JPanel {
         jResetBtn.setText("Reset");
         jResetBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jResetBtnActionPerformed(evt);
+                System.out.println("Resetting puzzle...");
+                buttonController.reset();
             }
         });
 
@@ -69,13 +74,21 @@ public class ButtonPanel extends JPanel {
         MoveCount.setText("Moves: 15");
 
         HintBtn.setText("Hint");
+        /*
+        HintBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Hint button pressed");
+            }
+        });
+        */
 
         UndoBtn.setText("Undo");
 
         RedoBtn.setText("Redo");
         RedoBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RedoBtnActionPerformed(evt);
+                // puzzleGame.redo();
             }
         });
 
@@ -159,16 +172,14 @@ public class ButtonPanel extends JPanel {
 
     }
 
-    private void RedoBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO 
-    }
-
-    private void jResetBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO 
-    }
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO 
+    }
+
+    public void setController(MouseAdapter controller){
+        this.addMouseListener(controller);
+
+
     }
 
 

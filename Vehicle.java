@@ -30,6 +30,16 @@ public class Vehicle {
 		this.col = col;
 		this.color = color;
 	}
+
+	// copy constructor
+	public Vehicle(Vehicle v){
+		this.id = v.getID();
+		this.isVertical = v.getIsVertical();
+		this.length = v.getLength();
+		this.row = v.getRow();
+		this.col = v.getCol();
+		this.color = v.getColor();
+	}
 	
 	public int getID() {
 		return id;
