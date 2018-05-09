@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,22 @@ public class PuzzleGame {
 		for(Vehicle v : this.vehicleMap.values()) {
 			this.fillVehicleSpace(v, v.getID());
 		}
+	}
+
+	/**
+	 * Copy constructor
+	 * @param g, the Puzzle game to copy
+	 */
+	public PuzzleGame(PuzzleGame g) {
+		this.sizeRow = g.sizeRow;
+		this.sizeCol = g.sizeCol;
+		this.exitRow = g.exitRow;
+		this.exitCol = g.exitCol;
+		this.vehicleMap = new HashMap<>();
+		for(Vehicle v : g.vehicleMap.values()) {
+			this.vehicleMap.put(v.getID(), new Vehicle(v));
+		}
+		this.board = this.cloneBoard(g.board);
 	}
 	
 	private void initBoard() {
@@ -205,6 +222,24 @@ public class PuzzleGame {
 		}
 		return false;
 	}
+
+//	private int[][] cloneBoard(int[][] board) {
+//		int[][] clone = new int[this.sizeRow][];
+//		for(int i = 0; i < this.sizeRow; i++) {
+//			clone[i] = board[i].clone();
+//		}
+//		return clone;
+//	}
+
+	private int[][] cloneBoard(int[][] board) {
+		int[][] clone = new int[this.sizeRow][this.sizeCol];
+		for(int i = 0; i < this.sizeRow; i++) {
+			for(int k = 0; k < this.sizeCol; k++) {
+				clone[i][k] = board[i][k];
+			}
+		}
+		return clone;
+	}
 	
 	/**
 	 * @pre this.isOutOfBounds(row,col) == false
@@ -249,6 +284,46 @@ public class PuzzleGame {
 		return this.sizeCol;
 	}
 	
+	public int[][] getBoard() {
+		return this.board;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.deepHashCode(board);
+		result = prime * result + exitCol;
+		result = prime * result + exitRow;
+		result = prime * result + sizeCol;
+		result = prime * result + sizeRow;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PuzzleGame other = (PuzzleGame) obj;
+		if (!Arrays.deepEquals(board, other.board))
+			return false;
+		if (exitCol != other.exitCol)
+			return false;
+		if (exitRow != other.exitRow)
+			return false;
+		if (sizeCol != other.sizeCol)
+			return false;
+		if (sizeRow != other.sizeRow)
+			return false;
+		return true;
+	}
+
+
+
 	//Used for printing out to the console
 	private final static String red_car = "r";
 	private final static String road = "-";
