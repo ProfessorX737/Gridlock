@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -297,6 +298,28 @@ public class PuzzleGame {
 	
 	public Vehicle getMainVehicle() {
 		return vehicleMap.get(0);
+	}
+	
+	/**
+	 * Returns the row of the vehicle
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id, of the vehicle
+	 * @return the row at which the vehicle head occupies
+	 */
+	public int getVehicleRow(int id) {
+		return vehicleMap.get(id).getRow();
+	}
+	
+	/**
+	 * Return the row of the vehicle
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id, of the vehicle
+	 * @return the column at which the vehicle head occupies
+	 */
+	public int getVehicleCol(int id) {
+		return vehicleMap.get(id).getCol();
 	}
 	
 	public Collection<Vehicle> getVehicles() {

@@ -17,6 +17,8 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 	//Other cars can either be of size 2 or size 3
 	private final static int[] carLength = new int[] {2, 3};
 	//private Collection<Integer> carLength;
+	private final static int numDirections = 4;
+	//number of directions
 	
 	public puzzleGeneratorAStar(Heuristic h) {
 		this.h = h;
@@ -81,8 +83,11 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 			carCol = width - mainCarLength;
 		}
 		puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, new Color(255, 0, 0));
-		//Place remaining cars
+		//Place remaining cars and move on car around
 		int len = 0;
+		int carID = 0;
+		int moveDist = 0;
+		int direction = 0;
 		int col0 = 0; 		//Colors of car
 		int col1 = 0;
 		int col2 = 0;
@@ -104,6 +109,30 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 			col1 = randomGenerator.nextInt(256);
 			col2 = randomGenerator.nextInt(256);
 			puzzle.addVehicle(isVertical, len, carRow, carCol, new Color(col0, col1, col2));
+			//move random vehicle around, randomly
+			carID = randomGenerator.nextInt(puzzle.getVehicles().size());
+			//Could add heuristic to generate more difficult puzzles
+			direction = randomGenerator.nextInt(4);
+			carRow = puzzle.getVehicleRow(carID);
+			carCol = puzzle.getVehicleCol(carID);
+
+			if (direction == 0) {
+				//move up
+				moveDist = randomGenerator.nextInt((puzzle.canMoveUp(carID) + 1));
+				puzzle.moveVehicle(carID, carRow - moveDist, carCol);
+			} else if (direction == 1) {
+				//move right
+				moveDist = randomGenerator.nextInt((puzzle.canMoveRight(carID) + 1));
+				puzzle.moveVehicle(carID, carRow, carCol + moveDist);
+			} else if (direction == 2) {
+				//move down
+				moveDist = randomGenerator.nextInt((puzzle.canMoveDown(carID) + 1));
+				puzzle.moveVehicle(carID, carRow + moveDist, carCol);
+			} else if (direction == 3) {
+				//move left
+				moveDist = randomGenerator.nextInt((puzzle.canMoveLeft(carID) + 1));
+				puzzle.moveVehicle(carID, carRow, carCol - moveDist);
+			}
 		}
 		return puzzle;
 	}
