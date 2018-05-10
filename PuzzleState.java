@@ -50,6 +50,22 @@ public class PuzzleState implements TreeNode<PuzzleState> {
 	public int[][] getBoard() {
 		return this.game.getBoard();
 	}
+	
+	public boolean isSolved() {
+		return this.game.isSolved();
+	}
+	
+	public int getExitRow() {
+		return this.game.getExitRow();
+	}
+
+	public int getExitCol() {
+		return this.game.getExitCol();
+	}
+	
+	public Vehicle getMainVehicle() {
+		return this.game.getMainVehicle();
+	}
 
 	@Override
 	public int hashCode() {
@@ -102,32 +118,3 @@ public class PuzzleState implements TreeNode<PuzzleState> {
 		}
 	}
 }
-	
-//	private int[][] cloneBoard(int[][] board) {
-//		int[][] clone = new int[this.game.getNumRows()][];
-//		for(int i = 0; i < this.game.getNumRows(); i++) {
-//			clone[i] = board[i].clone();
-//		}
-//		return clone;
-//	}
-//	
-//	public void moveVehicle(Vehicle v, int[][] board, int newRow, int newCol) {
-//		this.fillVehicleSpace(v, board, -1);
-//		v.setPos(newRow, newCol);
-//		this.fillVehicleSpace(v, board, v.getID());
-//	}
-//	
-//	private void fillVehicleSpace(Vehicle v, int[][] board, int id) {
-//		int row = v.getRow();
-//		int col = v.getCol();
-//		if(v.getIsVertical()) {
-//			for(int i = 0; i < v.getLength(); i++) {
-//				board[row+i][col] = id;
-//			}
-//		} else {
-//			for(int i = 0; i < v.getLength(); i++) {
-//				board[row][col+i] = id;
-//			}
-//		}
-//	}
-//}

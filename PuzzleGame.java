@@ -288,6 +288,13 @@ public class PuzzleGame {
 		return this.board;
 	}
 	
+	public int getExitRow() {
+		return this.exitRow;
+	}
+	public int getExitCol() {
+		return this.exitCol;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

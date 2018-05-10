@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.util.List;
 
 public class TestSearch {
-	public static void main(String[] args) {
+	public static void test1() {
 		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
 		puzzleGame.addVehicle(false, 2, 2, 0, Color.RED);
 		puzzleGame.addVehicle(false, 3, 0, 0, Color.ORANGE);
@@ -29,6 +29,41 @@ public class TestSearch {
 			System.out.println("");
 		}
 	}
+	public static void test2() {
+		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
+		puzzleGame.addVehicle(false, 2, 2, 2, Color.RED);
+		puzzleGame.addVehicle(false, 3, 0, 0, Color.ORANGE);
+		puzzleGame.addVehicle(true, 2, 0, 3, Color.ORANGE);
+		puzzleGame.addVehicle(true, 3, 0, 4, Color.ORANGE);
+		puzzleGame.addVehicle(true, 3, 0, 5, Color.ORANGE);
+		puzzleGame.addVehicle(true, 2, 1, 0, Color.ORANGE);
+		puzzleGame.addVehicle(false, 2, 1, 1, Color.ORANGE);
+		puzzleGame.addVehicle(false, 2, 3, 0, Color.ORANGE);
+		puzzleGame.addVehicle(true, 2, 3, 2, Color.ORANGE);
+		puzzleGame.addVehicle(true, 2, 4, 1, Color.ORANGE);
+		puzzleGame.addVehicle(false, 2, 5, 2, Color.ORANGE);
+		puzzleGame.addVehicle(false, 2, 4, 4, Color.ORANGE);
+		puzzleGame.addVehicle(false, 2, 5, 4, Color.ORANGE);
+		PuzzleGame goal = new PuzzleGame(6,6,2,5);
+		goal.addVehicle(false, 2, 2, 5, Color.RED);
+		Heuristic<PuzzleState> h = new PuzzleHeuristic();
+		Graph<PuzzleState> stateGraph = new TreeGraph<>();
+		ShortestPathSearch<PuzzleState> search = new AStar<>(stateGraph,h);
+		List<PuzzleState> path = search.shortestPath(new PuzzleState(puzzleGame), new PuzzleState(goal));
+		System.out.printf("%d%n",search.getNumExpanded());
+		System.out.printf("path cost = %d%n", search.getFinalCost());
+		if(path == null) {
+			System.out.println("null");
+			return;
+		}
+		for(PuzzleState state : path) {
+			showBoard(puzzleGame, state.getBoard());
+			System.out.println("");
+		}
+	}
+	public static void main(String[] args) {
+		test1();
+	}
 	private final static String red_car = "r";
 	private final static String road = "-";
 	private final static String wall = "W";
@@ -43,7 +78,7 @@ public class TestSearch {
 				} else if (board[y][x] == -1) {
 					System.out.print(road);
 				} else {
-					System.out.print(board[y][x]);
+					System.out.print(Integer.toHexString(board[y][x]));
 				}
 			}
 			System.out.println("");
