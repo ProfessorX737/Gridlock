@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -46,25 +47,34 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 		int movesRequired = 0;
 		boolean canAdd = true;
 		int tries = 0;
-		//if tries exceeds tries limit then it is too difficult to generate
-		PuzzleGame puzzle = null;
+		PuzzleSolver solver = new PuzzleSolver();
+		List<int[][]> puzzleSolved = null;
+		//generate initial puzzle
+		PuzzleGame puzzle = generateInitialState(width, height, exitRow, exitCol);
 		//Keep generating until we have a suitable puzzle
 		while (movesRequired < moves) {
-			if (tries < triesLimit) {
-				tries++;
-			} else {
+			if (tries > triesLimit) {
+				//if tries exceeds tries limit then it is too difficult to generate
 				return null;
 			}
-			puzzle = generateInitialState(width, height, exitRow, exitCol);
 			//add random vehicle
 			//if can't find a suitable place to add vehicle start over
 			canAdd = addRandomVehicle(puzzle);
 			if (!canAdd) {
 				puzzle = generateInitialState(width, height, exitRow, exitCol);
+				tries++;
+			} else {
+				puzzleSolved = solver.solve(puzzle);
+				if (puzzleSolved == null) {
+					//couldn't Solve puzzle restart
+					movesRequired = 0;
+					puzzle = generateInitialState(width, height, exitRow, exitCol);
+					tries++;
+				} else {
+					movesRequired = puzzleSolved.size() - 1;
+				}
 			}
-
 		}
- 
 		return puzzle;
 	}
 	
