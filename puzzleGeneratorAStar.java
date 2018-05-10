@@ -21,9 +21,9 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 	private final static int numDirections = 4;
 	//number of directions
 	//limit of which to generate random vehicle
-	private final static int randomLimit = 10;
+	private final static int randomLimit = 100;
 	//limit of how many tries to generate board
-	private final static int triesLimit = 10;
+	private final static int triesLimit = 100;
 
 	public puzzleGeneratorAStar(Heuristic h) {
 		this.h = h;
