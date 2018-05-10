@@ -10,6 +10,7 @@ public class PuzzleSolver {
 		PuzzleGame goal = new PuzzleGame(game.getNumRows(),game.getNumCols(),game.getExitRow(),game.getExitCol());
 		goal.addVehicle(false, 2, game.getExitRow(), game.getExitCol(), Color.RED);
 		List<PuzzleState> states = search.shortestPath(new PuzzleState(game), new PuzzleState(goal));
+		if(states == null) return null;
 		List<int[][]> path = new ArrayList<>();
 		for(PuzzleState state : states) {
 			path.add(state.getBoard());
