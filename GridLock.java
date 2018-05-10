@@ -54,7 +54,24 @@ public class GridLock{
 		f.setVisible(true);
 		
 	}
+	public static void testUnsolvable() {
+		JFrame f = new JFrame("GridLock");
+		f.setLayout(new BorderLayout());
+		f.setLayout(new BorderLayout());
+		f.setBackground(Color.BLACK);
+		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
+		puzzleGame.addVehicle(false, 2, 2, 2, Color.RED);
+		puzzleGame.addVehicle(true, 3, 0, 5, Color.ORANGE);
+		puzzleGame.addVehicle(true, 3, 3, 5, Color.ORANGE);
+		PuzzleView bv = new PuzzleView(puzzleGame,50);
+		PuzzleController bc = new PuzzleController(puzzleGame,bv);
+		bv.setController(bc);
+        f.add(bv,BorderLayout.CENTER);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.pack();
+		f.setVisible(true);
+	}
 	public static void main(String args[]) {
-		test2();
+		testUnsolvable();
 	}
 }

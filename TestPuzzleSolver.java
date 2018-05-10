@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.util.List;
 
 public class TestPuzzleSolver {
-	public static void main(String[] args) {
+	public static void test1() {
 		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
 		puzzleGame.addVehicle(false, 2, 2, 2, Color.RED);
 		puzzleGame.addVehicle(false, 3, 0, 0, Color.ORANGE);
@@ -22,6 +22,26 @@ public class TestPuzzleSolver {
 			showBoard(puzzleGame,board);
 		}
 	}
+	
+	public static void testUnsolvable() {
+		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
+		puzzleGame.addVehicle(false, 2, 2, 2, Color.RED);
+		puzzleGame.addVehicle(true, 3, 0, 5, Color.ORANGE);
+		puzzleGame.addVehicle(true, 3, 3, 5, Color.ORANGE);
+		List<int[][]> path = PuzzleSolver.solve(puzzleGame);
+		if(path == null) {
+			System.out.println("null");
+			return;
+		}
+		for(int[][] board : path) {
+			showBoard(puzzleGame,board);
+		}
+	}
+
+	public static void main(String[] args) {
+		testUnsolvable();
+	}
+
 	private final static String red_car = "r";
 	private final static String road = "-";
 	private final static String wall = "W";
