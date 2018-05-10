@@ -1,9 +1,8 @@
 
-public interface Heuristic {
+public interface Heuristic<N> {
 	/**
-	 * Calculate the heuristic value of the current puzzle
-	 * @param puzzle
-	 * @return
+	 * @param node, the node from which to calculate the heuristic 
+	 * @return the heuristic value of the node
 	 */
-	int calculate (PuzzleGame puzzle);
+	int getH(N node);
 }

@@ -31,6 +31,19 @@ public class Vehicle {
 		this.color = color;
 	}
 	
+	/**
+	 * Copy constructor
+	 * @return
+	 */
+	public Vehicle(Vehicle v) {
+		this.id = v.id;
+		this.isVertical = v.isVertical;
+		this.length = v.length;
+		this.row = v.row;
+		this.col = v.col;
+		this.color = v.color;
+	}
+	
 	public int getID() {
 		return id;
 	}

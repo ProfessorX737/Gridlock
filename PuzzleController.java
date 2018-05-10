@@ -46,27 +46,27 @@ public class PuzzleController extends MouseAdapter {
 		
 		// Set the new vehicle location on the board view
         if(this.isVertical) {
-        		if(deltaY <= this.downSpace && deltaY >= -this.upSpace) {
-        			this.view.setVehicleLocation(this.currentVehicleID, this.x, this.y + deltaY);
-        		} else if(vc.getY() <= this.y + this.downSpace && vc.getY() >= this.y - this.upSpace) {
-        			// Handle the case if the user moves the vehicle too fast for vertical vehicles
-        			if(deltaY < 0) {
-        				this.view.setVehicleLocation(this.currentVehicleID, this.x, this.y - this.upSpace);
-        			} else {
-        				this.view.setVehicleLocation(this.currentVehicleID, this.x, this.y + this.downSpace);
-        			}
-        		}
+			if(deltaY <= this.downSpace && deltaY >= -this.upSpace) {
+				this.view.setVehicleLocation(this.currentVehicleID, this.x, this.y + deltaY);
+			} else if(vc.getY() <= this.y + this.downSpace && vc.getY() >= this.y - this.upSpace) {
+				// Handle the case if the user moves the vehicle too fast for vertical vehicles
+				if(deltaY < 0) {
+					this.view.setVehicleLocation(this.currentVehicleID, this.x, this.y - this.upSpace);
+				} else {
+					this.view.setVehicleLocation(this.currentVehicleID, this.x, this.y + this.downSpace);
+				}
+			}
         } else {
-        		if(deltaX <= this.rightSpace && deltaX >= -this.leftSpace) {
-        			this.view.setVehicleLocation(this.currentVehicleID, this.x + deltaX, this.y);
-        		} else if(vc.getX() <= this.x + this.rightSpace && vc.getX() >= this.x - this.leftSpace) {
-        			// Handle the case if the user moves the vehicle too fast for horizontal vehicles
-        			if(deltaX < 0) {
-        				this.view.setVehicleLocation(this.currentVehicleID, this.x - this.leftSpace, this.y);
-        			} else {
-        				this.view.setVehicleLocation(this.currentVehicleID, this.x + this.rightSpace, this.y);
-        			}
-        		}
+			if(deltaX <= this.rightSpace && deltaX >= -this.leftSpace) {
+				this.view.setVehicleLocation(this.currentVehicleID, this.x + deltaX, this.y);
+			} else if(vc.getX() <= this.x + this.rightSpace && vc.getX() >= this.x - this.leftSpace) {
+				// Handle the case if the user moves the vehicle too fast for horizontal vehicles
+				if(deltaX < 0) {
+					this.view.setVehicleLocation(this.currentVehicleID, this.x - this.leftSpace, this.y);
+				} else {
+					this.view.setVehicleLocation(this.currentVehicleID, this.x + this.rightSpace, this.y);
+				}
+			}
         }
 	}
 
