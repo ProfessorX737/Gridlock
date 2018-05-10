@@ -18,6 +18,7 @@ public class GridLock{
 		puzzleGame.addVehicle(true, 2, 4, 4, Color.ORANGE);
 		puzzleGame.addVehicle(false, 2, 3, 4, Color.ORANGE);
 		puzzleGame.addVehicle(true, 3, 0, 5, Color.ORANGE);
+		puzzleGame.initState();
 
 
 		PuzzleView bv = new PuzzleView(puzzleGame,50);

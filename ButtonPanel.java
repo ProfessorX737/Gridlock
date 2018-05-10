@@ -84,21 +84,19 @@ public class ButtonPanel extends JPanel {
         */
 
         UndoBtn.setText("Undo");
+        UndoBtn.addActionListener(evt -> buttonController.undo());
 
         RedoBtn.setText("Redo");
-        RedoBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // puzzleGame.redo();
-            }
-        });
+        RedoBtn.addActionListener(evt -> buttonController.redo());
 
         DifficultyLabel.setText("Difficulty:");
 
-        DifficultyBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Novice", "Intermediate", "Expert" }));
+        DifficultyBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Novice", "Intermediate",
+                "Expert"}));
 
         LevelLabel.setText("Puzzle: ");
 
-        LevelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Puzzle 1", "Puzzle 2", "Puzzle 100" }));
+        LevelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Puzzle 1", "Puzzle 2", "Puzzle 100"}));
 
         jButton1.setText("Create Randomized Game");
         jButton1.addActionListener(new ActionListener() {
@@ -115,24 +113,34 @@ public class ButtonPanel extends JPanel {
                                 .addContainerGap()
                                 .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment
+                                                        .LEADING)
                                                         .addComponent(DifficultyLabel)
-                                                        .addComponent(DifficultyBox, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(DifficultyBox, GroupLayout.PREFERRED_SIZE, 87,
+                                                                GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(UndoBtn)
                                                         .addComponent(RedoBtn))
                                                 .addGap(18, 18, 18)
-                                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment
+                                                        .TRAILING)
                                                         .addComponent(jTimeLabel)
                                                         .addComponent(MoveCount))
                                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing
+                                                        .GroupLayout.Alignment.LEADING)
                                                         .addComponent(LevelLabel)
                                                         .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                                                .addComponent(LevelBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(LoadGameBtn, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                                                .addComponent(LevelBox, GroupLayout.PREFERRED_SIZE,
+                                                                        GroupLayout.DEFAULT_SIZE, GroupLayout
+                                                                                .PREFERRED_SIZE)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement
+                                                                        .UNRELATED)
+                                                                .addComponent(LoadGameBtn, GroupLayout
+                                                                        .PREFERRED_SIZE, 100, GroupLayout
+                                                                        .PREFERRED_SIZE))
+                                                        .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout
+                                                                .Alignment.TRAILING)
                                                                 .addComponent(HintBtn)
                                                                 .addComponent(jButton1)
                                                                 .addComponent(jResetBtn)))
@@ -147,13 +155,15 @@ public class ButtonPanel extends JPanel {
                                         .addComponent(jTimeLabel))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(DifficultyBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(DifficultyBox, GroupLayout.PREFERRED_SIZE, GroupLayout
+                                                .DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(MoveCount))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(LevelLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(LevelBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(LevelBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
                                         .addComponent(LoadGameBtn))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1)
@@ -176,12 +186,11 @@ public class ButtonPanel extends JPanel {
         // TODO 
     }
 
-    public void setController(MouseAdapter controller){
+    public void setController(MouseAdapter controller) {
         this.addMouseListener(controller);
 
 
     }
-
 
 
 }

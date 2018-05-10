@@ -26,5 +26,15 @@ public class ButtonController{
         updateView();
     }
 
+    public void redo(){
+        puzzleGame.redo();
+        updateView();
+    }
+
+    public void undo(){
+        puzzleGame.undo();
+        updateView();
+    }
+
 
 }
