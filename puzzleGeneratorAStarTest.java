@@ -6,8 +6,7 @@ public class puzzleGeneratorAStarTest {
 
 	@Test
 	public void test() {
-		Heuristic h = new ZeroHeuristic();
-		puzzleGeneratorAStar foo = new puzzleGeneratorAStar(h);
+		puzzleGeneratorAStar foo = new puzzleGeneratorAStar();
 		PuzzleGame bah = foo.generatePuzzle(5, 5, 0, 3, 6, 6);
 		bah.showBoard();
 	}
