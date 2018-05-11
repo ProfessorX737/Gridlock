@@ -40,7 +40,6 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 		int movesRequired = 0;
 		boolean canAdd = true;
 		int tries = 0;
-		PuzzleSolver solver = new PuzzleSolver();
 		List<int[][]> puzzleSolved = null;
 		//generate initial puzzle
 		PuzzleGame puzzle = generateInitialState(width, height, exitRow, exitCol);
@@ -51,13 +50,14 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 				return null;
 			}
 			//add random vehicle
-			//if can't find a suitable place to add vehicle start over
+			//if can't add any more vehicles move the vehicles around
 			canAdd = addRandomVehicle(puzzle);
 			if (!canAdd) {
+				//jumblePuzzle()
 				puzzle = generateInitialState(width, height, exitRow, exitCol);
 				tries++;
 			} else {
-				puzzleSolved = solver.solve(puzzle);
+				puzzleSolved = PuzzleSolver.solve(puzzle);
 				if (puzzleSolved == null) {
 					//couldn't Solve puzzle restart
 					movesRequired = 0;
@@ -69,6 +69,29 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 			}
 		}
 		return puzzle;
+	}
+	
+	/**
+	 * Jumble the vehicles around using AStar and choose the one which gives the highest number of moves required to solve
+	 * @param puzzle, the puzzle that will be jumbled
+	 * @param moves, number of moves required
+	 */
+	private void jumbleVehicles(PuzzleGame puzzle, int moves) {
+		//Get all the connections of the current graph and add them to queue
+		//Sort based on the most number of moves required to solve puzzle
+		
+		Heuristic<PuzzleState> h = new PuzzleHeuristic();
+		Graph<PuzzleState> stateGraph = new TreeGraph<>();
+		ShortestPathSearch<PuzzleState> search = new AStar<>(stateGraph,h);
+		PuzzleGame goal = new PuzzleGame(puzzle.getNumRows(),puzzle.getNumCols(),puzzle.getExitRow(),puzzle.getExitCol());
+		goal.addVehicle(false, 2, puzzle.getExitRow(), puzzle.getExitCol(), Color.RED);
+		List<PuzzleState> states = search.shortestPath(new PuzzleState(puzzle), new PuzzleState(goal));
+		//if(states == null) return null;
+		List<int[][]> path = new ArrayList<>();
+		for(PuzzleState state : states) {
+			path.add(state.getBoard());
+		}
+		//return path;
 	}
 	
 	/**
