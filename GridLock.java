@@ -72,6 +72,6 @@ public class GridLock{
 		f.setVisible(true);
 	}
 	public static void main(String args[]) {
-		testUnsolvable();
+		test2();
 	}
 }

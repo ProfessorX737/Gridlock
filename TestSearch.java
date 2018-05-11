@@ -62,7 +62,10 @@ public class TestSearch {
 		}
 	}
 	public static void main(String[] args) {
-		test1();
+		final long startTime = System.currentTimeMillis();
+		test2();
+		final long endTime = System.currentTimeMillis();
+		System.out.println("Total execution time: " + (endTime - startTime) );
 	}
 	private final static String red_car = "r";
 	private final static String road = "-";
