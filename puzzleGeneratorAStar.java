@@ -10,18 +10,22 @@ import java.util.Random;
  * Generate a puzzle using AStar. 
  *
  */
-public class puzzleGeneratorAStar implements puzzleGenerator{
+public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	//The main car will always be of length 2
 	private static final int mainCarLength = 2;
 	//Other cars can either be of size 2 or size 3
 	private final static int[] carLength = new int[] {2, 3};
 	//private Collection<Integer> carLength;
 	//limit of which to generate random vehicle
-	private final static int randomLimit = 100;
+	private final static int randomLimit = 20;
 	//limit of how many tries to generate board
-	private final static int triesLimit = 100;
+	private final static int triesLimit = 20;
+	//number of different puzzles to generate each time
+	private final static int boardBranch = 10;
+	//number of directions
+	private final static int numDirections = 4;
 
-	public puzzleGeneratorAStar() {
+	public PuzzleGeneratorAStar() {
 	}
 
 	/**
@@ -36,32 +40,35 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 	 * @return puzzleGame, 
 	 */
 	@Override
-	public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int numVehicle, int moves) {
+	public PuzzleGame generatePuzzle(int width, int height, int moves) {
 		int movesRequired = 0;
 		boolean canAdd = true;
 		int tries = 0;
 		List<int[][]> puzzleSolved = null;
 		//generate initial puzzle
-		PuzzleGame puzzle = generateInitialState(width, height, exitRow, exitCol);
+		PuzzleGame puzzle = generateInitialState(width, height);
 		//Keep generating until we have a suitable puzzle
 		while (movesRequired < moves) {
+			System.out.println("Generating puzzle");
 			if (tries > triesLimit) {
 				//if tries exceeds tries limit then it is too difficult to generate
 				return null;
 			}
 			//add random vehicle
 			//if can't add any more vehicles move the vehicles around
-			canAdd = addRandomVehicle(puzzle);
+			canAdd = mostDifficultAdd(puzzle, movesRequired);
 			if (!canAdd) {
 				//jumblePuzzle()
-				puzzle = generateInitialState(width, height, exitRow, exitCol);
-				tries++;
+				return puzzle;
+				//puzzle = generateInitialState(width, height, exitRow, exitCol);
+				//tries++;
 			} else {
+			//mostDifficultAdd(puzzle);
 				puzzleSolved = PuzzleSolver.solve(puzzle);
 				if (puzzleSolved == null) {
 					//couldn't Solve puzzle restart
 					movesRequired = 0;
-					puzzle = generateInitialState(width, height, exitRow, exitCol);
+					puzzle = generateInitialState(width, height);
 					tries++;
 				} else {
 					movesRequired = puzzleSolved.size() - 1;
@@ -69,6 +76,42 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 			}
 		}
 		return puzzle;
+	}
+	
+	/**
+	 * Generate a few random puzzles, determined by static in board branch and chooses the most difficult one. 
+	 * @param puzzle
+	 */
+	private boolean mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
+		//randomly generate N different puzzles and choose the hardest one
+		int mostMoves = currentMoves;
+		PuzzleGame mostDifficult = null;
+		int requiredMoves = 0;
+		boolean canAdd = true;
+		List<int[][]> puzzleSolved = null;
+		PuzzleGame newPuzzle = null;
+
+		for (int i = 0; i < boardBranch; i++) {
+			//get a new board and add a random piece
+			newPuzzle = new PuzzleGame(puzzle);
+			canAdd = addRandomVehicle(newPuzzle);
+			if (canAdd) {
+				puzzleSolved = PuzzleSolver.solve(newPuzzle);
+				if (puzzleSolved != null) {
+					requiredMoves = puzzleSolved.size() - 1;
+					if (requiredMoves > mostMoves) {
+						mostMoves = requiredMoves;
+						mostDifficult = newPuzzle;
+					}
+				}
+			}
+		}
+		if (mostMoves == currentMoves) {
+			return false;
+		} else {
+			puzzle = mostDifficult;
+			return true;
+		}
 	}
 	
 	/**
@@ -152,20 +195,39 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 	}
 	
 	/**
-	 * Places the main vehicle in a random place on the map, place it near the end of the map.
-	 * The main car should not be more than half way across the board, just a hypothesis but it would be hard to generate puzzle otherwise.
+	 * Places the main vehicle in a random place on the map, place it at the end of the map.
+	 * The exit is randomly generated, although max difficulty puzzles might need the exit near the middle
 	 * @param width, the width of the board
 	 * @param height, the height of the board
-	 * @param exitRow, the row which the vehicle can exit
-	 * @param exitCol, the col which the vehicle can exit
 	 * @return
 	 */
-	private PuzzleGame generateInitialState(int width, int height, int exitRow, int exitCol) {
+	private PuzzleGame generateInitialState(int height, int width) {
+		Random randomGenerator = new Random();
+		//generate a random exit
+		int direction = randomGenerator.nextInt(numDirections);
+		int exitRow = 0;
+		int exitCol = 0;
+		if (direction == 0) {
+			//exit on the top row
+			exitRow = 0;
+			exitCol = randomGenerator.nextInt(width);
+		} else if (direction == 1) {
+			//exit on the right
+			exitRow = randomGenerator.nextInt(height);
+			exitCol = width - 1;
+		} else if (direction == 2) {
+			//exit on the bottom
+			exitRow = height - 1;
+			exitCol = randomGenerator.nextInt(width);
+		} else if (direction == 3) {
+			//exit on the left
+			exitRow = randomGenerator.nextInt(height);
+			exitCol = 0;		
+		}
+
 		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
 		PuzzleGame puzzle = new PuzzleGame(width, height, exitRow, exitCol, vehicleMap);
-		Random randomGenerator = new Random();
 		//How far should it be from the other end of the board.
-		int dist = 0;
 		//Place main car
 		boolean isVertical = true;
 		int carRow = 0;
@@ -173,27 +235,23 @@ public class puzzleGeneratorAStar implements puzzleGenerator{
 		if (exitRow == 0) {
 			//Indicates that the exit is on the top of the board
 			isVertical = true;
-			dist = randomGenerator.nextInt(height / 2);
-			carRow = height - dist - mainCarLength;
+			carRow = height - mainCarLength;
 			carCol = exitCol;
 		} else if (exitRow == height - 1) {
 			//Indicates that the exit is on the bottom of the board
 			isVertical = true;
-			dist = randomGenerator.nextInt(height / 2);
-			carRow = height + dist;
+			carRow = 0;
 			carCol = exitCol;
 		} else if (exitCol == 0) {
 			//Indicates that the exit is on the left of the board
 			isVertical = false;
-			dist = randomGenerator.nextInt(width / 2);
 			carRow = exitRow;
-			carCol = width - dist - mainCarLength;
+			carCol = width - mainCarLength;
 		} else if (exitCol == width - 1) {
 			//Indicates that the exit is on the right of the board
 			isVertical = false;
-			dist = randomGenerator.nextInt(width / 2);
 			carRow = exitRow;
-			carCol = width + dist;
+			carCol = 0;
 		}
 		puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, new Color(255, 0, 0));
 		return puzzle;

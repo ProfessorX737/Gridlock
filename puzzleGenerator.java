@@ -1,5 +1,5 @@
 
-public interface puzzleGenerator {
+public interface PuzzleGenerator {
 	/**
 	 * Specify the board size and exit location and the number of vehicles and generate a puzzle
 	 * @param width
@@ -10,6 +10,6 @@ public interface puzzleGenerator {
 	 * @param moves, the number of moves required to solve the puzzle
 	 * @return
 	 */
-	public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int numVehicle, int moves);
+	public PuzzleGame generatePuzzle(int width, int height, int moves);
 	
 }

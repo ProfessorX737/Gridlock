@@ -382,7 +382,8 @@ public class PuzzleGame {
 	private final static String road = "-";
 	private final static String wall = "W";
 
-	void showBoard() {
+	public void showBoard() {
+		System.out.println("Exit at row: " + exitRow + ", col: " + exitCol);
 		for (int y = -1; y <= sizeRow; y++) {
 			for (int x = -1; x <= sizeCol; x++) {
 				if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
@@ -397,6 +398,10 @@ public class PuzzleGame {
 			}
 			System.out.println("");
 		}
+	}
+	
+	public getEmptyCol() {
+		
 	}
 
 }
