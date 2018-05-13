@@ -41,7 +41,7 @@ public class PuzzleView extends JPanel {
 			}
 			dc.setPreferredSize(new Dimension(vWidth,vHeight));
 			dc.setBackground(v.getColor());
-			dc.setBorder(new LineBorder(Color.black, 2));
+			dc.setBorder(new LineBorder(Color.white, 2));
 			dc.setBounds(v.getCol() * this.cellLength, v.getRow() * this.cellLength, vWidth, vHeight);
 			this.vehicles.put(v.getID(),dc);
 			this.add(dc);
