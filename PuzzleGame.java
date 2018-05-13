@@ -191,6 +191,9 @@ public class PuzzleGame {
         }
         */
 
+        // Todo currently clicking on the vehicle counts as a move
+        // Need to ensure it is not
+
         // Adds the previous board state to state history
         if(currentState != stateHistory.size() - 1) {
             stateHistory = stateHistory.subList(0, currentState);
@@ -199,6 +202,7 @@ public class PuzzleGame {
         stateHistory.add(new MoveState(copyBoard(), copyVehicleMap()));
         System.out.println(stateHistory);
         currentState++;
+
 
         Vehicle v = this.vehicleMap.get(id);
         this.fillVehicleSpace(v, -1);
