@@ -1,6 +1,8 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import java.awt.Color;
@@ -18,6 +20,8 @@ public class PuzzleGame {
 	private Map<Integer, Vehicle> vehicleMap;
 	//a matrix which represents the board. Where their ID represents their location on the board
 	private int[][] board;
+	//possible size of vehicles, or should this be added to vehicle class
+	private static final int[] vehicleSize = new int[] {2, 3};
 
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
@@ -113,6 +117,18 @@ public class PuzzleGame {
 		Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
 		this.vehicleMap.put(id, v);
 		this.fillVehicleSpace(v, id);
+	}
+	
+	/**
+	 * Add vehicle to the board. Adds by reference so don't change the vehicle after adding it,
+	 * unless through GamePuzzle methods.
+	 * @param vehicle
+	 */
+	public void addVehicle(Vehicle vehicle) {
+		int id = vehicleMap.size();
+		vehicle.setID(id);
+		this.vehicleMap.put(id, vehicle);
+		this.fillVehicleSpace(vehicle, id);
 	}
 
 	/**
@@ -400,8 +416,77 @@ public class PuzzleGame {
 		}
 	}
 	
-	public getEmptyCol() {
+	/**
+	 * This might need to be changed
+	 * Will be very expensive if we had to recalculate this every time
+	 * Generates all possible vehicle spaces
+	 */
+	public Collection<Vehicle> getPossibleVehicle() {
+		//number of empty spaces found so far
+		int emptySpace = 0;
+		//placeholderID which will be changed it it is the best choice
+		int placeHolderID = 0xDEADBEEF;
+		Collection<Vehicle> possibleVehicle = new ArrayList<Vehicle>();
+		//go through the board vertically and find all spaces which are 2 or 3 in length
+		for (int i = 0; i < sizeCol; i++) {
+			for (int j = 0; j < sizeRow; j++) {
+				if (!isOccupied(j, i)) {
+					emptySpace++;
+					for (int k = 0; k < vehicleSize.length; k++) {
+						if (emptySpace >= vehicleSize[k]) {
+							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j - emptySpace + 1, i, new Color(0, 0, 0)));
+						}
+					}
+				} else {
+					emptySpace = 0;
+				}
+			}
+		}
 		
+		//go through the board horizontally and find empty spaces
+		emptySpace = 0;
+		for (int j = 0; j < sizeRow; j++) {
+			for (int i = 0; i < sizeCol; i++) {
+				if (!isOccupied(j, i)) {
+					emptySpace++;
+					for (int k = 0; k < vehicleSize.length; k++) {
+						if (emptySpace >= vehicleSize[k]) {
+							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i - emptySpace + 1, new Color(0, 0, 0)));
+						}
+					}
+				}
+				emptySpace = 0;
+			}
+		}
+		return possibleVehicle;
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

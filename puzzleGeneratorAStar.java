@@ -79,39 +79,33 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	}
 	
 	/**
-	 * Generate a few random puzzles, determined by static in board branch and chooses the most difficult one. 
+	 * Find all possible locations for a vehicle, adds them one by one and sees if its harder.
+	 * Take the first puzzle that is harder
 	 * @param puzzle
+	 * @param currentMoves, number of moves required to solve the current puzzle
 	 */
 	private boolean mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
-		//randomly generate N different puzzles and choose the hardest one
-		int mostMoves = currentMoves;
-		PuzzleGame mostDifficult = null;
-		int requiredMoves = 0;
-		boolean canAdd = true;
-		List<int[][]> puzzleSolved = null;
-		PuzzleGame newPuzzle = null;
+		//get all possible location for the vehicle
+		Collection<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
 
-		for (int i = 0; i < boardBranch; i++) {
-			//get a new board and add a random piece
-			newPuzzle = new PuzzleGame(puzzle);
-			canAdd = addRandomVehicle(newPuzzle);
-			if (canAdd) {
-				puzzleSolved = PuzzleSolver.solve(newPuzzle);
-				if (puzzleSolved != null) {
-					requiredMoves = puzzleSolved.size() - 1;
-					if (requiredMoves > mostMoves) {
-						mostMoves = requiredMoves;
-						mostDifficult = newPuzzle;
-					}
+		//add every possible vehicle to the board and see if it makes the game harder
+		for (Vehicle vehicle : possibleVehicle) {
+			//get a new board and add a random piece and see if its harder
+			PuzzleGame newPuzzle = new PuzzleGame(puzzle);
+			newPuzzle.addVehicle(vehicle);
+			//get the number of moves required to solve puzzle
+			List<int[][]>puzzleSolved = PuzzleSolver.solve(newPuzzle);
+			if (puzzleSolved != null) {
+				//couldn't solve the puzzle
+				if (puzzleSolved.size() - 1 > currentMoves) {
+					//found a harder puzzle
+					puzzle = newPuzzle;
+					return true;
 				}
 			}
 		}
-		if (mostMoves == currentMoves) {
-			return false;
-		} else {
-			puzzle = mostDifficult;
-			return true;
-		}
+		//could not find a harder puzzle
+		return false;
 	}
 	
 	/**
