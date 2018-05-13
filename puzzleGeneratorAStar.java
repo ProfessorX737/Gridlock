@@ -43,7 +43,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	@Override
 	public PuzzleGame generatePuzzle(int width, int height, int moves) {
 		int movesRequired = 1;
-		boolean canAdd = true;
 		int tries = 0;
 		//generate initial puzzle
 		PuzzleGame puzzle = generateInitialState(width, height);
@@ -58,22 +57,23 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 			}
 			//add random vehicle
 			//if can't add any more vehicles move the vehicles around
-			canAdd = mostDifficultAdd(puzzle, movesRequired);
-			if (!canAdd) {
+			PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
+			if (newPuzzle == null) {
 				System.out.println("Couldn't add anymore vehicles to the board");
 				//jumblePuzzle()
 				return puzzle;
 				//puzzle = generateInitialState(width, height, exitRow, exitCol);
 				//tries++;
 			} else {
-				List<int[][]> puzzleSolved = PuzzleSolver.solve(puzzle);
+				List<int[][]> puzzleSolved = PuzzleSolver.solve(newPuzzle);
 				if (puzzleSolved == null) {
 					//couldn't Solve puzzle restart
 					movesRequired = 0;
 					puzzle = generateInitialState(width, height);
 					tries++;
 				} else {
-					movesRequired = puzzleSolved.size();
+					movesRequired = puzzleSolved.size() - 1;
+					puzzle = newPuzzle;
 				}
 			}
 		}
@@ -87,7 +87,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @param puzzle
 	 * @param currentMoves, number of moves required to solve the current puzzle
 	 */
-	private boolean mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
+	private PuzzleGame mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
 		//get all possible location for the vehicle
 		List<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
 		//shuffle for random outcome, is this correct
@@ -97,20 +97,21 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 			//get a new board and add a random piece and see if its harder
 			PuzzleGame newPuzzle = new PuzzleGame(puzzle);
 			newPuzzle.addVehicle(vehicle);
-			newPuzzle.showBoard();
 			//get the number of moves required to solve puzzle
 			List<int[][]>puzzleSolved = PuzzleSolver.solve(newPuzzle);
+			System.out.println("");
+			newPuzzle.showBoard();
 			if (puzzleSolved != null) {
+				System.out.println("RequiredMoves: " + (puzzleSolved.size() - 1) + ", currentMoves: " + currentMoves + "\n");
 				//couldn't solve the puzzle
 				if (puzzleSolved.size() - 1 > currentMoves) {
 					//found a harder puzzle
-					puzzle = newPuzzle;
-					return true;
+					return newPuzzle;
 				}
 			}
 		}
 		//could not find a harder puzzle
-		return false;
+		return null;
 	}
 	
 	/**

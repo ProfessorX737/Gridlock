@@ -88,4 +88,45 @@ public class Vehicle {
 		this.row = row;
 		this.col = col;
 	}
+	
+	@Override
+	public String toString() {
+		String x = "Vehicle ID: " + this.id + ", isVertical: " + 
+					this.isVertical + ", length: " + this.length + 
+					", row: " + this.row + ", col: " + this.col;
+		return x;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

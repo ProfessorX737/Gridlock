@@ -469,8 +469,9 @@ public class PuzzleGame {
 							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, new Color(0, 0, 0)));
 						}
 					}
+				} else {
+					emptySpace = 0;
 				}
-				emptySpace = 0;
 			}
 			emptySpace = 0;
 		}
