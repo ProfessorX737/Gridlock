@@ -2,11 +2,11 @@ import javax.swing.tree.TreeNode;
 import java.util.Collection;
 import java.util.Map;
 
-public class PuzzleState {
+public class MoveState {
     private int [][] gameBoard;
     private Map<Integer, Vehicle> vehicleMap;
 
-    public PuzzleState(int[][] gameBoard, Map<Integer, Vehicle> vehicleMap) {
+    public MoveState(int[][] gameBoard, Map<Integer, Vehicle> vehicleMap) {
         this.gameBoard = gameBoard;
         this.vehicleMap = vehicleMap;
     }

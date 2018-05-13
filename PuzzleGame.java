@@ -19,7 +19,7 @@ public class PuzzleGame {
     private Map<Integer, Vehicle> vehicleMap;
     //a matrix which represents the board. Where their ID represents their location on the board
     private int[][] board;
-    private List<PuzzleState> stateHistory;
+    private List<MoveState> stateHistory;
     // private PuzzleState puzzleState;
     private int currentState;
 
@@ -196,7 +196,7 @@ public class PuzzleGame {
             stateHistory = stateHistory.subList(0, currentState);
             currentState = stateHistory.size() - 1;
         }
-        stateHistory.add(new PuzzleState(copyBoard(), copyVehicleMap()));
+        stateHistory.add(new MoveState(copyBoard(), copyVehicleMap()));
         System.out.println(stateHistory);
         currentState++;
 
@@ -304,7 +304,7 @@ public class PuzzleGame {
         System.out.println("...");
         currentState = 0;
         // System.out.println("Should reset to " + stateHistory.get(0));
-        PuzzleState ps = stateHistory.get(currentState);
+        MoveState ps = stateHistory.get(currentState);
         this.board = ps.getGameBoard();
         this.vehicleMap = ps.getVehicleMap();
 	    /*
@@ -321,7 +321,7 @@ public class PuzzleGame {
         System.out.println("Current state is " + this.currentState);
         if (currentState < stateHistory.size() - 1 && currentState != -1) {
             currentState++;
-            PuzzleState ps = stateHistory.get(currentState);
+            MoveState ps = stateHistory.get(currentState);
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
         }
@@ -336,13 +336,14 @@ public class PuzzleGame {
         System.out.println("Current state is " + this.currentState);
         if (this.currentState > 0) {
             currentState--;
-            PuzzleState ps = stateHistory.get(currentState);
+            MoveState ps = stateHistory.get(currentState);
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
         }
     }
 
     public void addMove() {
+        // TODO create two states which maintain
         for (int i = currentState + 1; i < stateHistory.size() - 1; i++) {
             stateHistory.remove(i);
         }
@@ -366,7 +367,7 @@ public class PuzzleGame {
     }
 
     public void initState() {
-        stateHistory.add(new PuzzleState(copyBoard(), copyVehicleMap()));
+        stateHistory.add(new MoveState(copyBoard(), copyVehicleMap()));
     }
 }
 

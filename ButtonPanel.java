@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
@@ -9,19 +10,19 @@ import java.awt.event.MouseAdapter;
 public class ButtonPanel extends JPanel {
 
     // Variables declaration
-    private javax.swing.JComboBox<String> DifficultyBox;
-    private javax.swing.JLabel DifficultyLabel;
-    private javax.swing.JButton HintBtn;
-    private javax.swing.JComboBox<String> LevelBox;
-    private javax.swing.JLabel LevelLabel;
-    private javax.swing.JButton LoadGameBtn;
-    private javax.swing.JLabel MoveCount;
-    private javax.swing.JButton RedoBtn;
-    private javax.swing.JButton UndoBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton jResetBtn;
-    private javax.swing.JLabel jTimeLabel;
+    private JComboBox<String> DifficultyBox;
+    private JLabel DifficultyLabel;
+    private JButton HintBtn;
+    private JComboBox<String> LevelBox;
+    private JLabel LevelLabel;
+    private JButton LoadGameBtn;
+    private JLabel MoveCount;
+    private JButton RedoBtn;
+    private JButton UndoBtn;
+    private JButton jButton1;
+    private JLabel jLabel1;
+    private JButton jResetBtn;
+    private JLabel jTimeLabel;
 
     private ButtonController buttonController;
 
@@ -41,18 +42,18 @@ public class ButtonPanel extends JPanel {
     private void initComponents(JPanel container) {
 
 
-        LoadGameBtn = new javax.swing.JButton();
-        jResetBtn = new javax.swing.JButton();
-        jTimeLabel = new javax.swing.JLabel();
-        MoveCount = new javax.swing.JLabel();
-        HintBtn = new javax.swing.JButton();
-        UndoBtn = new javax.swing.JButton();
-        RedoBtn = new javax.swing.JButton();
-        DifficultyLabel = new javax.swing.JLabel();
-        DifficultyBox = new javax.swing.JComboBox<>();
-        LevelLabel = new javax.swing.JLabel();
-        LevelBox = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        LoadGameBtn = new JButton();
+        jResetBtn = new JButton();
+        jTimeLabel = new JLabel();
+        MoveCount = new JLabel();
+        HintBtn = new JButton();
+        UndoBtn = new JButton();
+        RedoBtn = new JButton();
+        DifficultyLabel = new JLabel();
+        DifficultyBox = new JComboBox<>();
+        LevelLabel = new JLabel();
+        LevelBox = new JComboBox<>();
+        jButton1 = new JButton();
 
 
         setPreferredSize(new java.awt.Dimension(300, 280));
@@ -91,16 +92,16 @@ public class ButtonPanel extends JPanel {
 
         DifficultyLabel.setText("Difficulty:");
 
-        DifficultyBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Novice", "Intermediate",
+        DifficultyBox.setModel(new DefaultComboBoxModel<>(new String[]{"Novice", "Intermediate",
                 "Expert"}));
 
         LevelLabel.setText("Puzzle: ");
 
-        LevelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Puzzle 1", "Puzzle 2", "Puzzle 100"}));
+        LevelBox.setModel(new DefaultComboBoxModel<>(new String[]{"Puzzle 1", "Puzzle 2", "Puzzle 100"}));
 
         jButton1.setText("Create Randomized Game");
         jButton1.addActionListener(new ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
