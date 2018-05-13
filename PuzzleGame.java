@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -421,42 +422,57 @@ public class PuzzleGame {
 	 * Will be very expensive if we had to recalculate this every time
 	 * Generates all possible vehicle spaces
 	 */
-	public Collection<Vehicle> getPossibleVehicle() {
+	public List<Vehicle> getPossibleVehicle() {
 		//number of empty spaces found so far
 		int emptySpace = 0;
 		//placeholderID which will be changed it it is the best choice
 		int placeHolderID = 0xDEADBEEF;
-		Collection<Vehicle> possibleVehicle = new ArrayList<Vehicle>();
+		List<Vehicle> possibleVehicle = new ArrayList<Vehicle>();
+		//exclude spaces that directly block the main vehicle
+		boolean mainIsVertical = vehicleMap.get(0).getIsVertical();
+		int mainRow = vehicleMap.get(0).getRow();
+		int mainCol = vehicleMap.get(0).getCol();
+		
 		//go through the board vertically and find all spaces which are 2 or 3 in length
-		for (int i = 0; i < sizeCol; i++) {
-			for (int j = 0; j < sizeRow; j++) {
+		for (int i = sizeCol - 1; i >= 0; i--) {
+			for (int j = sizeRow - 1; j >= 0; j--) {
+				if (mainIsVertical == true && mainCol == i) {
+					//don't return vehicles that directly get in the way
+					continue;
+				}
 				if (!isOccupied(j, i)) {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j - emptySpace + 1, i, new Color(0, 0, 0)));
+							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, new Color(0, 0, 0)));
 						}
 					}
 				} else {
 					emptySpace = 0;
 				}
 			}
+			emptySpace = 0;
 		}
 		
 		//go through the board horizontally and find empty spaces
 		emptySpace = 0;
-		for (int j = 0; j < sizeRow; j++) {
-			for (int i = 0; i < sizeCol; i++) {
+		for (int j = sizeRow - 1; j >= 0 ; j--) {
+			for (int i = sizeCol - 1; i >= 0; i--) {
+				if (mainIsVertical == false && mainRow == j) {
+					//don't return vehicles that directly get in the way
+					continue;
+				}
 				if (!isOccupied(j, i)) {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i - emptySpace + 1, new Color(0, 0, 0)));
+							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, new Color(0, 0, 0)));
 						}
 					}
 				}
 				emptySpace = 0;
 			}
+			emptySpace = 0;
 		}
 		return possibleVehicle;
 	}

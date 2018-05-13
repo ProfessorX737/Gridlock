@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	//limit of which to generate random vehicle
 	private final static int randomLimit = 20;
 	//limit of how many tries to generate board
-	private final static int triesLimit = 20;
+	private final static int triesLimit = 1;
 	//number of different puzzles to generate each time
 	private final static int boardBranch = 10;
 	//number of directions
@@ -41,16 +42,17 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 */
 	@Override
 	public PuzzleGame generatePuzzle(int width, int height, int moves) {
-		int movesRequired = 0;
+		int movesRequired = 1;
 		boolean canAdd = true;
 		int tries = 0;
-		List<int[][]> puzzleSolved = null;
 		//generate initial puzzle
 		PuzzleGame puzzle = generateInitialState(width, height);
+		puzzle.showBoard();
 		//Keep generating until we have a suitable puzzle
-		while (movesRequired < moves) {
+		while (movesRequired <= moves) {
 			System.out.println("Generating puzzle");
 			if (tries > triesLimit) {
+				System.out.println("Gave up generating puzzles");
 				//if tries exceeds tries limit then it is too difficult to generate
 				return null;
 			}
@@ -58,23 +60,24 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 			//if can't add any more vehicles move the vehicles around
 			canAdd = mostDifficultAdd(puzzle, movesRequired);
 			if (!canAdd) {
+				System.out.println("Couldn't add anymore vehicles to the board");
 				//jumblePuzzle()
 				return puzzle;
 				//puzzle = generateInitialState(width, height, exitRow, exitCol);
 				//tries++;
 			} else {
-			//mostDifficultAdd(puzzle);
-				puzzleSolved = PuzzleSolver.solve(puzzle);
+				List<int[][]> puzzleSolved = PuzzleSolver.solve(puzzle);
 				if (puzzleSolved == null) {
 					//couldn't Solve puzzle restart
 					movesRequired = 0;
 					puzzle = generateInitialState(width, height);
 					tries++;
 				} else {
-					movesRequired = puzzleSolved.size() - 1;
+					movesRequired = puzzleSolved.size();
 				}
 			}
 		}
+		System.out.println("Got a spicy puzzle this time");
 		return puzzle;
 	}
 	
@@ -86,13 +89,15 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 */
 	private boolean mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
 		//get all possible location for the vehicle
-		Collection<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
-
+		List<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
+		//shuffle for random outcome, is this correct
+		Collections.shuffle(possibleVehicle);
 		//add every possible vehicle to the board and see if it makes the game harder
 		for (Vehicle vehicle : possibleVehicle) {
 			//get a new board and add a random piece and see if its harder
 			PuzzleGame newPuzzle = new PuzzleGame(puzzle);
 			newPuzzle.addVehicle(vehicle);
+			newPuzzle.showBoard();
 			//get the number of moves required to solve puzzle
 			List<int[][]>puzzleSolved = PuzzleSolver.solve(newPuzzle);
 			if (puzzleSolved != null) {
