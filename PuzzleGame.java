@@ -384,6 +384,7 @@ public class PuzzleGame {
         }
         */
         if (!redo.empty()) {
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
             MoveState ps = redo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
