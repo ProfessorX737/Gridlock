@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Represent the current board of the game
@@ -19,14 +18,15 @@ public class PuzzleGame {
     private Map<Integer, Vehicle> vehicleMap;
     //a matrix which represents the board. Where their ID represents their location on the board
     private int[][] board;
-    private List<MoveState> stateHistory;
     // private PuzzleState puzzleState;
-    private int currentState;
-    private Stack<PuzzleState> undo;
-    private Stack<PuzzleState> redo;
+    private Stack<MoveState> undo;
+    private Stack<MoveState> redo;
+    private MoveState initialState;
 
     /**
      * Constructor for the board, when only the size of the board is provided.
+     * TODO currently we use this constructor, then add vehicles, would be better to create a vehicleMap and then use
+     * the other constructor
      *
      * @param sizeRow, the number of rows in the board
      * @param sizeCol, the number of columns in the board
@@ -37,11 +37,9 @@ public class PuzzleGame {
         this.exitRow = exitRow;
         this.exitCol = exitCol;
         this.vehicleMap = new HashMap<>();
-        this.stateHistory = new ArrayList<>();
-        this.initBoard();
-        this.currentState = 0;
         this.undo = new Stack<>();
         this.redo = new Stack<>();
+        this.initBoard();
     }
 
     /**
@@ -61,6 +59,23 @@ public class PuzzleGame {
         for (Vehicle v : this.vehicleMap.values()) {
             this.fillVehicleSpace(v, v.getID());
         }
+    }
+
+    /**
+     * Copy constructor
+     *
+     * @param g, the Puzzle game to copy
+     */
+    public PuzzleGame(PuzzleGame g) {
+        this.sizeRow = g.sizeRow;
+        this.sizeCol = g.sizeCol;
+        this.exitRow = g.exitRow;
+        this.exitCol = g.exitCol;
+        this.vehicleMap = new HashMap<>();
+        for (Vehicle v : g.vehicleMap.values()) {
+            this.vehicleMap.put(v.getID(), new Vehicle(v));
+        }
+        this.board = this.copyBoard(g.board);
     }
 
     private void initBoard() {
@@ -181,36 +196,18 @@ public class PuzzleGame {
 
     /**
      * To move a vehicle specify the vehicle, direction and distance.
+     * * @param id
      *
-     * @param id
      * @pre checkMove(id, direction, distance) == true
      */
     public void moveVehicle(int id, int newRow, int newCol) {
-        // If current state is not the most recent state (ie if we have undone some moves))
-        /*
-        if(currentState != stateHistory.size() - 1){
-            for(int i = currentState; i < stateHistory.size() - 1; i++){
-	            stateHistory.remove(i);
-            }
-        }
-        */
+
 
         // Todo currently clicking on the vehicle counts as a move
         // Need to ensure it is not
 
-        // Adds the previous board state to state history
-        /*
-        if(currentState != stateHistory.size() - 1) {
-            stateHistory = stateHistory.subList(0, currentState);
-            currentState = stateHistory.size() - 1;
-        }
-        stateHistory.add(new MoveState(copyBoard(), copyVehicleMap()));
-        System.out.println(stateHistory);
-        currentState++;
-        */
-        undo.add(new PuzzleState(copyBoard(), copyVehicleMap()));
-
-
+        redo.removeAllElements();
+        undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
         Vehicle v = this.vehicleMap.get(id);
         this.fillVehicleSpace(v, -1);
         v.setPos(newRow, newCol);
@@ -233,9 +230,9 @@ public class PuzzleGame {
         }
     }
 
-    /**
-     * @return
+    /*** @return
      * @pre main car has id 0 and is added to the class
+
      */
     public boolean isSolved() {
         if (this.board[exitRow][exitCol] == 0) {
@@ -245,8 +242,7 @@ public class PuzzleGame {
     }
 
     /**
-     * @return the vehicle id if the position, if not valid return -1
-     * @pre this.isOutOfBounds(row, col) == false
+     * @return the vehicle id if the position, if not valid return -1* @pre this.isOutOfBounds(row, col) == false
      */
     public int getVehicleIDAtLocation(int row, int col) {
         if (!this.isOutOfBounds(row, col)) {
@@ -255,10 +251,10 @@ public class PuzzleGame {
         return -1;
     }
 
-    /**
-     * @return
+    /*** @return
      * @pre this.isOutOfBounds(row, col) == false
      * @pre board[row][col] is in this.vehicleMap.keys()
+
      */
     public Vehicle getVehicleAtLocation(int row, int col) {
         return this.vehicleMap.get(board[row][col]);
@@ -287,6 +283,53 @@ public class PuzzleGame {
         return this.sizeCol;
     }
 
+    public int[][] getBoard() {
+        return this.board;
+    }
+
+    public int getExitRow() {
+        return this.exitRow;
+    }
+
+    public int getExitCol() {
+        return this.exitCol;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.deepHashCode(board);
+        result = prime * result + exitCol;
+        result = prime * result + exitRow;
+        result = prime * result + sizeCol;
+        result = prime * result + sizeRow;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PuzzleGame other = (PuzzleGame) obj;
+        if (!Arrays.deepEquals(board, other.board))
+            return false;
+        if (exitCol != other.exitCol)
+            return false;
+        if (exitRow != other.exitRow)
+            return false;
+        if (sizeCol != other.sizeCol)
+            return false;
+        if (sizeRow != other.sizeRow)
+            return false;
+        return true;
+    }
+
+
     public void showBoard() {
         printBoard(this.board);
     }
@@ -312,22 +355,19 @@ public class PuzzleGame {
      * Resets the board to the starting state
      */
     public void reset() {
+        /*
         if(!undo.empty()){
-            PuzzleState ps = undo.firstElement();
+            MoveState ps = undo.firstElement();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
             undo.removeAllElements();
             redo.removeAllElements();
         }
-        /*
-        System.out.println("...");
-        currentState = 0;
-        // System.out.println("Should reset to " + stateHistory.get(0));
-        MoveState ps = stateHistory.get(currentState);
-        this.board = ps.getGameBoard();
-        this.vehicleMap = ps.getVehicleMap();
         */
-
+        this.board = initialState.getGameBoard();
+        this.vehicleMap = initialState.getVehicleMap();
+        undo.removeAllElements();
+        redo.removeAllElements();
     }
 
     /**
@@ -343,8 +383,8 @@ public class PuzzleGame {
             this.vehicleMap = ps.getVehicleMap();
         }
         */
-        if(!redo.empty()){
-            PuzzleState ps = redo.pop();
+        if (!redo.empty()) {
+            MoveState ps = redo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
         }
@@ -356,32 +396,15 @@ public class PuzzleGame {
     // TODO fine tune behaviour - first press undoes the last 2 moves?????
     //
     public void undo() {
-        /*
-        System.out.println("Current state is " + this.currentState);
-        if (this.currentState > 0) {
-            currentState--;
-            MoveState ps = stateHistory.get(currentState);
-            this.board = ps.getGameBoard();
-            this.vehicleMap = ps.getVehicleMap();
-        }
-        */
-        if(!undo.empty()){
-            redo.add(new PuzzleState(copyBoard(),  copyVehicleMap()));
-            PuzzleState ps = undo.pop();
+        if (!undo.empty()) {
+            redo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            MoveState ps = undo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
         }
     }
 
-    public void addMove() {
-        // TODO create two states which maintain
-        for (int i = currentState + 1; i < stateHistory.size() - 1; i++) {
-            stateHistory.remove(i);
-        }
-
-    }
-
-    private int[][] copyBoard() {
+    private int[][] copyBoard(int[][] board) {
         int[][] copy = new int[sizeRow][sizeCol];
         for (int y = 0; y < sizeRow; y++) {
             System.arraycopy(board[y], 0, copy[y], 0, sizeCol);
@@ -398,7 +421,7 @@ public class PuzzleGame {
     }
 
     public void initState() {
-        stateHistory.add(new MoveState(copyBoard(), copyVehicleMap()));
+        initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap());
     }
 }
 
