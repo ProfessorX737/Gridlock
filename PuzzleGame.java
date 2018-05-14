@@ -22,6 +22,8 @@ public class PuzzleGame {
     private List<PuzzleState> stateHistory;
     // private PuzzleState puzzleState;
     private int currentState;
+    private Stack<PuzzleState> undo;
+    private Stack<PuzzleState> redo;
 
     /**
      * Constructor for the board, when only the size of the board is provided.
@@ -38,6 +40,8 @@ public class PuzzleGame {
         this.stateHistory = new ArrayList<>();
         this.initBoard();
         this.currentState = 0;
+        this.undo = new Stack<>();
+        this.redo = new Stack<>();
     }
 
     /**
@@ -192,6 +196,7 @@ public class PuzzleGame {
         */
 
         // Adds the previous board state to state history
+        /*
         if(currentState != stateHistory.size() - 1) {
             stateHistory = stateHistory.subList(0, currentState);
             currentState = stateHistory.size() - 1;
@@ -199,6 +204,8 @@ public class PuzzleGame {
         stateHistory.add(new PuzzleState(copyBoard(), copyVehicleMap()));
         System.out.println(stateHistory);
         currentState++;
+        */
+        undo.add(new PuzzleState(copyBoard(), copyVehicleMap()));
 
         Vehicle v = this.vehicleMap.get(id);
         this.fillVehicleSpace(v, -1);
@@ -301,27 +308,39 @@ public class PuzzleGame {
      * Resets the board to the starting state
      */
     public void reset() {
+        if(!undo.empty()){
+            PuzzleState ps = undo.firstElement();
+            this.board = ps.getGameBoard();
+            this.vehicleMap = ps.getVehicleMap();
+            undo.removeAllElements();
+            redo.removeAllElements();
+        }
+        /*
         System.out.println("...");
         currentState = 0;
         // System.out.println("Should reset to " + stateHistory.get(0));
         PuzzleState ps = stateHistory.get(currentState);
         this.board = ps.getGameBoard();
         this.vehicleMap = ps.getVehicleMap();
-	    /*
-	    System.out.println("Should reset to:");
-	    printBoard(stateHistory.get(0).getGameBoard());
-	    System.out.println();
-	    */
+        */
+
     }
 
     /**
      * Redo a move that has previously been undone
      */
     public void redo() {
+        /*
         System.out.println("Current state is " + this.currentState);
         if (currentState < stateHistory.size() - 1 && currentState != -1) {
             currentState++;
             PuzzleState ps = stateHistory.get(currentState);
+            this.board = ps.getGameBoard();
+            this.vehicleMap = ps.getVehicleMap();
+        }
+        */
+        if(!redo.empty()){
+            PuzzleState ps = redo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
         }
@@ -333,10 +352,18 @@ public class PuzzleGame {
     // TODO fine tune behaviour - first press undoes the last 2 moves?????
     //
     public void undo() {
+        /*
         System.out.println("Current state is " + this.currentState);
         if (this.currentState > 0) {
             currentState--;
             PuzzleState ps = stateHistory.get(currentState);
+            this.board = ps.getGameBoard();
+            this.vehicleMap = ps.getVehicleMap();
+        }
+        */
+        if(!undo.empty()){
+            redo.add(new PuzzleState(copyBoard(),  copyVehicleMap()));
+            PuzzleState ps = undo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
         }

@@ -16,6 +16,7 @@ public class ButtonController{
     private void updateView(){
         System.out.println("Updating view...");
         for(Vehicle v : puzzleGame.getVehicles()){
+            // TODO don't hardcode the cellsize
            puzzleView.setVehicleLocation(v.getID(), v.getCol() * 50, v.getRow() * 50 );
         }
     }
