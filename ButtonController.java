@@ -1,5 +1,3 @@
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ButtonController{
     private PuzzleView puzzleView;
@@ -14,10 +12,8 @@ public class ButtonController{
      * Updates the view with the current game board
      */
     private void updateView(){
-        System.out.println("Updating view...");
-        for(Vehicle v : puzzleGame.getVehicles()){
-            // TODO don't hardcode the cellsize
-           puzzleView.setVehicleLocation(v.getID(), v.getCol() * 50, v.getRow() * 50 );
+        for(Vehicle v : puzzleGame.getVehicles()) {
+        	puzzleView.setVehicleLocation(v.getID(), v.getCol() * this.puzzleView.getCellLength(), v.getRow() * this.puzzleView.getCellLength());
         }
     }
 
