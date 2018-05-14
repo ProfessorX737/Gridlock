@@ -22,7 +22,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	//limit of how many tries to generate board
 	private final static int triesLimit = 1;
 	//number of different puzzles to generate each time
-	private final static int boardBranch = 10;
+	private final static int jumbleLimit = 10;
 	//number of directions
 	private final static int numDirections = 4;
 
@@ -60,7 +60,9 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 			PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
 			if (newPuzzle == null) {
 				System.out.println("Couldn't add anymore vehicles to the board");
-				//jumblePuzzle()
+				System.out.println("Required moves: " + (PuzzleSolver.solve(puzzle).size() - 1));
+				jumbleVehicles(puzzle);
+				System.out.println("Required moves: " + (PuzzleSolver.solve(puzzle).size() - 1));
 				return puzzle;
 				//puzzle = generateInitialState(width, height, exitRow, exitCol);
 				//tries++;
@@ -115,26 +117,55 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	}
 	
 	/**
-	 * Jumble the vehicles around using AStar and choose the one which gives the highest number of moves required to solve
+	 * Jumble the vehicles around, using a theory that randomly moving the vehicles around will generate a more complex puzzle
+	 * Moves one vehicle around randomly
 	 * @param puzzle, the puzzle that will be jumbled
-	 * @param moves, number of moves required
 	 */
-	private void jumbleVehicles(PuzzleGame puzzle, int moves) {
-		//Get all the connections of the current graph and add them to queue
-		//Sort based on the most number of moves required to solve puzzle
-		
-		Heuristic<PuzzleState> h = new PuzzleHeuristic();
-		Graph<PuzzleState> stateGraph = new TreeGraph<>();
-		ShortestPathSearch<PuzzleState> search = new AStar<>(stateGraph,h);
-		PuzzleGame goal = new PuzzleGame(puzzle.getNumRows(),puzzle.getNumCols(),puzzle.getExitRow(),puzzle.getExitCol());
-		goal.addVehicle(false, 2, puzzle.getExitRow(), puzzle.getExitCol(), Color.RED);
-		List<PuzzleState> states = search.shortestPath(new PuzzleState(puzzle), new PuzzleState(goal));
-		//if(states == null) return null;
-		List<int[][]> path = new ArrayList<>();
-		for(PuzzleState state : states) {
-			path.add(state.getBoard());
+	private void jumbleVehicles(PuzzleGame puzzle) {
+		//jumble the vehicles around n times
+		Random randomGenerator = new Random();
+		int dist = 0;
+		for (int i = 0; i < jumbleLimit; i++) {
+			System.out.println("\nJumbling vehicles");
+			//get all moves of a random vehicle
+			Vehicle randVehicle = puzzle.getRandomVehicle();
+			if (randVehicle.getIsVertical() == true) {
+				//vehicle can only up or down
+				if (randomGenerator.nextBoolean()) {
+					//move the vehicle up
+					dist = puzzle.canMoveUp(randVehicle.getID());
+					if (dist > 0) {
+						//move vehicle a random distance
+						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow() - randomGenerator.nextInt(dist + 1), randVehicle.getCol());
+					}
+				} else {
+					//move the vehicle down
+					dist = puzzle.canMoveDown(randVehicle.getID());
+					if (dist > 0) {
+						//move vehicle a random distance
+						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow() + randomGenerator.nextInt(dist + 1), randVehicle.getCol());
+					}
+				}
+			} else {
+				//vehicle can only move left or right
+				if (randomGenerator.nextBoolean()) {
+					//move the vehicle left
+					dist = puzzle.canMoveLeft(randVehicle.getID());
+					if (dist > 0) {
+						//move vehicle a random distance
+						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow(), randVehicle.getCol() - randomGenerator.nextInt(dist + 1));
+					}
+				} else {
+					//move the vehicle right
+					dist = puzzle.canMoveRight(randVehicle.getID());
+					if (dist > 0) {
+						//move vehicle a random distance
+						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow(), randVehicle.getCol() + randomGenerator.nextInt(dist + 1));
+					}
+				}
+			}
+			puzzle.showBoard();
 		}
-		//return path;
 	}
 	
 	/**

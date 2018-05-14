@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Random;
 import java.awt.Color;
 
 /**
@@ -153,6 +153,13 @@ public class PuzzleGame {
 		return true;
 	}
 	
+	/**
+	 * Returns the number of spaces the vehicle and be moved up.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveUp(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(!v.getIsVertical()) return 0;
@@ -170,6 +177,13 @@ public class PuzzleGame {
 		return numLegal;
 	}
 
+	/**
+	 * Returns the number of spaces the vehicle and be moved down.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveDown(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(!v.getIsVertical()) return 0;
@@ -189,6 +203,13 @@ public class PuzzleGame {
 		return numLegal;
 	}
 	
+	/**
+	 * Returns the number of spaces the vehicle and be moved left.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveLeft(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(v.getIsVertical()) return 0;
@@ -206,6 +227,13 @@ public class PuzzleGame {
 		return numLegal;
 	}
 
+	/**
+	 * Returns the number of spaces the vehicle and be moved right.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveRight(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(v.getIsVertical()) return 0;
@@ -225,10 +253,11 @@ public class PuzzleGame {
 	
 	
 	/**
-	 * To move a vehicle specify the vehicle, direction and distance.
+	 * Move vehicle to new position
 	 * @pre checkMove(id, direction, distance) == true
 	 * @param id
-	 * @param direction
+	 * @param newRow
+	 * @param newCol
 	 */
 	public void moveVehicle(int id, int newRow, int newCol) {
 		Vehicle v = this.vehicleMap.get(id);
@@ -280,6 +309,30 @@ public class PuzzleGame {
 			}
 		}
 		return clone;
+	}
+	
+	/**
+	 * Returns a random vehicle from the map of vehicles.
+	 * Returns the reference to the vehicle.
+	 * @pre vehicleMap.size() >= 1
+	 * @post true
+	 * @return
+	 */
+	public Vehicle getRandomVehicle() {
+		Random rand = new Random();
+		return vehicleMap.get(rand.nextInt(vehicleMap.size()));
+	}
+	
+	/**
+	 * Returns the vehicle given the vehicle ID.
+	 * Returns the reference to the vehicle, modifying the vehicle will change the game.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id, of the vehicle
+	 * @return, reference to vehicle
+	 */
+	public Vehicle getVehicle(int id) {
+		return vehicleMap.get(id);
 	}
 	
 	/**
@@ -477,7 +530,6 @@ public class PuzzleGame {
 		}
 		return possibleVehicle;
 	}
-
 }
 
 
