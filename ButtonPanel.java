@@ -1,7 +1,4 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 
 public class ButtonPanel extends JPanel {
 
@@ -128,12 +125,12 @@ public class ButtonPanel extends JPanel {
     }
 
     public void setController(ButtonController c) {
-    	this.RedoBtn.addActionListener(c.getRedoButtonListener());
-    	this.UndoBtn.addActionListener(c.getUndoButtonListener());
-    	this.HintBtn.addActionListener(c.getHintButtonListener());
-    	this.LoadGameBtn.addActionListener(c.getLoadGameButtonListener());
-    	this.CreateBtn.addActionListener(c.getCreateGameButtonListener());
-    	this.jResetBtn.addActionListener(c.getResetButtonListener());
+        this.RedoBtn.addActionListener(c.getRedoButtonListener());
+        this.UndoBtn.addActionListener(c.getUndoButtonListener());
+        this.HintBtn.addActionListener(c.getHintButtonListener());
+        this.LoadGameBtn.addActionListener(c.getLoadGameButtonListener());
+        this.CreateBtn.addActionListener(c.getCreateGameButtonListener());
+        this.jResetBtn.addActionListener(c.getResetButtonListener());
     }
 
 }

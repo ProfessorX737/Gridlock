@@ -355,15 +355,6 @@ public class PuzzleGame {
      * Resets the board to the starting state
      */
     public void reset() {
-        /*
-        if(!undo.empty()){
-            MoveState ps = undo.firstElement();
-            this.board = ps.getGameBoard();
-            this.vehicleMap = ps.getVehicleMap();
-            undo.removeAllElements();
-            redo.removeAllElements();
-        }
-        */
         this.board = initialState.getGameBoard();
         this.vehicleMap = initialState.getVehicleMap();
         undo.removeAllElements();
@@ -374,15 +365,7 @@ public class PuzzleGame {
      * Redo a move that has previously been undone
      */
     public void redo() {
-        /*
-        System.out.println("Current state is " + this.currentState);
-        if (currentState < stateHistory.size() - 1 && currentState != -1) {
-            currentState++;
-            MoveState ps = stateHistory.get(currentState);
-            this.board = ps.getGameBoard();
-            this.vehicleMap = ps.getVehicleMap();
-        }
-        */
+
         if (!redo.empty()) {
             undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
             MoveState ps = redo.pop();
@@ -394,8 +377,6 @@ public class PuzzleGame {
     /**
      * Reverse a move made by the user
      */
-    // TODO fine tune behaviour - first press undoes the last 2 moves?????
-    //
     public void undo() {
         if (!undo.empty()) {
             redo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
