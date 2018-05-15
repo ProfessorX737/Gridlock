@@ -1,41 +1,15 @@
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
 
-public class ButtonController{
-    private PuzzleView puzzleView;
-    private PuzzleGame puzzleGame;
+public interface ButtonController {
+    public ActionListener getRedoButtonListener();
 
-    public ButtonController(PuzzleView puzzleView, PuzzleGame puzzleGame) {
-        this.puzzleView = puzzleView;
-        this.puzzleGame = puzzleGame;
-    }
+    public ActionListener getUndoButtonListener();
 
-    /**
-     * Updates the view with the current game board
-     */
-    private void updateView(){
-        System.out.println("Updating view...");
-        for(Vehicle v : puzzleGame.getVehicles()){
-            // TODO don't hardcode the cellsize
-           puzzleView.setVehicleLocation(v.getID(), v.getCol() * 50, v.getRow() * 50 );
-        }
-    }
+    public ActionListener getLoadGameButtonListener();
 
-    public void reset(){
-        puzzleGame.reset();
-        // puzzleGame.showBoard();
-        updateView();
-    }
+    public ActionListener getCreateGameButtonListener();
 
-    public void redo(){
-        puzzleGame.redo();
-        updateView();
-    }
+    public ActionListener getHintButtonListener();
 
-    public void undo(){
-        puzzleGame.undo();
-        updateView();
-    }
-
-
+    public ActionListener getResetButtonListener();
 }

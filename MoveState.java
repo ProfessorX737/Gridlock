@@ -1,9 +1,7 @@
-import javax.swing.tree.TreeNode;
-import java.util.Collection;
 import java.util.Map;
 
 public class MoveState {
-    private int [][] gameBoard;
+    private int[][] gameBoard;
     private Map<Integer, Vehicle> vehicleMap;
 
     public MoveState(int[][] gameBoard, Map<Integer, Vehicle> vehicleMap) {
