@@ -25,29 +25,22 @@ public class GridLock{
 		puzzleGame.addVehicle(false, 2, 4, 4, Color.ORANGE);
 		puzzleGame.addVehicle(false, 2, 5, 4, Color.ORANGE);
 		puzzleGame.initState();
-		/*
-		PuzzleView bv = new PuzzleView(puzzleGame,50);
-		PuzzleController bc = new PuzzleController(puzzleGame,bv);
-		bv.setController(bc);
-        f.add(bv,BorderLayout.CENTER);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.pack();
-		f.setVisible(true);
-		*/PuzzleView bv = new PuzzleView(puzzleGame,50);
-		ButtonController buttonController = new ButtonController(bv, puzzleGame);
-		PuzzleController bc = new PuzzleController(puzzleGame,bv);
+		
+		PuzzleView pv = new PuzzleView(puzzleGame,50);
+		PuzzleController pc = new PuzzleController(puzzleGame,pv);
+		pv.setController(pc);
 
-		ButtonPanel panelTwo = new ButtonPanel(container, buttonController);
+		ButtonController bc = new SideButtonController(pv, puzzleGame);
+		ButtonPanel bp = new ButtonPanel();
+		bp.setController(bc);
 
 
 		container.setLayout(new GridLayout(1,2));
-		container.add(bv,BorderLayout.CENTER);
-		container.add(panelTwo, BorderLayout.EAST);
+		container.add(pv,BorderLayout.CENTER);
+		container.add(bp, BorderLayout.EAST);
 
 
-		bv.setController(bc);
 		f.add(container, BorderLayout.CENTER);
-//        f.add(bv,BorderLayout.CENTER);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
@@ -70,25 +63,22 @@ public class GridLock{
 		puzzleGame.initState();
 
 
-		PuzzleView bv = new PuzzleView(puzzleGame,50);
-		ButtonController buttonController = new ButtonController(bv, puzzleGame);
-		PuzzleController bc = new PuzzleController(puzzleGame,bv);
+		PuzzleView pv = new PuzzleView(puzzleGame,50);
+		PuzzleController pc = new PuzzleController(puzzleGame,pv);
+		pv.setController(pc);
 
-		ButtonPanel panelTwo = new ButtonPanel(container, buttonController);
-
+		ButtonController bc = new SideButtonController(pv, puzzleGame);
+		ButtonPanel bp = new ButtonPanel();
+		bp.setController(bc);
 
 		container.setLayout(new GridLayout(1,2));
-		container.add(bv,BorderLayout.CENTER);
-		container.add(panelTwo, BorderLayout.EAST);
+		container.add(pv,BorderLayout.CENTER);
+		container.add(bp, BorderLayout.EAST);
 
-		
-		bv.setController(bc);
 		f.add(container, BorderLayout.CENTER);
-//        f.add(bv,BorderLayout.CENTER);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
-		
 	}
 	public static void main(String args[]) {
 		test2();
