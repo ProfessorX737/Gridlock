@@ -497,7 +497,7 @@ public class PuzzleGame {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, new Color(0, 0, 0)));
+							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, Color.ORANGE));
 						}
 					}
 				} else {
@@ -519,7 +519,7 @@ public class PuzzleGame {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, new Color(0, 0, 0)));
+							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, Color.ORANGE));
 						}
 					}
 				} else {
