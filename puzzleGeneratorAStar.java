@@ -46,27 +46,18 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		int tries = 0;
 		//generate initial puzzle
 		PuzzleGame puzzle = generateInitialState(width, height);
-		puzzle.showBoard();
 		//Keep generating until we have a suitable puzzle
 		while (movesRequired <= moves) {
-			System.out.println("Generating puzzle");
 			if (tries > triesLimit) {
-				System.out.println("Gave up generating puzzles");
 				//if tries exceeds tries limit then it is too difficult to generate
 				return null;
 			}
 			//add random vehicle
-			//if can't add any more vehicles move the vehicles around
 			PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
 			if (newPuzzle == null) {
-				System.out.println("Couldn't add anymore vehicles to the board");
-				System.out.println("Required moves: " + (PuzzleSolver.solve(puzzle).size() - 1));
-				jumbleVehicles(puzzle);
-				System.out.println("Required moves: " + (PuzzleSolver.solve(puzzle).size() - 1));
 				return puzzle;
-				//puzzle = generateInitialState(width, height, exitRow, exitCol);
-				//tries++;
 			} else {
+				puzzle = jumbleVehicles(puzzle);
 				List<int[][]> puzzleSolved = PuzzleSolver.solve(newPuzzle);
 				if (puzzleSolved == null) {
 					//couldn't Solve puzzle restart
@@ -79,9 +70,10 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 				}
 			}
 		}
-		System.out.println("Got a spicy puzzle this time");
 		return puzzle;
 	}
+	
+	
 	
 	/**
 	 * Find all possible locations for a vehicle, adds them one by one and sees if its harder.
@@ -101,11 +93,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 			newPuzzle.addVehicle(vehicle);
 			//get the number of moves required to solve puzzle
 			List<int[][]>puzzleSolved = PuzzleSolver.solve(newPuzzle);
-			System.out.println("");
-			newPuzzle.showBoard();
 			if (puzzleSolved != null) {
-				System.out.println("RequiredMoves: " + (puzzleSolved.size() - 1) + ", currentMoves: " + currentMoves + "\n");
-				//couldn't solve the puzzle
 				if (puzzleSolved.size() - 1 > currentMoves) {
 					//found a harder puzzle
 					return newPuzzle;
@@ -121,51 +109,14 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * Moves one vehicle around randomly
 	 * @param puzzle, the puzzle that will be jumbled
 	 */
-	private void jumbleVehicles(PuzzleGame puzzle) {
+	private PuzzleGame jumbleVehicles(PuzzleGame puzzle) {
 		//jumble the vehicles around n times
 		Random randomGenerator = new Random();
-		int dist = 0;
-		for (int i = 0; i < jumbleLimit; i++) {
-			System.out.println("\nJumbling vehicles");
-			//get all moves of a random vehicle
-			Vehicle randVehicle = puzzle.getRandomVehicle();
-			if (randVehicle.getIsVertical() == true) {
-				//vehicle can only up or down
-				if (randomGenerator.nextBoolean()) {
-					//move the vehicle up
-					dist = puzzle.canMoveUp(randVehicle.getID());
-					if (dist > 0) {
-						//move vehicle a random distance
-						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow() - randomGenerator.nextInt(dist + 1), randVehicle.getCol());
-					}
-				} else {
-					//move the vehicle down
-					dist = puzzle.canMoveDown(randVehicle.getID());
-					if (dist > 0) {
-						//move vehicle a random distance
-						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow() + randomGenerator.nextInt(dist + 1), randVehicle.getCol());
-					}
-				}
-			} else {
-				//vehicle can only move left or right
-				if (randomGenerator.nextBoolean()) {
-					//move the vehicle left
-					dist = puzzle.canMoveLeft(randVehicle.getID());
-					if (dist > 0) {
-						//move vehicle a random distance
-						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow(), randVehicle.getCol() - randomGenerator.nextInt(dist + 1));
-					}
-				} else {
-					//move the vehicle right
-					dist = puzzle.canMoveRight(randVehicle.getID());
-					if (dist > 0) {
-						//move vehicle a random distance
-						puzzle.moveVehicle(randVehicle.getID(), randVehicle.getRow(), randVehicle.getCol() + randomGenerator.nextInt(dist + 1));
-					}
-				}
-			}
-			puzzle.showBoard();
-		}
+		//create a puzzle state and see what other connections it has
+		PuzzleState currState = new PuzzleState(puzzle);
+		List<PuzzleState> stateList = currState.getConnections();
+		PuzzleState newState = stateList.get(randomGenerator.nextInt(stateList.size()));
+		return newState.getGame();
 	}
 	
 	/**
