@@ -12,4 +12,8 @@ public interface ButtonController {
     public ActionListener getHintButtonListener();
 
     public ActionListener getResetButtonListener();
+
+	public ActionListener getTimerListener();
+
+	public void updateMoves();
 }

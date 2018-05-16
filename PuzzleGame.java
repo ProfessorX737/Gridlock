@@ -22,6 +22,7 @@ public class PuzzleGame {
     private Stack<MoveState> undo;
     private Stack<MoveState> redo;
     private MoveState initialState;
+    private int moves;
 
     /**
      * Constructor for the board, when only the size of the board is provided.
@@ -40,6 +41,7 @@ public class PuzzleGame {
         this.undo = new Stack<>();
         this.redo = new Stack<>();
         this.initBoard();
+        this.moves = 0;
     }
 
     /**
@@ -212,6 +214,7 @@ public class PuzzleGame {
         this.fillVehicleSpace(v, -1);
         v.setPos(newRow, newCol);
         this.fillVehicleSpace(v, id);
+        moves += 1;
     }
 
     private void fillVehicleSpace(Vehicle v, int id) {
@@ -359,6 +362,7 @@ public class PuzzleGame {
         this.vehicleMap = initialState.getVehicleMap();
         undo.removeAllElements();
         redo.removeAllElements();
+        moves = 0;
     }
 
     /**
@@ -371,6 +375,7 @@ public class PuzzleGame {
             MoveState ps = redo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
+            moves += 1;
         }
     }
 
@@ -383,6 +388,7 @@ public class PuzzleGame {
             MoveState ps = undo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
+            moves -=1;
         }
     }
 
@@ -404,6 +410,10 @@ public class PuzzleGame {
 
     public void initState() {
         initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap());
+    }
+
+    public int getMoves(){
+        return moves;
     }
 }
 

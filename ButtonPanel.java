@@ -1,4 +1,7 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 public class ButtonPanel extends JPanel {
 
@@ -15,6 +18,7 @@ public class ButtonPanel extends JPanel {
     private JButton CreateBtn;
     private JButton jResetBtn;
     private JLabel jTimeLabel;
+    private Timer timer;
 
     public ButtonPanel() {
 
@@ -35,8 +39,8 @@ public class ButtonPanel extends JPanel {
         this.setBorder(javax.swing.BorderFactory.createTitledBorder("Rush Hour"));
 
         LoadGameBtn.setText("Load Game");
-        jTimeLabel.setText("Time: 11:11");
-        MoveCount.setText("Moves: 15");
+        jTimeLabel.setText("Time: 00:00:00");
+        MoveCount.setText("Moves: 0");
         jResetBtn.setText("Reset");
         HintBtn.setText("Hint");
         UndoBtn.setText("Undo");
@@ -131,6 +135,24 @@ public class ButtonPanel extends JPanel {
         this.LoadGameBtn.addActionListener(c.getLoadGameButtonListener());
         this.CreateBtn.addActionListener(c.getCreateGameButtonListener());
         this.jResetBtn.addActionListener(c.getResetButtonListener());
+        this.timer = new Timer(1000, c.getTimerListener());
+        this.startTimer();
+    }
+
+    public void startTimer(){
+        this.timer.start();
+    }
+
+    public void endTimer(){
+        this.timer.stop();
+    }
+
+    public void displayTime(String time){
+        jTimeLabel.setText("Time: " + time);
+    }
+
+    public void displayMoves(int moves){
+        MoveCount.setText("Moves: " + Integer.toString(moves));
     }
 
 }
