@@ -1,11 +1,12 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.*;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class GridLock{
 	public static void test2() {
 		JFrame f = new JFrame("GridLock");
+		JPanel container = new JPanel();
+
 		f.setLayout(new BorderLayout());
 		f.setLayout(new BorderLayout());
 		f.setBackground(Color.BLACK);
@@ -23,17 +24,30 @@ public class GridLock{
 		puzzleGame.addVehicle(false, 2, 5, 2, Color.ORANGE);
 		puzzleGame.addVehicle(false, 2, 4, 4, Color.ORANGE);
 		puzzleGame.addVehicle(false, 2, 5, 4, Color.ORANGE);
-		PuzzleView bv = new PuzzleView(puzzleGame,50);
-		PuzzleController bc = new PuzzleController(puzzleGame,bv);
-		bv.setController(bc);
-        f.add(bv,BorderLayout.CENTER);
+		puzzleGame.initState();
+
+		PuzzleView pv = new PuzzleView(puzzleGame,50);
+		PuzzleController pc = new PuzzleController(puzzleGame,pv);
+		pv.setController(pc);
+
+		ButtonPanel bp = new ButtonPanel();
+		ButtonController bc = new SideButtonController(pv, puzzleGame, bp);
+		bp.setController(bc);
+		pc.setButtonController(bc);
+
+		container.setLayout(new GridLayout(1,2));
+		container.add(pv,BorderLayout.CENTER);
+		container.add(bp, BorderLayout.EAST);
+
+		f.add(container, BorderLayout.CENTER);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
 	}
 	public static void test1() {
 		JFrame f = new JFrame("GridLock");
-		f.setLayout(new BorderLayout());
+		JPanel container = new JPanel();
+
 		f.setLayout(new BorderLayout());
 		f.setBackground(Color.BLACK);
 		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
@@ -45,14 +59,27 @@ public class GridLock{
 		puzzleGame.addVehicle(true, 2, 4, 4, Color.ORANGE);
 		puzzleGame.addVehicle(false, 2, 3, 4, Color.ORANGE);
 		puzzleGame.addVehicle(true, 3, 0, 5, Color.ORANGE);
-		PuzzleView bv = new PuzzleView(puzzleGame,50);
-		PuzzleController bc = new PuzzleController(puzzleGame,bv);
-		bv.setController(bc);
-        f.add(bv,BorderLayout.CENTER);
+		puzzleGame.initState();
+
+
+		PuzzleView pv = new PuzzleView(puzzleGame,50);
+		PuzzleController pc = new PuzzleController(puzzleGame,pv);
+		pv.setController(pc);
+
+		ButtonPanel bp = new ButtonPanel();
+		ButtonController bc = new SideButtonController(pv, puzzleGame, bp);
+		bp.setController(bc);
+		pc.setButtonController(bc);
+
+
+		container.setLayout(new GridLayout(1,2));
+		container.add(pv,BorderLayout.CENTER);
+		container.add(bp, BorderLayout.EAST);
+
+		f.add(container, BorderLayout.CENTER);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
-		
 	}
 	public static void main(String args[]) {
 		test2();
