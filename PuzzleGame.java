@@ -207,14 +207,15 @@ public class PuzzleGame {
 
         // Todo currently clicking on the vehicle counts as a move
         // Need to ensure it is not
-
-        redo.removeAllElements();
-        undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
         Vehicle v = this.vehicleMap.get(id);
-        this.fillVehicleSpace(v, -1);
-        v.setPos(newRow, newCol);
-        this.fillVehicleSpace(v, id);
-        moves += 1;
+        if (v.getRow() != newRow || v.getCol() != newCol){
+            redo.removeAllElements();
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            this.fillVehicleSpace(v, -1);
+            v.setPos(newRow, newCol);
+            this.fillVehicleSpace(v, id);
+            moves += 1;
+        }
     }
 
     private void fillVehicleSpace(Vehicle v, int id) {
