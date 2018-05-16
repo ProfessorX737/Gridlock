@@ -1,8 +1,11 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
+import java.util.Random;
 import java.awt.Color;
 
 /**
@@ -18,6 +21,8 @@ public class PuzzleGame {
 	private Map<Integer, Vehicle> vehicleMap;
 	//a matrix which represents the board. Where their ID represents their location on the board
 	private int[][] board;
+	//possible size of vehicles, or should this be added to vehicle class
+	private static final int[] vehicleSize = new int[] {2, 3};
 
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
@@ -77,6 +82,30 @@ public class PuzzleGame {
 	}
 	
 	/**
+	 * Check whether the vehicle can be added to the location.
+	 * @param row
+	 * @param col
+	 * @param vehicle
+	 * @return
+	 */
+	public boolean canAddVehicle(boolean isVertical, int length, int row, int col) {
+		if (isVertical){
+			for (int i = 0; i < length; i++) {
+				if (isOccupied(row + i, col)) {
+					return false;
+				}
+			}
+		} else {
+			for (int i = 0; i < length; i++) {
+				if (isOccupied(row, col + i)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Add vehicle to the board.
 	 * @param isVertical
 	 * @param length
@@ -89,6 +118,18 @@ public class PuzzleGame {
 		Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
 		this.vehicleMap.put(id, v);
 		this.fillVehicleSpace(v, id);
+	}
+	
+	/**
+	 * Add vehicle to the board. Adds by reference so don't change the vehicle after adding it,
+	 * unless through GamePuzzle methods.
+	 * @param vehicle
+	 */
+	public void addVehicle(Vehicle vehicle) {
+		int id = vehicleMap.size();
+		vehicle.setID(id);
+		this.vehicleMap.put(id, vehicle);
+		this.fillVehicleSpace(vehicle, id);
 	}
 
 	/**
@@ -112,6 +153,13 @@ public class PuzzleGame {
 		return true;
 	}
 	
+	/**
+	 * Returns the number of spaces the vehicle and be moved up.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveUp(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(!v.getIsVertical()) return 0;
@@ -129,6 +177,13 @@ public class PuzzleGame {
 		return numLegal;
 	}
 
+	/**
+	 * Returns the number of spaces the vehicle and be moved down.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveDown(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(!v.getIsVertical()) return 0;
@@ -148,6 +203,13 @@ public class PuzzleGame {
 		return numLegal;
 	}
 	
+	/**
+	 * Returns the number of spaces the vehicle and be moved left.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveLeft(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(v.getIsVertical()) return 0;
@@ -165,6 +227,13 @@ public class PuzzleGame {
 		return numLegal;
 	}
 
+	/**
+	 * Returns the number of spaces the vehicle and be moved right.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id of the vehicle
+	 * @return number of spaces the vehicle can be moved
+	 */
 	public int canMoveRight(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(v.getIsVertical()) return 0;
@@ -184,10 +253,11 @@ public class PuzzleGame {
 	
 	
 	/**
-	 * To move a vehicle specify the vehicle, direction and distance.
+	 * Move vehicle to new position
 	 * @pre checkMove(id, direction, distance) == true
 	 * @param id
-	 * @param direction
+	 * @param newRow
+	 * @param newCol
 	 */
 	public void moveVehicle(int id, int newRow, int newCol) {
 		Vehicle v = this.vehicleMap.get(id);
@@ -242,6 +312,30 @@ public class PuzzleGame {
 	}
 	
 	/**
+	 * Returns a random vehicle from the map of vehicles.
+	 * Returns the reference to the vehicle.
+	 * @pre vehicleMap.size() >= 1
+	 * @post true
+	 * @return
+	 */
+	public Vehicle getRandomVehicle() {
+		Random rand = new Random();
+		return vehicleMap.get(rand.nextInt(vehicleMap.size()));
+	}
+	
+	/**
+	 * Returns the vehicle given the vehicle ID.
+	 * Returns the reference to the vehicle, modifying the vehicle will change the game.
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id, of the vehicle
+	 * @return, reference to vehicle
+	 */
+	public Vehicle getVehicle(int id) {
+		return vehicleMap.get(id);
+	}
+	
+	/**
 	 * @pre this.isOutOfBounds(row,col) == false
 	 * @return the vehicle id if the position, if not valid return -1
 	 */
@@ -270,6 +364,28 @@ public class PuzzleGame {
 	
 	public Vehicle getMainVehicle() {
 		return vehicleMap.get(0);
+	}
+	
+	/**
+	 * Returns the row of the vehicle
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id, of the vehicle
+	 * @return the row at which the vehicle head occupies
+	 */
+	public int getVehicleRow(int id) {
+		return vehicleMap.get(id).getRow();
+	}
+	
+	/**
+	 * Return the row of the vehicle
+	 * @pre vehicleMap.contains(id)
+	 * @post true
+	 * @param id, of the vehicle
+	 * @return the column at which the vehicle head occupies
+	 */
+	public int getVehicleCol(int id) {
+		return vehicleMap.get(id).getCol();
 	}
 	
 	public Collection<Vehicle> getVehicles() {
@@ -336,7 +452,8 @@ public class PuzzleGame {
 	private final static String road = "-";
 	private final static String wall = "W";
 
-	void showBoard() {
+	public void showBoard() {
+		System.out.println("Exit at row: " + exitRow + ", col: " + exitCol);
 		for (int y = -1; y <= sizeRow; y++) {
 			for (int x = -1; x <= sizeCol; x++) {
 				if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
@@ -352,5 +469,93 @@ public class PuzzleGame {
 			System.out.println("");
 		}
 	}
-
+	
+	/**
+	 * This might need to be changed
+	 * Will be very expensive if we had to recalculate this every time
+	 * Generates all possible vehicle spaces
+	 */
+	public List<Vehicle> getPossibleVehicle() {
+		//number of empty spaces found so far
+		int emptySpace = 0;
+		//placeholderID which will be changed it it is the best choice
+		int placeHolderID = 0xDEADBEEF;
+		List<Vehicle> possibleVehicle = new ArrayList<Vehicle>();
+		//exclude spaces that directly block the main vehicle
+		boolean mainIsVertical = vehicleMap.get(0).getIsVertical();
+		int mainRow = vehicleMap.get(0).getRow();
+		int mainCol = vehicleMap.get(0).getCol();
+		
+		//go through the board vertically and find all spaces which are 2 or 3 in length
+		for (int i = sizeCol - 1; i >= 0; i--) {
+			for (int j = sizeRow - 1; j >= 0; j--) {
+				if (mainIsVertical == true && mainCol == i) {
+					//don't return vehicles that directly get in the way
+					continue;
+				}
+				if (!isOccupied(j, i)) {
+					emptySpace++;
+					for (int k = 0; k < vehicleSize.length; k++) {
+						if (emptySpace >= vehicleSize[k]) {
+							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, new Color(0, 0, 0)));
+						}
+					}
+				} else {
+					emptySpace = 0;
+				}
+			}
+			emptySpace = 0;
+		}
+		
+		//go through the board horizontally and find empty spaces
+		emptySpace = 0;
+		for (int j = sizeRow - 1; j >= 0 ; j--) {
+			for (int i = sizeCol - 1; i >= 0; i--) {
+				if (mainIsVertical == false && mainRow == j) {
+					//don't return vehicles that directly get in the way
+					continue;
+				}
+				if (!isOccupied(j, i)) {
+					emptySpace++;
+					for (int k = 0; k < vehicleSize.length; k++) {
+						if (emptySpace >= vehicleSize[k]) {
+							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, new Color(0, 0, 0)));
+						}
+					}
+				} else {
+					emptySpace = 0;
+				}
+			}
+			emptySpace = 0;
+		}
+		return possibleVehicle;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

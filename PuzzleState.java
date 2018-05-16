@@ -47,6 +47,10 @@ public class PuzzleState implements TreeNode<PuzzleState> {
 		return conns;
 	}
 	
+	public PuzzleGame getGame() {
+		return game;
+	}
+	
 	public int[][] getBoard() {
 		return this.game.getBoard();
 	}

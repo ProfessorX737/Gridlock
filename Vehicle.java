@@ -5,12 +5,12 @@ import java.awt.Color;
  *
  */
 public class Vehicle {
-	private final int id;
+	private int id;
 	private final boolean isVertical;
 	private final int length;
 	private int row;
 	private int col;
-	private final Color color;
+	private Color color;
 	
 	/**
 	 * Constructor for vehicles, takes the parameters
@@ -44,6 +44,22 @@ public class Vehicle {
 		this.color = v.color;
 	}
 	
+	/**
+	 * Set ID for vehicle
+	 * @param ID
+	 */
+	public void setID(int ID) {
+		this.id = ID;
+	}
+	
+	/**
+	 * Set the color of the vehicle
+	 * @param color
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
 	public int getID() {
 		return id;
 	}
@@ -72,4 +88,45 @@ public class Vehicle {
 		this.row = row;
 		this.col = col;
 	}
+	
+	@Override
+	public String toString() {
+		String x = "Vehicle ID: " + this.id + ", isVertical: " + 
+					this.isVertical + ", length: " + this.length + 
+					", row: " + this.row + ", col: " + this.col;
+		return x;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
