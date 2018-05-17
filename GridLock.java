@@ -54,7 +54,24 @@ public class GridLock{
 		f.setVisible(true);
 		
 	}
+	
+	public static void test3() {
+		JFrame f = new JFrame("GridLock");
+		f.setLayout(new BorderLayout());
+		f.setLayout(new BorderLayout());
+		f.setBackground(Color.BLACK);
+		PuzzleGeneratorAStar foo = new PuzzleGeneratorAStar();
+		PuzzleGame puzzleGame = foo.generatePuzzle(6, 6, 20);
+		PuzzleView bv = new PuzzleView(puzzleGame,50);
+		PuzzleController bc = new PuzzleController(puzzleGame,bv);
+		bv.setController(bc);
+        f.add(bv,BorderLayout.CENTER);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.pack();
+		f.setVisible(true);
+	}
+
 	public static void main(String args[]) {
-		test2();
+		test3();
 	}
 }
