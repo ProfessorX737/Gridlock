@@ -205,9 +205,8 @@ public class PuzzleGame {
     public void moveVehicle(int id, int newRow, int newCol) {
 
 
-        // Todo currently clicking on the vehicle counts as a move
-        // Need to ensure it is not
         Vehicle v = this.vehicleMap.get(id);
+        // Checks if move actually moved vehicle
         if (v.getRow() != newRow || v.getCol() != newCol){
             redo.removeAllElements();
             undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));

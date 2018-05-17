@@ -46,7 +46,10 @@ public class RushHourClient implements Runnable{
 				System.out.println("Connection successful, please input data on the next line");
 		        while (!closed) {
 		        	String coolLine = inputLine.readLine().trim();
-		        	System.out.println("Received" + coolLine);
+		        	if (coolLine == "close"){
+		        		closed = true;
+					}
+		        	System.out.println("Sent: " + coolLine);
 		          os.println(coolLine);
 		          os.flush();
 		        }
@@ -73,7 +76,7 @@ public class RushHourClient implements Runnable{
 		String responseLine;
 		try {
 		      while ((responseLine = is.readLine()) != null) {
-		        System.out.println(responseLine);
+		        System.out.println("From server: " + responseLine);
 		        if (responseLine.indexOf("drop") != -1)
 		          break;
 		      }

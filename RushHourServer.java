@@ -1,40 +1,52 @@
-package cs2511;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class RushHourServer {
-	private ServerSocket ss = null;
-	private int port;
-	BlockingQueue eventQueue = null;
-	Set<ClientInfo> clients = null;
-	Map<String, PrintStream> outputUser = null;
+	private static ServerSocket ss;
+	private static int port;
+	private static BlockingQueue<String> eventQueue;
+	private static Map<String,ClientInfo> clients;
+	private static Map<String, Socket> userList;
+	private static RushHourServerEV evHandler;
 	
 	public static void main(String[] args) {
 		RushHourServer server = new RushHourServer(55555);
 		server.run();
 	}
-	
+
 	public RushHourServer(int port) {
 		this.port = port;
+		this.userList = new ConcurrentHashMap<String, Socket>();
+		this.clients = new ConcurrentHashMap<String, ClientInfo>();
+		this.eventQueue = new LinkedBlockingQueue<String>();
 	}
 
 	// In charge of handling new connections and creating threads
 	public void run() {
-		
+		String line;
+		String username;
+
 		try {
 			System.out.println("Starting server on port " + port);
 			ss = new ServerSocket(port);
-			
-			// Start an event handling thread
-			
-			
-			
+
+			// Start Event Handler Thread
+			// RushHourServerEV(BlockingQueue eventQueue,  Map<String,ClientInfo> clients, Map<String, Socket> userList)
+			evHandler = new RushHourServerEV(eventQueue, clients, userList);
+			evHandler.start();
+
+
 			while(true) {
 
 				// When a new connection established, handle it
@@ -45,22 +57,46 @@ public class RushHourServer {
 				// Get handshake message to identify user
 				// first message will be new username in format
 				System.out.println("New connection established" + newClient);
-				while (true) {
-					String line;
-					try {
-						line = is.readLine();
-						System.out.println(line);
-					} catch (IOException e1) {
-						// Connection probably broke?
-						e1.printStackTrace();
-						System.out.println("Connection broke");
-						break;
+				// command should be user "username", the first word is chosen, rest is ignored
+				System.out.println("Getting username from user");
+
+				// Test code for now
+
+				try {
+					line = is.readLine();
+					System.out.println("From Host:" + line);
+					String[] parts = (line.trim()).split(" ");
+
+					// TODO: check for duplicate usernames? if duplicate close connection, give them notification that username currently in use
+					if (parts[0].toLowerCase().equals("user")){
+						username = parts[1];
+						userList.put(username,newClient);
+
+						// Start new ConnectionHandler object
+						ClientInfo newInfo = new ClientInfo(username);
+						clients.put(username, newInfo);
+						ConnectionHandler newConn = new ConnectionHandler(newInfo, eventQueue, newClient);
+
+						// Should limit how many threads, need one for each active connection right now!
+						System.out.println("Thread created and started for " + username);
+						newConn.start();
+
 					}
+					else{
+						// Invalid first message
+						os.println("Invalid command: user <username> required");
+						newClient.close();
+					}
+
+				} catch (IOException e1) {
+					// Connection probably broke?
+					e1.printStackTrace();
+					System.out.println("Connection broke");
+					break;
 				}
-//				String line = is.readLine();
-				
-			
-				newClient.close();
+
+////				String line = is.readLine();
+//				newClient.close();
 
 			}
 			
@@ -69,64 +105,12 @@ public class RushHourServer {
 			System.out.println("I/O Exception: Issue starting up server");
 			e.printStackTrace();
 			System.out.println(e);
-		}
-	}
-	
-	public void eventHandler() {
-		// TODO 
-	}
-	
-	// TODO implement threads in java, limit concurrent threads to 8, thread pool?
-	private class clientThread extends Thread{
-			private ClientInfo info = null;
-			private DataInputStream is = null;
-			private BlockingQueue<String> eventQueue = null;
-			
-			public clientThread(ClientInfo info, DataInputStream is, BlockingQueue<String> eventQueue) {
-				this.info = info;
-				this.is = is;
-				this.eventQueue = eventQueue;
-			};
-			
-			
-			public void run() {
-			
-				// Add messages to event queue
 
-				// Keep processing messages sent from client
-				while (true) {
-					String line;
-					try {
-						line = is.readLine();
-					} catch (IOException e1) {
-						// Connection probably broke?
-						e1.printStackTrace();
-						System.out.println("Connection broke");
-						break;
-					}
-					
-					if (line != null) {
-						try {
-							// Add messages to the queue
-							// If blocking queue is full wait 200ms before trying again
-							while(!eventQueue.offer(line)) {
-								Thread.sleep(200);
-							}
-							
-						} catch(Exception e){
-							System.out.println(e);
-						}
-					}
-					else {
-						System.out.println("Null result found");
-					}
-					
-				}
-				
-				// Connection closed, remove hashmap mapping
-				
-			}
+		}catch(Exception e){
+			System.out.println("A Non I/O related issue occurred");
+			e.printStackTrace();
+			System.out.println(e);
 		}
-	
-	
+	}
+
 }
