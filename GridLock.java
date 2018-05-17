@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -62,6 +63,11 @@ public class GridLock{
 		f.setBackground(Color.BLACK);
 		PuzzleGeneratorAStar foo = new PuzzleGeneratorAStar();
 		PuzzleGame puzzleGame = foo.generateEasyPuzzle();
+		List<int[][]> path = PuzzleSolver.solve(puzzleGame);
+		for(int[][] state : path) {
+			showBoard(puzzleGame, state);
+			System.out.println("");
+		}
 		PuzzleView bv = new PuzzleView(puzzleGame,50);
 		PuzzleController bc = new PuzzleController(puzzleGame,bv);
 		bv.setController(bc);
@@ -73,5 +79,26 @@ public class GridLock{
 
 	public static void main(String args[]) {
 		test3();
+	}
+	
+	private final static String red_car = "r";
+	private final static String road = "-";
+	private final static String wall = "W";
+
+	static void showBoard(PuzzleGame game, int[][] board) {
+		for (int y = -1; y <= game.getNumRows(); y++) {
+			for (int x = -1; x <= game.getNumCols(); x++) {
+				if (y == -1 || y == game.getNumRows() || x == -1 || x == game.getNumCols()) {
+					System.out.print(wall);
+				} else if (board[y][x] == 0) {
+					System.out.print(red_car);
+				} else if (board[y][x] == -1) {
+					System.out.print(road);
+				} else {
+					System.out.print(Integer.toHexString(board[y][x]));
+				}
+			}
+			System.out.println("");
+		}
 	}
 }
