@@ -471,6 +471,16 @@ public class PuzzleGame {
 	}
 	
 	/**
+	 * Remove vehicle from the vehicleMap and the board.
+	 */
+	public void removeVehicle(int id) {
+		//remove from the board
+		this.fillVehicleSpace(vehicleMap.get(id), -1);
+		//remove from the map
+		vehicleMap.remove(id);
+	}
+	
+	/**
 	 * This might need to be changed
 	 * Will be very expensive if we had to recalculate this every time
 	 * Generates all possible vehicle spaces

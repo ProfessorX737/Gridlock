@@ -41,11 +41,11 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @return puzzleGame, 
 	 */
 	@Override
-	public PuzzleGame generatePuzzle(int width, int height, int moves) {
+	public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves) {
 		int movesRequired = 1;
 		int tries = 0;
 		//generate initial puzzle
-		PuzzleGame puzzle = generateInitialState(width, height);
+		PuzzleGame puzzle = generateInitialState(width, height, exitRow, exitCol);
 		//Keep generating until we have a suitable puzzle
 		while (movesRequired <= moves) {
 			if (tries > triesLimit) {
@@ -57,12 +57,12 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 			if (newPuzzle == null) {
 				return puzzle;
 			} else {
-				puzzle = jumbleVehicles(puzzle);
+				//puzzle = jumbleVehicles(puzzle);
 				List<int[][]> puzzleSolved = PuzzleSolver.solve(newPuzzle);
 				if (puzzleSolved == null) {
 					//couldn't Solve puzzle restart
 					movesRequired = 0;
-					puzzle = generateInitialState(width, height);
+					puzzle = generateInitialState(width, height, exitRow, exitCol);
 					tries++;
 				} else {
 					movesRequired = puzzleSolved.size() - 1;
@@ -183,30 +183,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @param height, the height of the board
 	 * @return
 	 */
-	private PuzzleGame generateInitialState(int height, int width) {
-		Random randomGenerator = new Random();
-		//generate a random exit
-		int direction = randomGenerator.nextInt(numDirections);
-		int exitRow = 0;
-		int exitCol = 0;
-		if (direction == 0) {
-			//exit on the top row
-			exitRow = 0;
-			exitCol = randomGenerator.nextInt(width);
-		} else if (direction == 1) {
-			//exit on the right
-			exitRow = randomGenerator.nextInt(height);
-			exitCol = width - 1;
-		} else if (direction == 2) {
-			//exit on the bottom
-			exitRow = height - 1;
-			exitCol = randomGenerator.nextInt(width);
-		} else if (direction == 3) {
-			//exit on the left
-			exitRow = randomGenerator.nextInt(height);
-			exitCol = 0;		
-		}
-
+	private PuzzleGame generateInitialState(int height, int width, int exitRow, int exitCol) {
 		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
 		PuzzleGame puzzle = new PuzzleGame(width, height, exitRow, exitCol, vehicleMap);
 		//How far should it be from the other end of the board.
@@ -237,6 +214,159 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		}
 		puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, new Color(255, 0, 0));
 		return puzzle;
+	}
+	
+	private List<Integer> randomExit(int height, int width) {
+		Random randomGenerator = new Random();
+		//generate a random exit
+		int direction = randomGenerator.nextInt(numDirections);
+		int exitRow = 0;
+		int exitCol = 0;
+		if (direction == 0) {
+			//exit on the top row
+			exitRow = 0;
+			exitCol = randomGenerator.nextInt(width);
+		} else if (direction == 1) {
+			//exit on the right
+			exitRow = randomGenerator.nextInt(height);
+			exitCol = width - 1;
+		} else if (direction == 2) {
+			//exit on the bottom
+			exitRow = height - 1;
+			exitCol = randomGenerator.nextInt(width);
+		} else if (direction == 3) {
+			//exit on the left
+			exitRow = randomGenerator.nextInt(height);
+			exitCol = 0;		
+		}
+		List<Integer> exit = new ArrayList<Integer>();
+		exit.add(exitRow);
+		exit.add(exitCol);
+		return exit;
+	}
+	
+	/**
+	 * Merge two puzzles together, they must have similar dimensions.
+	 * If the exitRow is on the top, then the puzzle will be merged onto the top of the first puzzle.
+	 * Hence the width of both puzzles must be the same. 
+	 * Likewise if the exit of the first puzzle is on the left, the second puzzle is added to the left,
+	 * and both puzzles must have the same height.
+	 * First and second puzzles are destoryed, afterwards. Don't reference again.
+	 * @pre first.height == second.height || first.width == second.wdith
+	 * @post first = null && second == null
+	 * @param first, the first puzzle, other puzzles will be attached to this puzzle.
+	 * @param second, puzzle to be merged, the puzzle can include the red car which it will be removed.
+	 * @return
+	 */
+	private PuzzleGame puzzleMerge(PuzzleGame first, PuzzleGame second) {
+		//getting exit of first and the width of both puzzles
+		int firstExitRow = first.getExitRow();
+		int firstExitCol = first.getExitCol();
+		int firstHeight = first.getNumRows();
+		int firstWidth = first.getNumCols();
+		int secondHeight = second.getNumRows();
+		int secondWidth = second.getNumCols();
+		PuzzleGame mergedPuzzle = null;
+		//remove the main car from the second puzzle
+		second.removeVehicle(0);
+
+		//determine where the exit is
+		if (firstExitRow == 0) {
+			//the exit is on the top
+			mergedPuzzle = new PuzzleGame(firstHeight + secondHeight, firstWidth, firstExitRow, firstExitCol);
+			//copy everything over from first
+			for (Vehicle vehicle : first.getVehicles()) {
+				//change the location
+				vehicle.setRow(vehicle.getRow() + secondHeight);
+				mergedPuzzle.addVehicle(vehicle);
+			}
+			//copy everything from the second
+			for (Vehicle vehicle : second.getVehicles()) {
+				//don't need to change location but need to change the id
+				vehicle.setID(mergedPuzzle.getVehicles().size());
+				mergedPuzzle.addVehicle(vehicle);
+			}
+		} else if (firstExitRow == firstHeight - 1) {
+			//the exit is on the bottom
+			mergedPuzzle = new PuzzleGame(firstHeight + secondHeight, firstWidth, firstHeight + secondHeight - 1, firstExitCol);
+			//copy everything over from first
+			for (Vehicle vehicle : first.getVehicles()) {
+				//no need to change anything just copy everything over
+				mergedPuzzle.addVehicle(vehicle);
+			}
+			//copy everything from second and adjust both position and id
+			for (Vehicle vehicle : second.getVehicles()) {
+				vehicle.setRow(vehicle.getRow() + firstHeight);
+				vehicle.setID(mergedPuzzle.getVehicles().size());
+				mergedPuzzle.addVehicle(vehicle);
+			}
+		} else if (firstExitCol == 0) {
+			//the exit is on the left
+			mergedPuzzle = new PuzzleGame(firstHeight, firstWidth + secondWidth, firstExitRow, firstExitCol);
+			//copy everything over from first
+			for (Vehicle vehicle : first.getVehicles()) {
+				//change the position of the col
+				vehicle.setCol(vehicle.getCol() + secondWidth);
+				mergedPuzzle.addVehicle(vehicle);
+			}
+			//copy everything from second
+			for (Vehicle vehicle : second.getVehicles()) {
+				//change the id
+				vehicle.setID(mergedPuzzle.getVehicles().size());
+				mergedPuzzle.addVehicle(vehicle);
+			}
+		} else if (firstExitCol == firstWidth - 1) {
+			//the exit is on the right
+			mergedPuzzle = new PuzzleGame(firstHeight, firstWidth + secondWidth, firstExitRow, firstWidth + secondWidth - 1);
+			//copy over everything from first no need to change anything
+			for (Vehicle vehicle : first.getVehicles()) {
+				mergedPuzzle.addVehicle(vehicle);
+			}
+			//copy from the second puzzle and change the id 
+			for (Vehicle vehicle : second.getVehicles()) {
+				vehicle.setID(mergedPuzzle.getVehicles().size());
+				vehicle.setCol(vehicle.getCol() + firstWidth);
+			}
+		}
+		return mergedPuzzle;
+	}
+
+	@Override
+	public PuzzleGame generateEasyPuzzle() {
+		List<Integer> exit = randomExit(6, 6);
+		int exitRow = exit.get(0);
+		int exitCol = exit.get(1);
+		return generatePuzzle(6, 6, exitRow, exitCol, 20);
+	}
+
+	/**
+	 * Generate a 12x6 puzzle.
+	 */
+	@Override
+	public PuzzleGame generateMediumPuzzle() {
+		List<Integer> exit = randomExit(6, 6);
+		int exitRow = exit.get(0);
+		int exitCol = exit.get(1);
+		//generate two different puzzles and merge them together
+		PuzzleGame mainPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
+		PuzzleGame secondPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
+		return puzzleMerge(mainPuzzle, secondPuzzle);
+	}
+
+	/**
+	 * Generate a 18x6 puzzle.
+	 */
+	@Override
+	public PuzzleGame generateHardPuzzle() {
+		List<Integer> exit = randomExit(6, 6);
+		int exitRow = exit.get(0);
+		int exitCol = exit.get(1);
+		//generate two different puzzles and merge them together
+		PuzzleGame mainPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
+		PuzzleGame secondPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
+		PuzzleGame thirdPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
+		PuzzleGame firstMerge = puzzleMerge(mainPuzzle, secondPuzzle);
+		return puzzleMerge(firstMerge, thirdPuzzle);
 	}
 }
 
