@@ -5,10 +5,19 @@ public class ClientInfo {
 	private boolean busy;
 	private String playingAgainst;
 
+	public void setBusy(boolean busy) {
+		this.busy = busy;
+	}
+
+	public void setPlayingAgainst(String playingAgainst) {
+		this.playingAgainst = playingAgainst;
+	}
+
 	public ClientInfo(String username){
 		this.name = username;
 		this.busy = false;
 		this.playingAgainst = null;
+
 	}
 
 	public String getName() {

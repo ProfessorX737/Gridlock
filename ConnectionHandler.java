@@ -45,6 +45,7 @@ public class ConnectionHandler extends Thread{
                 }catch(InterruptedException e){
                     // Fine, since interrupted while putting something in
                     // execution should resume when it comes back to the thread?
+                    System.out.println("Line is null");
                 }
 
             }

@@ -415,5 +415,30 @@ public class PuzzleGame {
     public int getMoves(){
         return moves;
     }
+
+    public String getStringRep(){
+
+        // More efficient string appending
+        StringBuilder sb = new StringBuilder();
+        int vert;
+        int length;
+        int row;
+        int col;
+        String colour;
+
+        for (Vehicle v: getVehicles()){
+            vert = ( v.getIsVertical() ) ? 1 : 0;
+            length = v.getLength();
+            row = v.getRow();
+            col = v.getCol();
+            colour = (v.getColor().getRGB() == Color.RED.getRGB()) ? "red" : "orange" ;
+            sb.append("| " + Integer.toString(vert));
+            sb.append(" " + Integer.toString(length));
+            sb.append(" " + Integer.toString(row));
+            sb.append(" " + Integer.toString(col));
+            sb.append(" " + colour);
+        }
+        return sb.toString();
+    }
 }
 
