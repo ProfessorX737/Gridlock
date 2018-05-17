@@ -1,12 +1,15 @@
 import java.awt.*;
 
 import javax.swing.*;
+import java.awt.CardLayout;
 
-public class GridLock{
-	public static void main(String args[]) {
+import javax.swing.*;
+
+public class GridLock { 	
+	public static void main(String[] args) {
 		JFrame f = new JFrame("GridLock");
 		String fileName = "puzzle1.txt";
-		board(f,fileName);
+		new MainMenu(f,fileName);
 	}
 	
 	public static void board(JFrame f, String fileName) {
@@ -15,6 +18,7 @@ public class GridLock{
 		
 		f.setLayout(new BorderLayout());
 		f.setBackground(Color.BLACK);
+		
 		PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
 		
 		//map the text file
@@ -57,9 +61,9 @@ public class GridLock{
 		
 		bv.setController(bc);
 		f.add(container, BorderLayout.CENTER);
-//        f.add(bv,BorderLayout.CENTER);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
+		f.setLocationRelativeTo(null);             // set the window to center of the screen
 		f.setVisible(true);
 	}
 }

@@ -23,10 +23,9 @@ public class Map {
 		String index = Map[y].substring(x, x + 1);
 		return index;
 	}
-	
 	public void openFile() {
 		try {
-			m = new Scanner(new File(fileName));
+			m = new Scanner(new File("src/"+fileName));
 		}catch(Exception e) {
 			System.out.println("error");
 		}
