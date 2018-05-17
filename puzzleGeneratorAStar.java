@@ -41,11 +41,11 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @return puzzleGame, 
 	 */
 	@Override
-	public PuzzleGame generatePuzzle(int width, int height, int moves) {
+	public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves) {
 		int movesRequired = 1;
 		int tries = 0;
 		//generate initial puzzle
-		PuzzleGame puzzle = generateInitialState(width, height);
+		PuzzleGame puzzle = generateInitialState(width, height, exitRow, exitCol);
 		//Keep generating until we have a suitable puzzle
 		while (movesRequired <= moves) {
 			if (tries > triesLimit) {
@@ -57,12 +57,12 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 			if (newPuzzle == null) {
 				return puzzle;
 			} else {
-				puzzle = jumbleVehicles(puzzle);
+				//puzzle = jumbleVehicles(puzzle);
 				List<int[][]> puzzleSolved = PuzzleSolver.solve(newPuzzle);
 				if (puzzleSolved == null) {
 					//couldn't Solve puzzle restart
 					movesRequired = 0;
-					puzzle = generateInitialState(width, height);
+					puzzle = generateInitialState(width, height, exitRow, exitCol);
 					tries++;
 				} else {
 					movesRequired = puzzleSolved.size() - 1;
@@ -183,30 +183,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @param height, the height of the board
 	 * @return
 	 */
-	private PuzzleGame generateInitialState(int height, int width) {
-		Random randomGenerator = new Random();
-		//generate a random exit
-		int direction = randomGenerator.nextInt(numDirections);
-		int exitRow = 0;
-		int exitCol = 0;
-		if (direction == 0) {
-			//exit on the top row
-			exitRow = 0;
-			exitCol = randomGenerator.nextInt(width);
-		} else if (direction == 1) {
-			//exit on the right
-			exitRow = randomGenerator.nextInt(height);
-			exitCol = width - 1;
-		} else if (direction == 2) {
-			//exit on the bottom
-			exitRow = height - 1;
-			exitCol = randomGenerator.nextInt(width);
-		} else if (direction == 3) {
-			//exit on the left
-			exitRow = randomGenerator.nextInt(height);
-			exitCol = 0;		
-		}
-
+	private PuzzleGame generateInitialState(int height, int width, int exitRow, int exitCol) {
 		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
 		PuzzleGame puzzle = new PuzzleGame(width, height, exitRow, exitCol, vehicleMap);
 		//How far should it be from the other end of the board.
@@ -237,6 +214,58 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		}
 		puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, new Color(255, 0, 0));
 		return puzzle;
+	}
+	
+	private List<Integer> randomExit(int height, int width) {
+		Random randomGenerator = new Random();
+		//generate a random exit
+		int direction = randomGenerator.nextInt(numDirections);
+		int exitRow = 0;
+		int exitCol = 0;
+		if (direction == 0) {
+			//exit on the top row
+			exitRow = 0;
+			exitCol = randomGenerator.nextInt(width);
+		} else if (direction == 1) {
+			//exit on the right
+			exitRow = randomGenerator.nextInt(height);
+			exitCol = width - 1;
+		} else if (direction == 2) {
+			//exit on the bottom
+			exitRow = height - 1;
+			exitCol = randomGenerator.nextInt(width);
+		} else if (direction == 3) {
+			//exit on the left
+			exitRow = randomGenerator.nextInt(height);
+			exitCol = 0;		
+		}
+		List<Integer> exit = new ArrayList<Integer>();
+		exit.add(exitRow);
+		exit.add(exitCol);
+		return exit;
+	}
+
+	@Override
+	public PuzzleGame generateEasyPuzzle() {
+		List<Integer> exit = randomExit(6, 6);
+		int exitRow = exit.get(0);
+		int exitCol = exit.get(1);
+		return generatePuzzle(6, 6, exitRow, exitCol, 20);
+	}
+
+	/**
+	 * Generate a 12x6 puzzle.
+	 */
+	@Override
+	public PuzzleGame generateMediumPuzzle() {
+		
+		return null;
+	}
+
+	@Override
+	public PuzzleGame generateHardPuzzle() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 
