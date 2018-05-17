@@ -123,19 +123,19 @@ public class PuzzleController extends MouseAdapter {
 		if(this.isVertical) {
 			if(vc.getY() % this.cellSize <= this.cellSize / 2) {
 				this.view.setVehicleLocation(this.currentVehicleID, vc.getX(), row * this.cellSize);
-				this.puzzleGame.moveVehicle(this.currentVehicleID, row, col);
+				this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col);
 			} else {
 				this.view.setVehicleLocation(this.currentVehicleID, vc.getX(), (row+1)* this.cellSize);
-				this.puzzleGame.moveVehicle(this.currentVehicleID, row+1, col);
+				this.puzzleGame.moveVehicleState(this.currentVehicleID, row+1, col);
 			}
 		} else {
 			if(vc.getX() % this.cellSize <= this.cellSize / 2) {
 				this.view.setVehicleLocation(this.currentVehicleID, col * this.cellSize, vc.getY());
-				this.puzzleGame.moveVehicle(this.currentVehicleID, row, col);
+				this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col);
 				//System.out.printf("same %d %d%n",row, col);
 			} else {
 				this.view.setVehicleLocation(this.currentVehicleID, (col+1) * this.cellSize, vc.getY());
-				this.puzzleGame.moveVehicle(this.currentVehicleID, row, col+1);
+				this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col+1);
 				//System.out.printf("next %d %d%n",row, col+1);
 			}
 		}

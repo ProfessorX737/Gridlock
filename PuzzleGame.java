@@ -550,7 +550,7 @@ public class PuzzleGame {
      *
      * @pre checkMove(id, direction, distance) == true
      */
-    public void moveVehicle(int id, int newRow, int newCol) {
+    public void moveVehicleState(int id, int newRow, int newCol) {
 
 
         // Todo currently clicking on the vehicle counts as a move
@@ -564,6 +564,13 @@ public class PuzzleGame {
             this.fillVehicleSpace(v, id);
             moves += 1;
         }
+    }
+
+    public void moveVehicle(int id, int newRow, int newCol) {
+        Vehicle v = this.vehicleMap.get(id);
+		this.fillVehicleSpace(v, -1);
+		v.setPos(newRow, newCol);
+		this.fillVehicleSpace(v, id);
     }
 
     private void printBoard(int[][] board) {
