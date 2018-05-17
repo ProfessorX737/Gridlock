@@ -61,7 +61,7 @@ public class GridLock{
 		f.setLayout(new BorderLayout());
 		f.setBackground(Color.BLACK);
 		PuzzleGeneratorAStar foo = new PuzzleGeneratorAStar();
-		PuzzleGame puzzleGame = foo.generateHardPuzzle();
+		PuzzleGame puzzleGame = foo.generateEasyPuzzle();
 		PuzzleView bv = new PuzzleView(puzzleGame,50);
 		PuzzleController bc = new PuzzleController(puzzleGame,bv);
 		bv.setController(bc);

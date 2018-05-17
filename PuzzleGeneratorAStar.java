@@ -15,7 +15,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	//The main car will always be of length 2
 	private static final int mainCarLength = 2;
 	//Other cars can either be of size 2 or size 3
-	private final static int[] carLength = new int[] {2, 3};
+	private final static int[] carLength = new int[] {2, 3, 4};
 	//private Collection<Integer> carLength;
 	//limit of which to generate random vehicle
 	private final static int randomLimit = 20;
@@ -367,6 +367,16 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		PuzzleGame thirdPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
 		PuzzleGame firstMerge = puzzleMerge(mainPuzzle, secondPuzzle);
 		return puzzleMerge(firstMerge, thirdPuzzle);
+	}
+	
+	public PuzzleGame generateSpicyPuzzle() {
+		List<Integer> exit = randomExit(5, 7);
+		int exitRow = exit.get(0);
+		int exitCol = exit.get(1);
+		//generate two different puzzles and merge them together
+		PuzzleGame mainPuzzle = generatePuzzle(5, 7, exitRow, exitCol, 20);
+		PuzzleGame secondPuzzle = generatePuzzle(5, 7, exitRow, exitCol, 20);
+		return puzzleMerge(mainPuzzle, secondPuzzle);
 	}
 }
 
