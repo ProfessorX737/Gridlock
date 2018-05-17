@@ -23,6 +23,8 @@ public class PuzzleGame {
 	private int[][] board;
 	//possible size of vehicles, or should this be added to vehicle class
 	private static final int[] vehicleSize = new int[] {2, 3};
+	//minimum moves to solve is the minimum required moves to solve this puzzle
+	private int requiredToSolve;
 
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
@@ -36,6 +38,7 @@ public class PuzzleGame {
 		this.exitCol = exitCol;
 		this.vehicleMap = new HashMap<Integer, Vehicle>();
 		this.initBoard();
+		this.requiredToSolve = 0;
 	}
 
 	/**
@@ -54,6 +57,7 @@ public class PuzzleGame {
 		for(Vehicle v : this.vehicleMap.values()) {
 			this.fillVehicleSpace(v, v.getID());
 		}
+		//this.requiredToSolve
 	}
 
 	/**
@@ -70,6 +74,7 @@ public class PuzzleGame {
 			this.vehicleMap.put(v.getID(), new Vehicle(v));
 		}
 		this.board = this.cloneBoard(g.board);
+		this.requiredToSolve = g.requiredToSolve;
 	}
 	
 	private void initBoard() {
