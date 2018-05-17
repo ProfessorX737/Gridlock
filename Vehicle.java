@@ -1,17 +1,15 @@
-import java.awt.Color;
+import java.awt.*;
 
 /**
- * Represents vehicles on the board 
- *
+ * Represents vehicles on the board
  */
 public class Vehicle {
 	private int id;
 	private final boolean isVertical;
 	private final int length;
+	private Color color;
 	private int row;
 	private int col;
-	private Color color;
-	
 	/**
 	 * Constructor for vehicles, takes the parameters
 	 * @post 
