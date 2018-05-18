@@ -3,7 +3,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -14,17 +16,8 @@ import java.util.Random;
 public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	//The main car will always be of length 2
 	private static final int mainCarLength = 2;
-	//Other cars can either be of size 2 or size 3
-	private final static int[] carLength = new int[] {2, 3, 4};
-	//private Collection<Integer> carLength;
-	//limit of which to generate random vehicle
-	private final static int randomLimit = 20;
-	//limit of how many tries to generate board
-	private final static int triesLimit = 1;
-	//number of different puzzles to generate each time
-	private final static int jumbleLimit = 10;
-	//number of directions
-	private final static int numDirections = 4;
+	//List of vehicles that you can add
+	private List<Vehicle> possibleVehicle;
 
 	public PuzzleGeneratorAStar() {
 	}
@@ -43,31 +36,22 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	@Override
 	public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves) {
 		int movesRequired = 1;
-		int tries = 0;
 		//generate initial puzzle
 		PuzzleGame puzzle = generateInitialState(width, height, exitRow, exitCol);
+		//get all possible location for the vehicle
+		this.possibleVehicle = puzzle.getPossibleVehicle();
+		//shuffle for random outcome
+		Collections.shuffle(this.possibleVehicle);
 		//Keep generating until we have a suitable puzzle
 		while (movesRequired <= moves) {
-			if (tries > triesLimit) {
-				//if tries exceeds tries limit then it is too difficult to generate
-				return null;
-			}
-			//add random vehicle
+			//add random vehicle which increases the difficulty and is still solvable
 			PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
 			if (newPuzzle == null) {
 				return puzzle;
 			} else {
-				//puzzle = jumbleVehicles(puzzle);
-				List<int[][]> puzzleSolved = PuzzleSolver.solve(newPuzzle);
-				if (puzzleSolved == null) {
-					//couldn't Solve puzzle restart
-					movesRequired = 0;
-					puzzle = generateInitialState(width, height, exitRow, exitCol);
-					tries++;
-				} else {
-					movesRequired = puzzleSolved.size() - 1;
-					puzzle = newPuzzle;
-				}
+				int requiredToSolve = newPuzzle.getRequiredToSolve();
+				movesRequired = requiredToSolve;
+				puzzle = newPuzzle;
 			}
 		}
 		return puzzle;
@@ -82,98 +66,58 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @param currentMoves, number of moves required to solve the current puzzle
 	 */
 	private PuzzleGame mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
-		//get all possible location for the vehicle
-		List<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
-		//shuffle for random outcome, is this correct
-		Collections.shuffle(possibleVehicle);
 		//add every possible vehicle to the board and see if it makes the game harder
-		for (Vehicle vehicle : possibleVehicle) {
+		PuzzleGame newPuzzle = null;
+		Iterator<Vehicle> vehicles = possibleVehicle.iterator();
+		//found is variable for which a new harder puzzle is found
+		boolean found = false;
+		Vehicle addedVehicle = null;
+		while (vehicles.hasNext()) {
+			Vehicle vehicle = vehicles.next();
 			//get a new board and add a random piece and see if its harder
-			PuzzleGame newPuzzle = new PuzzleGame(puzzle);
+			newPuzzle = new PuzzleGame(puzzle);
 			newPuzzle.addVehicle(vehicle);
 			//get the number of moves required to solve puzzle
 			List<int[][]>puzzleSolved = PuzzleSolver.solve(newPuzzle);
 			if (puzzleSolved != null) {
-				if (puzzleSolved.size() - 1 > currentMoves) {
+				int requiredMoves = puzzleSolved.size() - 1;
+				if (requiredMoves > currentMoves) {
 					//found a harder puzzle
-					return newPuzzle;
+					found = true;
+					//remove the added vehicle from the list
+					vehicles.remove();
+					//set the required amount to solve the puzzle
+					newPuzzle.setRequiredToSolve(requiredMoves);
+					//the vehicle that has been added
+					addedVehicle = vehicle;
+					break;
 				}
-			}
-		}
-		//could not find a harder puzzle
-		return null;
-	}
-	
-	/**
-	 * Jumble the vehicles around, using a theory that randomly moving the vehicles around will generate a more complex puzzle
-	 * Moves one vehicle around randomly
-	 * @param puzzle, the puzzle that will be jumbled
-	 */
-	private PuzzleGame jumbleVehicles(PuzzleGame puzzle) {
-		//jumble the vehicles around n times
-		Random randomGenerator = new Random();
-		//create a puzzle state and see what other connections it has
-		PuzzleState currState = new PuzzleState(puzzle);
-		List<PuzzleState> stateList = currState.getConnections();
-		PuzzleState newState = stateList.get(randomGenerator.nextInt(stateList.size()));
-		return newState.getGame();
-	}
-	
-	/**
-	 * Adds a random vehicle onto the board, it ensures that the vehicle does not super block the main car.
-	 * i.e is the same orientation and in the same row or col
-	 * @param puzzle, puzzle of which to add the vehicle to
-	 * @return true if successfully added vehicle otherwise false
-	 */
-	private boolean addRandomVehicle(PuzzleGame puzzle) {
-		Random randomGenerator = new Random();
-		//Get the orientation of the main car and its position
-		boolean mainIsVertical = puzzle.getMainVehicle().getIsVertical();
-		int mainRow = puzzle.getMainVehicle().getRow();
-		int mainCol = puzzle.getMainVehicle().getCol();
-		//Get board params
-		int height = puzzle.getNumRows();
-		int width = puzzle.getNumCols();
-		
-		//generate random position for new vehicle
-		int len = 0;
-		int carID = 0;
-		boolean isVertical = true;
-		int carRow = 0;
-		int carCol = 0;
-		int col0 = 0; 		//Colors of car
-		int col1 = 0;
-		int col2 = 0;
-
-		//loop until limit is reached or vehicle is generated
-		for (int i = 0; i < randomLimit; i++) {
-			len = carLength[randomGenerator.nextInt(carLength.length)];
-			isVertical = randomGenerator.nextBoolean();
-			col0 = randomGenerator.nextInt(256);
-			col1 = randomGenerator.nextInt(256);
-			col2 = randomGenerator.nextInt(256);
-			if (isVertical) {
-				carRow = randomGenerator.nextInt(height - len + 1);
-				carCol = randomGenerator.nextInt(width);
 			} else {
-				carRow = randomGenerator.nextInt(height);
-				carCol = randomGenerator.nextInt(width - len + 1);
-			}
-			if (isVertical == true && carCol != mainCol) {
-				//vertical but not in same column
-				if (puzzle.canAddVehicle(isVertical, len, carRow, carCol)) {
-					puzzle.addVehicle(isVertical, len, carRow, carCol, new Color(col0, col1, col2));
-					return true;
-				}
-			} else if (isVertical == false && carRow != mainRow) {
-				//horizontal but not in same row
-				if (puzzle.canAddVehicle(isVertical, len, carRow, carCol)) {
-					puzzle.addVehicle(isVertical, len, carRow, carCol, new Color(col0, col1, col2));
-					return true;
-				}
+				//puzzle not solvable, remove the vehicle from the list
+				vehicles.remove();
 			}
 		}
-		return false;
+		if (found == true) {
+			for (int i = 0; i < addedVehicle.getLength(); i++) {
+				if (addedVehicle.getIsVertical()) {
+					final int addedRow = addedVehicle.getRow() + i;
+					final int addedCol = addedVehicle.getCol();
+					//remove other vehicles that overlap with that vehicle
+					possibleVehicle.removeIf(b -> b.isOccupy(addedRow, addedCol));
+				} else {
+					final int addedRow = addedVehicle.getRow();
+					final int addedCol = addedVehicle.getCol() + i;
+					//remove other vehicles that overlap with that vehicle
+					possibleVehicle.removeIf(b -> b.isOccupy(addedRow, addedCol));
+				}
+				return newPuzzle;
+			}
+		} else {
+			//could not find a harder puzzle
+			return null;
+		}
+		//weird stuff happened
+		return null;
 	}
 	
 	/**
@@ -184,61 +128,27 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @return
 	 */
 	private PuzzleGame generateInitialState(int height, int width, int exitRow, int exitCol) {
-		Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
-		PuzzleGame puzzle = new PuzzleGame(width, height, exitRow, exitCol, vehicleMap);
-		//How far should it be from the other end of the board.
+		PuzzleGame puzzle = new PuzzleGame(width, height, exitRow, exitCol);
 		//Place main car
-		boolean isVertical = true;
-		int carRow = 0;
+		//Indicates that the exit is on the right of the board
+		boolean isVertical = false;
+		int carRow = exitRow;
 		int carCol = 0;
-		if (exitRow == 0) {
-			//Indicates that the exit is on the top of the board
-			isVertical = true;
-			carRow = height - mainCarLength;
-			carCol = exitCol;
-		} else if (exitRow == height - 1) {
-			//Indicates that the exit is on the bottom of the board
-			isVertical = true;
-			carRow = 0;
-			carCol = exitCol;
-		} else if (exitCol == 0) {
-			//Indicates that the exit is on the left of the board
-			isVertical = false;
-			carRow = exitRow;
-			carCol = width - mainCarLength;
-		} else if (exitCol == width - 1) {
-			//Indicates that the exit is on the right of the board
-			isVertical = false;
-			carRow = exitRow;
-			carCol = 0;
-		}
-		puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, new Color(255, 0, 0));
+		puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, Color.RED);
 		return puzzle;
 	}
 	
+	/**
+	 * All puzzles have the exit on the right
+	 * @param height
+	 * @param width
+	 * @return
+	 */
 	private List<Integer> randomExit(int height, int width) {
 		Random randomGenerator = new Random();
 		//generate a random exit
-		int direction = randomGenerator.nextInt(numDirections);
-		int exitRow = 0;
-		int exitCol = 0;
-		if (direction == 0) {
-			//exit on the top row
-			exitRow = 0;
-			exitCol = randomGenerator.nextInt(width);
-		} else if (direction == 1) {
-			//exit on the right
-			exitRow = randomGenerator.nextInt(height);
-			exitCol = width - 1;
-		} else if (direction == 2) {
-			//exit on the bottom
-			exitRow = height - 1;
-			exitCol = randomGenerator.nextInt(width);
-		} else if (direction == 3) {
-			//exit on the left
-			exitRow = randomGenerator.nextInt(height);
-			exitCol = 0;		
-		}
+		int exitRow = randomGenerator.nextInt(height);
+		int exitCol = width - 1;
 		List<Integer> exit = new ArrayList<Integer>();
 		exit.add(exitRow);
 		exit.add(exitCol);
@@ -246,89 +156,41 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	}
 	
 	/**
-	 * Merge two puzzles together, they must have similar dimensions.
-	 * If the exitRow is on the top, then the puzzle will be merged onto the top of the first puzzle.
-	 * Hence the width of both puzzles must be the same. 
-	 * Likewise if the exit of the first puzzle is on the left, the second puzzle is added to the left,
-	 * and both puzzles must have the same height.
-	 * First and second puzzles are destoryed, afterwards. Don't reference again.
-	 * @pre first.height == second.height || first.width == second.wdith
+	 * Merge two puzzles together, they must have similar height.
+	 * Puzzles are always from left to right.
+	 * First and second puzzles are destroyed, afterwards. Don't reference again.
+	 * @pre first.height == second.height 
 	 * @post first = null && second == null
 	 * @param first, the first puzzle, other puzzles will be attached to this puzzle.
 	 * @param second, puzzle to be merged, the puzzle can include the red car which it will be removed.
 	 * @return
 	 */
 	private PuzzleGame puzzleMerge(PuzzleGame first, PuzzleGame second) {
-		//getting exit of first and the width of both puzzles
 		int firstExitRow = first.getExitRow();
-		int firstExitCol = first.getExitCol();
 		int firstHeight = first.getNumRows();
 		int firstWidth = first.getNumCols();
-		int secondHeight = second.getNumRows();
 		int secondWidth = second.getNumCols();
+		int numVehicles = 0;
 		PuzzleGame mergedPuzzle = null;
+
 		//remove the main car from the second puzzle
 		second.removeVehicle(0);
-		int numVehicles = 0;
 
-		//determine where the exit is
-		if (firstExitRow == 0) {
-			//the exit is on the top
-			mergedPuzzle = new PuzzleGame(firstHeight + secondHeight, firstWidth, firstExitRow, firstExitCol);
-			//copy everything over from first
-			for (Vehicle vehicle : first.getVehicles()) {
-				//change the location
-				vehicle.setRow(vehicle.getRow() + secondHeight);
-				mergedPuzzle.addVehicle(vehicle);
-			}
-			//copy everything from the second
-			for (Vehicle vehicle : second.getVehicles()) {
-				//don't need to change location but need to change the id
-				vehicle.setID(mergedPuzzle.getVehicles().size());
-				mergedPuzzle.addVehicle(vehicle);
-			}
-		} else if (firstExitRow == firstHeight - 1) {
-			//the exit is on the bottom
-			mergedPuzzle = new PuzzleGame(firstHeight + secondHeight, firstWidth, firstHeight + secondHeight - 1, firstExitCol);
-			//copy everything over from first
-			for (Vehicle vehicle : first.getVehicles()) {
-				//no need to change anything just copy everything over
-				mergedPuzzle.addVehicle(vehicle);
-			}
-			//copy everything from second and adjust both position and id
-			for (Vehicle vehicle : second.getVehicles()) {
-				vehicle.setRow(vehicle.getRow() + firstHeight);
-				vehicle.setID(mergedPuzzle.getVehicles().size());
-				mergedPuzzle.addVehicle(vehicle);
-			}
-		} else if (firstExitCol == 0) {
-			//the exit is on the left
-			mergedPuzzle = new PuzzleGame(firstHeight, firstWidth + secondWidth, firstExitRow, firstExitCol);
-			//copy everything over from first
-			for (Vehicle vehicle : first.getVehicles()) {
-				//change the position of the col
-				vehicle.setCol(vehicle.getCol() + secondWidth);
-				mergedPuzzle.addVehicle(vehicle);
-			}
-			//copy everything from second
-			for (Vehicle vehicle : second.getVehicles()) {
-				//change the id
-				vehicle.setID(mergedPuzzle.getVehicles().size());
-				mergedPuzzle.addVehicle(vehicle);
-			}
-		} else if (firstExitCol == firstWidth - 1) {
-			//the exit is on the right
-			mergedPuzzle = new PuzzleGame(firstHeight, firstWidth + secondWidth, firstExitRow, firstWidth + secondWidth - 1);
-			//copy over everything from first no need to change anything
-			for (Vehicle vehicle : first.getVehicles()) {
-				mergedPuzzle.addVehicle(vehicle);
-			}
-			//copy from the second puzzle and change the id 
-			for (Vehicle vehicle : second.getVehicles()) {
-				vehicle.setID(mergedPuzzle.getVehicles().size());
-				vehicle.setCol(vehicle.getCol() + firstWidth);
-			}
+
+		mergedPuzzle = new PuzzleGame(firstHeight, firstWidth + secondWidth, firstExitRow, firstWidth + secondWidth - 1);
+		//copy over everything from first no need to change anything
+		for (Vehicle vehicle : first.getVehicles()) {
+			mergedPuzzle.addVehicle(vehicle);
+			numVehicles++;
 		}
+		//copy from the second puzzle and change the id 
+		for (Vehicle vehicle : second.getVehicles()) {
+			vehicle.setID(numVehicles);
+			vehicle.setCol(vehicle.getCol() + firstWidth);
+			mergedPuzzle.addVehicle(vehicle);
+			numVehicles++;
+		}
+
 		return mergedPuzzle;
 	}
 

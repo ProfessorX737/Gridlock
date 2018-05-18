@@ -97,6 +97,32 @@ public class Vehicle {
 		this.col = col;
 	}
 	
+	/**
+	 * Given the row and col check whether the vehicle takes up that space.
+	 * @pre isOutBounds(row, col) == false
+	 * @post true
+	 * @param row
+	 * @param col
+	 * @return
+	 */
+	public boolean isOccupy(int row, int col) {
+		if (this.isVertical) {
+			//the vehicle is vertical
+			if (this.col == col) {
+				if (this.row >= row && row < this.row + this.length) {
+					return true;
+				}
+			}
+		} else {
+			if (this.row == row) {
+				if (this.col >= col && col < this.col + this.length) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		String x = "Vehicle ID: " + this.id + ", isVertical: " + 
