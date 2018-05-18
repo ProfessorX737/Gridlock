@@ -51,6 +51,7 @@ public class ConnectionHandler extends Thread{
             }
             else{
                 System.out.println("Null result found, no message" + info.getName());
+                break;
             }
 
 
@@ -58,6 +59,15 @@ public class ConnectionHandler extends Thread{
 
         // Connection broken, don't need thread anymore
         System.out.println("Thread stopped " + info.getName());
+
+        // Event handler needs to remove online mapping and set client info to offline
+        try{
+            queue.put("offline " + info.getName());
+        }
+        catch(InterruptedException e){
+            e.printStackTrace();
+        }
         Thread.currentThread().stop();
+
     }
 }

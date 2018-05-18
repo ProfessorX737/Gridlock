@@ -61,39 +61,69 @@ public class RushHourServer {
 				System.out.println("Getting username from user");
 
 				// Test code for now
+				while(true){
+					try {
+						line = is.readLine();
+						System.out.println("From Host:" + line);
+						String[] parts = (line.trim()).split(" ");
 
-				try {
-					line = is.readLine();
-					System.out.println("From Host:" + line);
-					String[] parts = (line.trim()).split(" ");
+						// Checking for duplicate usernames
+						if (parts[0].toLowerCase().equals("user")){
+							username = parts[1].toLowerCase();
 
-					// TODO: check for duplicate usernames? if duplicate close connection, give them notification that username currently in use
-					if (parts[0].toLowerCase().equals("user")){
-						username = parts[1];
-						userList.put(username,newClient);
+							// Check if username exists and is online
+							if (clients.containsKey(username)){
 
-						// Start new ConnectionHandler object
-						ClientInfo newInfo = new ClientInfo(username);
-						clients.put(username, newInfo);
-						ConnectionHandler newConn = new ConnectionHandler(newInfo, eventQueue, newClient);
+								// Other user online is currently using the name, pick another name
+								if(userList.containsKey(username)){
+									os.println("usertaken Username is currently online, please log out before logging in");
+									os.flush();
+									continue;
+								}
+								// Username is free, can be used
+								else{
+									System.out.println(username + " has been online before");
+									userList.put(username,newClient); // Add mapping username to online socket
+									ClientInfo existingUser = clients.get(username);
+									existingUser.setOnline(true);
+									ConnectionHandler newConn = new ConnectionHandler(existingUser, eventQueue, newClient);
+									existingUser.setOnline(true);
+									newConn.start();
+									break;
+								}
 
-						// Should limit how many threads, need one for each active connection right now!
-						System.out.println("Thread created and started for " + username);
-						newConn.start();
+							}
+							else{
+								userList.put(username,newClient);
+								// Start new ConnectionHandler object
+								ClientInfo newInfo = new ClientInfo(username);
+								clients.put(username, newInfo);
+								ConnectionHandler newConn = new ConnectionHandler(newInfo, eventQueue, newClient);
 
+								// Should limit how many threads, need one for each active connection right now!
+								System.out.println("Thread created and started for " + username);
+								newConn.start();
+								break;
+							}
+
+						}
+						else{
+							// Invalid first message
+							os.println("Invalid command: user <username> required, connection is closed");
+							os.flush();
+							newClient.close();
+						}
+
+					} catch (IOException e1) {
+						// Connection probably broke?
+						e1.printStackTrace();
+						System.out.println("Connection broke");
+						break;
 					}
-					else{
-						// Invalid first message
-						os.println("Invalid command: user <username> required");
-						newClient.close();
-					}
 
-				} catch (IOException e1) {
-					// Connection probably broke?
-					e1.printStackTrace();
-					System.out.println("Connection broke");
-					break;
 				}
+
+
 
 ////				String line = is.readLine();
 //				newClient.close();

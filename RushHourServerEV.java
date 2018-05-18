@@ -1,3 +1,5 @@
+import com.sun.security.ntlm.Client;
+
 import java.awt.*;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -51,6 +53,11 @@ public class RushHourServerEV extends Thread{
 
                     case "done":
                         puzzleComplete(parts[1],parts[2]);
+                        break;
+
+                    case "offline":
+                        offlineUser(parts[1]);
+                        break;
 
                     default:
                         break;
@@ -64,7 +71,7 @@ public class RushHourServerEV extends Thread{
 
     private void getList(String username){
         StringBuilder builder = new StringBuilder("userList ");
-        for (String names : clients.keySet()){
+        for (String names : userList.keySet()){
             builder.append(names + "| ");
         }
 
@@ -164,5 +171,14 @@ public class RushHourServerEV extends Thread{
         usrInfo1.setPlayingAgainst(null);
         usrInfo2.setPlayingAgainst(null);
 
+    }
+
+    // Remove online mapping, set user offline
+    private void offlineUser(String user){
+        userList.remove(user);
+        ClientInfo info = clients.get(user);
+        info.setOnline(false);
+        info.resetPlayingAgainst();
+        info.setBusy(false);
     }
 }
