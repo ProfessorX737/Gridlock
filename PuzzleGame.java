@@ -443,6 +443,10 @@ public class PuzzleGame {
 
 	public void showBoard() {
 		System.out.println("Exit at row: " + exitRow + ", col: " + exitCol);
+		for(int i = -1; i < sizeCol; i++) {
+			System.out.printf("%d\t",i);
+		}
+		System.out.println("");
 		for (int y = -1; y <= sizeRow; y++) {
 			for (int x = -1; x <= sizeCol; x++) {
 				if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
@@ -455,7 +459,7 @@ public class PuzzleGame {
 					System.out.print(board[y][x] + "\t");
 				}
 			}
-			System.out.println("");
+			System.out.printf("%n%d",y+1);
 		}
 	}
 	
@@ -536,18 +540,44 @@ public class PuzzleGame {
 		Vehicle v = this.vehicleMap.get(vId);
 		if(v.getIsVertical()) {
 			for(int i = 1; i <= this.canMoveUp(vId); i++) {
-				int row = v.getRow() + i;
+				int row = v.getRow() - i;
 				for(int l = 0; l < vLength; l++) {
 					int col = v.getCol() - l;
+					if(this.canAddVehicle(false, vLength, row, col)) {
+						possibleVehicles.add(new Vehicle(newId,false,vLength,row,col,Color.ORANGE));
+					}
+				}
+			}
+			for(int i = 0; i < this.canMoveDown(vId); i++) {
+				int row = v.getRow() + vLength + i;
+				for(int l = 0; i <= this.canMoveDown(vId); i++) {
+					int col = v.getCol() - l;
+					if(this.canAddVehicle(false, vLength, row, col)) {
+						possibleVehicles.add(new Vehicle(newId,false,vLength,row,col,Color.ORANGE));
+					}
+				}
+			}
+		} else {
+			for(int i = 1; i <= this.canMoveLeft(vId); i++) {
+				int col = v.getCol() - i;
+				for(int l = 0; l < vLength; l++) {
+					int row = v.getRow() - l;
 					if(this.canAddVehicle(true, vLength, row, col)) {
 						possibleVehicles.add(new Vehicle(newId,true,vLength,row,col,Color.ORANGE));
 					}
 				}
 			}
-			for(int i = 1; i <= this.canMoveDown(vId); i++) {
-				
+			for(int i = 0; i < this.canMoveRight(vId); i++) {
+				int col = v.getCol() + vLength + i;
+				for(int l = 0; l < vLength; l++) {
+					int row = v.getRow() - l;
+					if(this.canAddVehicle(true, vLength, row, col)) {
+						possibleVehicles.add(new Vehicle(newId,true,vLength,row,col,Color.ORANGE));
+					}
+				}
 			}
 		}
+		return possibleVehicles;
 	}
 
     /**
