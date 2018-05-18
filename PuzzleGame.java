@@ -107,15 +107,13 @@ public class PuzzleGame {
 	public boolean canAddVehicle(boolean isVertical, int length, int row, int col) {
 		if (isVertical){
 			for (int i = 0; i < length; i++) {
-				if (isOccupied(row + i, col)) {
-					return false;
-				}
+				if(this.isOutOfBounds(row + i, col)) return false;
+				if (isOccupied(row + i, col)) return false;
 			}
 		} else {
 			for (int i = 0; i < length; i++) {
-				if (isOccupied(row, col + i)) {
-					return false;
-				}
+				if(this.isOutOfBounds(row, col + i)) return false;
+				if (isOccupied(row, col + i)) return false;
 			}
 		}
 		return true;
@@ -398,6 +396,10 @@ public class PuzzleGame {
 		return this.exitCol;
 	}
 	
+	public int getMinMoves() {
+		return this.requiredToSolve;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -526,6 +528,26 @@ public class PuzzleGame {
 			emptySpace = 0;
 		}
 		return possibleVehicle;
+	}
+	
+	public List<Vehicle> getPossibleIntersects(int vId, int vLength) {
+		List<Vehicle> possibleVehicles = new ArrayList<>();
+		int newId = this.vehicleMap.size();
+		Vehicle v = this.vehicleMap.get(vId);
+		if(v.getIsVertical()) {
+			for(int i = 1; i <= this.canMoveUp(vId); i++) {
+				int row = v.getRow() + i;
+				for(int l = 0; l < vLength; l++) {
+					int col = v.getCol() - l;
+					if(this.canAddVehicle(true, vLength, row, col)) {
+						possibleVehicles.add(new Vehicle(newId,true,vLength,row,col,Color.ORANGE));
+					}
+				}
+			}
+			for(int i = 1; i <= this.canMoveDown(vId); i++) {
+				
+			}
+		}
 	}
 
     /**

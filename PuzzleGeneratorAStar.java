@@ -74,7 +74,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	}
 	
 	
-	
 	/**
 	 * Find all possible locations for a vehicle, adds them one by one and sees if its harder.
 	 * Take the first puzzle that is harder
@@ -336,7 +335,9 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		List<Integer> exit = randomExit(6, 6);
 		int exitRow = exit.get(0);
 		int exitCol = exit.get(1);
-		return generatePuzzle(6, 6, exitRow, exitCol, 20);
+		PuzzleGame game = generatePuzzle(6, 6, exitRow, exitCol, 20);
+		System.out.printf("%d%n", game.getMinMoves());
+		return game;
 	}
 
 	/**
@@ -350,6 +351,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		//generate two different puzzles and merge them together
 		PuzzleGame mainPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
 		PuzzleGame secondPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
+		System.out.println("made 1st and 2nd puzzle");
 		return puzzleMerge(mainPuzzle, secondPuzzle);
 	}
 

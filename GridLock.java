@@ -28,7 +28,7 @@ public class GridLock{
 //		puzzleGame.addVehicle(false, 2, 5, 4, Color.ORANGE);
 //		puzzleGame.initState();
 		PuzzleGeneratorAStar foo = new PuzzleGeneratorAStar();
-		PuzzleGame puzzleGame = foo.generateMediumPuzzle();
+		PuzzleGame puzzleGame = foo.generateEasyPuzzle();
 		puzzleGame.initState();
 		List<int[][]> path = PuzzleSolver.solve(puzzleGame);
 		for(int[][] state : path) {
