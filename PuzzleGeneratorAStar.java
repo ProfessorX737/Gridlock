@@ -269,6 +269,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		PuzzleGame mergedPuzzle = null;
 		//remove the main car from the second puzzle
 		second.removeVehicle(0);
+		int numVehicles = 0;
 
 		//determine where the exit is
 		if (firstExitRow == 0) {
