@@ -1,7 +1,7 @@
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
 public class SideButtonController implements ButtonController {
@@ -24,9 +24,10 @@ public class SideButtonController implements ButtonController {
     /**
      * Updates the view with the current game board
      */
-    private void updateView(){
-        for(Vehicle v : puzzleGame.getVehicles()) {
-            puzzleView.setVehicleLocation(v.getID(), v.getCol() * this.puzzleView.getCellLength(), v.getRow() * this.puzzleView.getCellLength());
+    private void updateView() {
+        for (Vehicle v : puzzleGame.getVehicles()) {
+            puzzleView.setVehicleLocation(v.getID(), v.getCol() * this.puzzleView.getCellLength(), v.getRow() * this
+                    .puzzleView.getCellLength());
         }
     }
 
@@ -98,27 +99,29 @@ public class SideButtonController implements ButtonController {
     }
 
     @Override
-    public ActionListener getTimerListener(){
-        ActionListener al = new ActionListener(){
-            public void actionPerformed(ActionEvent evt){
+    public ActionListener getTimerListener() {
+        ActionListener al = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 long millis = System.currentTimeMillis() - time;
                 String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS
+                                .toHours(millis)),
+                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
+                                .toMinutes(millis)));
                 bp.displayTime(hms);
             }
         };
         return al;
     }
-    
+
     @Override
     public MouseAdapter getMouseAdapter() {
-    	MouseAdapter ma = new MouseAdapter() {
-    		public void mouseReleased(MouseEvent e) {
-    			bp.displayMoves(puzzleGame.getMoves());
-    		}
-    	};
-    	return ma;
+        MouseAdapter ma = new MouseAdapter() {
+            public void mouseReleased(MouseEvent e) {
+                bp.displayMoves(puzzleGame.getMoves());
+            }
+        };
+        return ma;
     }
 
 }
