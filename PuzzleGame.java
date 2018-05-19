@@ -437,6 +437,7 @@ public class PuzzleGame {
             sb.append(" " + Integer.toString(row));
             sb.append(" " + Integer.toString(col));
             sb.append(" " + colour);
+            sb.append(" " + Integer.toString(id));
         }
         return sb.toString();
     }

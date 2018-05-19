@@ -69,4 +69,19 @@ public class Vehicle {
         this.row = row;
         this.col = col;
     }
+
+    public static Vehicle strToVehicle(String s){
+        s = s.trim();
+        String[] parts = s.split();
+
+        Boolean isVert = (Integer.getInteger(parts[0]) == 1) ? true : false;
+        int length = Integer.parseInt(parts[1]);
+        int row = Integer.parseInt(parts[2]);
+        int col = Integer.parseInt(parts[3]);
+        Color colour = (parts[4] == "red") ? Color.RED: Color.ORANGE;
+        int id = Integer.getInteger(parts[5]);
+
+        Vehicle v = new Vehicle(id, isVert, length, row, col, colour);
+        return v;
+    }
 }
