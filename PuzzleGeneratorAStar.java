@@ -3,9 +3,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -17,7 +15,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	//The main car will always be of length 2
 	private static final int mainCarLength = 2;
 	//List of vehicles that you can add
-	private List<Vehicle> possibleVehicle;
 
 	public PuzzleGeneratorAStar() {
 	}
@@ -29,7 +26,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @param height, the height of the board
 	 * @param exitRow, the row which the vehicle can exit
 	 * @param exitCol, the col which the vehicle can exit
-	 * @param numVehicle, the number of vehicles on the board
 	 * @param move, the number of moves required to complete the game
 	 * @return puzzleGame, 
 	 */
@@ -38,10 +34,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		int movesRequired = 1;
 		//generate initial puzzle
 		PuzzleGame puzzle = generateInitialState(width, height, exitRow, exitCol);
-		//get all possible location for the vehicle
-		this.possibleVehicle = puzzle.getPossibleVehicle();
-		//shuffle for random outcome
-		Collections.shuffle(this.possibleVehicle);
 		//Keep generating until we have a suitable puzzle
 		while (movesRequired <= moves) {
 			//add random vehicle which increases the difficulty and is still solvable
@@ -57,8 +49,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		return puzzle;
 	}
 	
-	
-	
 	/**
 	 * Find all possible locations for a vehicle, adds them one by one and sees if its harder.
 	 * Take the first puzzle that is harder
@@ -67,15 +57,12 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 */
 	private PuzzleGame mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
 		//add every possible vehicle to the board and see if it makes the game harder
-		PuzzleGame newPuzzle = null;
-		Iterator<Vehicle> vehicles = possibleVehicle.iterator();
-		//found is variable for which a new harder puzzle is found
-		boolean found = false;
-		Vehicle addedVehicle = null;
-		while (vehicles.hasNext()) {
-			Vehicle vehicle = vehicles.next();
+		List<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
+		Collections.shuffle(possibleVehicle);
+		for (int i = 0; i < possibleVehicle.size(); i++) {
+			Vehicle vehicle = possibleVehicle.get(i);
 			//get a new board and add a random piece and see if its harder
-			newPuzzle = new PuzzleGame(puzzle);
+			PuzzleGame newPuzzle = new PuzzleGame(puzzle);
 			newPuzzle.addVehicle(vehicle);
 			//get the number of moves required to solve puzzle
 			List<int[][]>puzzleSolved = PuzzleSolver.solve(newPuzzle);
@@ -83,40 +70,14 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 				int requiredMoves = puzzleSolved.size() - 1;
 				if (requiredMoves > currentMoves) {
 					//found a harder puzzle
-					found = true;
-					//remove the added vehicle from the list
-					vehicles.remove();
 					//set the required amount to solve the puzzle
 					newPuzzle.setRequiredToSolve(requiredMoves);
 					//the vehicle that has been added
-					addedVehicle = vehicle;
-					break;
+					return newPuzzle;
 				}
-			} else {
-				//puzzle not solvable, remove the vehicle from the list
-				vehicles.remove();
-			}
+			} 
 		}
-		if (found == true) {
-			for (int i = 0; i < addedVehicle.getLength(); i++) {
-				if (addedVehicle.getIsVertical()) {
-					final int addedRow = addedVehicle.getRow() + i;
-					final int addedCol = addedVehicle.getCol();
-					//remove other vehicles that overlap with that vehicle
-					possibleVehicle.removeIf(b -> b.isOccupy(addedRow, addedCol));
-				} else {
-					final int addedRow = addedVehicle.getRow();
-					final int addedCol = addedVehicle.getCol() + i;
-					//remove other vehicles that overlap with that vehicle
-					possibleVehicle.removeIf(b -> b.isOccupy(addedRow, addedCol));
-				}
-				return newPuzzle;
-			}
-		} else {
-			//could not find a harder puzzle
-			return null;
-		}
-		//weird stuff happened
+		//could not find a harder puzzle
 		return null;
 	}
 	
