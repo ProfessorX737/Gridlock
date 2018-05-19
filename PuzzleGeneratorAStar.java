@@ -89,7 +89,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	 * @return
 	 */
 	private PuzzleGame generateInitialState(int height, int width, int exitRow, int exitCol) {
-		PuzzleGame puzzle = new PuzzleGame(width, height, exitRow, exitCol);
+		PuzzleGame puzzle = new PuzzleGame(height, width, exitRow, exitCol);
 		//Place main car
 		//Indicates that the exit is on the right of the board
 		boolean isVertical = false;
@@ -154,6 +154,15 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 
 		return mergedPuzzle;
 	}
+	
+	@Override
+	public PuzzleGame generateVeryEasyPuzzle() {
+		List<Integer> exit = randomExit(6, 6);
+		int exitRow = exit.get(0);
+		int exitCol = exit.get(1);
+		return generatePuzzle(6, 6, exitRow, exitCol, 5);
+		
+	}
 
 	@Override
 	public PuzzleGame generateEasyPuzzle() {
@@ -193,14 +202,19 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		return puzzleMerge(firstMerge, thirdPuzzle);
 	}
 	
+	/**
+	 * Don't use takes quite a while to generate
+	 * @return
+	 */
 	public PuzzleGame generateSpicyPuzzle() {
-		List<Integer> exit = randomExit(5, 7);
+		List<Integer> exit = randomExit(8, 5);
 		int exitRow = exit.get(0);
 		int exitCol = exit.get(1);
-		//generate two different puzzles and merge them together
-		PuzzleGame mainPuzzle = generatePuzzle(5, 7, exitRow, exitCol, 20);
-		PuzzleGame secondPuzzle = generatePuzzle(5, 7, exitRow, exitCol, 20);
-		return puzzleMerge(mainPuzzle, secondPuzzle);
+		PuzzleGame mainPuzzle = generatePuzzle(8, 5, exitRow, exitCol, 20);
+		PuzzleGame secondPuzzle = generatePuzzle(8, 5, exitRow, exitCol, 20);
+		PuzzleGame thirdPuzzle = generatePuzzle(8, 5, exitRow, exitCol, 20);
+		PuzzleGame mergedPuzzle = puzzleMerge(mainPuzzle, secondPuzzle);
+		return puzzleMerge(mergedPuzzle, thirdPuzzle);
 	}
 }
 
