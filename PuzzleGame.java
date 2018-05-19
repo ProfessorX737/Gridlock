@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -665,5 +670,42 @@ public class PuzzleGame {
 
     public int getMoves(){
         return moves;
+    }
+    
+    /**
+     * Load save game from list
+     */
+    public PuzzleGame loadPuzzleGame() {
+		return null;
+    }
+    
+    /**
+     * Saves the current game
+     * @throws IOException 
+     */
+    public void savePuzzleGame(String file_name) throws IOException {
+		/*Save the game in the current format
+    		 * Meta data
+    		 * Name of save file
+    		 * Date and time of save
+    		 * User who saved the file
+    		 * Game data
+    		 */
+    		//meta data
+    		String date_time = "today";
+    		String user_name = "dude";
+    		//game data
+		List<String> lines = Arrays.asList(file_name, date_time, user_name);
+		Path file = Paths.get(file_name);
+		Files.write(file, lines, Charset.forName("UTF-8"));
+    }
+    
+    /**
+     * Get list of games that have been saved
+     * @return
+     */
+    public List<String> getSaveGameList() {
+    	
+		return null;
     }
 }
