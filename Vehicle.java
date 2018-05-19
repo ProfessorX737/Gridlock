@@ -72,7 +72,7 @@ public class Vehicle {
 
     public static Vehicle strToVehicle(String s){
         s = s.trim();
-        String[] parts = s.split();
+        String[] parts = s.split(" ");
 
         Boolean isVert = (Integer.getInteger(parts[0]) == 1) ? true : false;
         int length = Integer.parseInt(parts[1]);

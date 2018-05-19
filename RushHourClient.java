@@ -19,7 +19,6 @@ public class RushHourClient implements Runnable{
 	public static void main(String[] args) {
 		int portNumber = 55555;
 		String host = "localhost";
-		username = "test1";
 		
 		// Open a socket with portNumber and given host
 		// Open input and output streams
@@ -45,12 +44,12 @@ public class RushHourClient implements Runnable{
 				new Thread(new RushHourClient()).start();
 				System.out.println("Connection successful, please input data on the next line");
 		        while (!closed) {
-		        	String coolLine = inputLine.readLine().trim();
-		        	if (coolLine == "close"){
+		        	String newLine = inputLine.readLine().trim();
+		        	if (newLine.equals( "close")){
 		        		closed = true;
 					}
-		        	System.out.println("Sent: " + coolLine);
-		          os.println(coolLine);
+		        	System.out.println("Sent: " + newLine);
+		          os.println(newLine);
 		          os.flush();
 		        }
 				/* Create a thread to read from the server. */

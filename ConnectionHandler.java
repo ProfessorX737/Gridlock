@@ -60,7 +60,7 @@ public class ConnectionHandler extends Thread{
         // Connection broken, don't need thread anymore
         System.out.println("Thread stopped " + info.getName());
 
-        // Event handler needs to remove online mapping and set client info to offline
+        // Notify Event handler needs to remove online mapping and set client info to offline
         try{
             queue.put("offline " + info.getName());
         }
