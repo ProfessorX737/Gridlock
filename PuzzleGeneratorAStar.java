@@ -1,23 +1,17 @@
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 /**
- * Generate a puzzle using AStar. 
- *
+ * Generate a puzzle using AStar.
  */
 public class PuzzleGeneratorAStar implements PuzzleGenerator{
 	//The main car will always be of length 2
 	private static final int mainCarLength = 2;
 	//List of vehicles that you can add
 
-	public PuzzleGeneratorAStar() {
-	}
+    public PuzzleGeneratorAStar() {
+    }
 
 	/**
 	 * Given the parameters generate a random puzzle using those parameters
@@ -164,27 +158,39 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		
 	}
 
-	@Override
-	public PuzzleGame generateEasyPuzzle() {
-		List<Integer> exit = randomExit(6, 6);
-		int exitRow = exit.get(0);
-		int exitCol = exit.get(1);
-		return generatePuzzle(6, 6, exitRow, exitCol, 20);
-	}
+    /**
+     * Jumble the vehicles around, using a theory that randomly moving the vehicles around will generate a more
+     * complex puzzle
+     * Moves one vehicle around randomly
+     *
+     * @param puzzle, the puzzle that will be jumbled
+     */
+    private PuzzleGame jumbleVehicles(PuzzleGame puzzle) {
+        //jumble the vehicles around n times
+        Random randomGenerator = new Random();
+        //create a puzzle state and see what other connections it has
+        PuzzleState currState = new PuzzleState(puzzle);
+        List<PuzzleState> stateList = currState.getConnections();
+        PuzzleState newState = stateList.get(randomGenerator.nextInt(stateList.size()));
+        return newState.getGame();
+    }
 
-	/**
-	 * Generate a 12x6 puzzle.
-	 */
-	@Override
-	public PuzzleGame generateMediumPuzzle() {
-		List<Integer> exit = randomExit(6, 6);
-		int exitRow = exit.get(0);
-		int exitCol = exit.get(1);
-		//generate two different puzzles and merge them together
-		PuzzleGame mainPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
-		PuzzleGame secondPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
-		return puzzleMerge(mainPuzzle, secondPuzzle);
-	}
+    /**
+     * Adds a random vehicle onto the board, it ensures that the vehicle does not super block the main car.
+     * i.e is the same orientation and in the same row or col
+     *
+     * @param puzzle, puzzle of which to add the vehicle to
+     * @return true if successfully added vehicle otherwise false
+     */
+    private boolean addRandomVehicle(PuzzleGame puzzle) {
+        Random randomGenerator = new Random();
+        //Get the orientation of the main car and its position
+        boolean mainIsVertical = puzzle.getMainVehicle().getIsVertical();
+        int mainRow = puzzle.getMainVehicle().getRow();
+        int mainCol = puzzle.getMainVehicle().getCol();
+        //Get board params
+        int height = puzzle.getNumRows();
+        int width = puzzle.getNumCols();
 
 	/**
 	 * Generate a 18x6 puzzle.

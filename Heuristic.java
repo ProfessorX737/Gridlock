@@ -1,4 +1,3 @@
-
 public interface Heuristic<N> {
 	/**
 	 * @param node, the node from which to calculate the heuristic 

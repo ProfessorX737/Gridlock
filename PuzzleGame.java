@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.awt.Color;
+import java.awt.*;
+import java.util.*;
 
 /**
  * Represent the current board of the game
@@ -26,6 +27,12 @@ public class PuzzleGame {
 	//minimum moves to solve is the minimum required moves to solve this puzzle
 	//it is set when the puzzle is generated
 	private int requiredToSolve;
+    //Used for printing out to the console
+    // private PuzzleState puzzleState;
+    private Stack<MoveState> undo;
+    private Stack<MoveState> redo;
+    private MoveState initialState;
+    private int moves;
 
 
 	/**
@@ -33,16 +40,18 @@ public class PuzzleGame {
 	 * @param sizeRow, the number of rows in the board
 	 * @param sizeCol, the number of columns in the board
 	 */
-	public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol) {
-		this.sizeRow = sizeRow;
-		this.sizeCol = sizeCol;
-		this.exitRow = exitRow;
-		this.exitCol = exitCol;
-		this.vehicleMap = new HashMap<Integer, Vehicle>();
-		this.initBoard();
+    public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol) {
+        this.sizeRow = sizeRow;
+        this.sizeCol = sizeCol;
+        this.exitRow = exitRow;
+        this.exitCol = exitCol;
+        this.vehicleMap = new HashMap<>();
+        this.undo = new Stack<>();
+        this.redo = new Stack<>();
+        this.initBoard();
+        this.moves = 0;
 		this.requiredToSolve = 0;
-	}
-
+    }
 	/**
 	 * Constructor for the board, when the size of the board and map of vehicles is provided
 	 * @param sizeRow, the number of rows in the board
@@ -78,6 +87,8 @@ public class PuzzleGame {
 		}
 		this.board = this.cloneBoard(g.board);
 		this.requiredToSolve = g.requiredToSolve;
+        this.undo = new Stack<>();
+        this.redo = new Stack<>();
 	}
 	
 	private void initBoard() {
@@ -111,21 +122,6 @@ public class PuzzleGame {
 			}
 		}
 		return true;
-	}
-	
-	/**
-	 * Add vehicle to the board.
-	 * @param isVertical
-	 * @param length
-	 * @param row
-	 * @param col
-	 * @param color
-	 */
-	public void addVehicle(boolean isVertical, int length, int row, int col, Color color) {
-		int id = vehicleMap.size();
-		Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
-		this.vehicleMap.put(id, v);
-		this.fillVehicleSpace(v, id);
 	}
 	
 	/**
@@ -259,20 +255,6 @@ public class PuzzleGame {
 		return numLegal;
 	}
 	
-	
-	/**
-	 * Move vehicle to new position
-	 * @pre checkMove(id, direction, distance) == true
-	 * @param id
-	 * @param newRow
-	 * @param newCol
-	 */
-	public void moveVehicle(int id, int newRow, int newCol) {
-		Vehicle v = this.vehicleMap.get(id);
-		this.fillVehicleSpace(v, -1);
-		v.setPos(newRow, newCol);
-		this.fillVehicleSpace(v, id);
-	}
 	
 	private void fillVehicleSpace(Vehicle v, int id) {
 		int row = v.getRow();
@@ -560,32 +542,128 @@ public class PuzzleGame {
 		}
 		return possibleVehicle;
 	}
+
+    /**
+     * Add vehicle to the board.
+     *
+     * @param isVertical
+     * @param length
+     * @param row
+     * @param col
+     * @param color
+     */
+    public void addVehicle(boolean isVertical, int length, int row, int col, Color color) {
+        int id = vehicleMap.size();
+        Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
+        this.vehicleMap.put(id, v);
+        this.fillVehicleSpace(v, id);
+    }
+
+    /**
+     * To move a vehicle specify the vehicle, direction and distance.
+     * * @param id
+     *
+     * @pre checkMove(id, direction, distance) == true
+     */
+    public void moveVehicleState(int id, int newRow, int newCol) {
+
+
+        // Todo currently clicking on the vehicle counts as a move
+        // Need to ensure it is not
+        Vehicle v = this.vehicleMap.get(id);
+        if (v.getRow() != newRow || v.getCol() != newCol){
+            redo.removeAllElements();
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            this.fillVehicleSpace(v, -1);
+            v.setPos(newRow, newCol);
+            this.fillVehicleSpace(v, id);
+            moves += 1;
+        }
+    }
+
+    public void moveVehicle(int id, int newRow, int newCol) {
+        Vehicle v = this.vehicleMap.get(id);
+		this.fillVehicleSpace(v, -1);
+		v.setPos(newRow, newCol);
+		this.fillVehicleSpace(v, id);
+    }
+
+    private void printBoard(int[][] board) {
+        for (int y = -1; y <= sizeRow; y++) {
+            for (int x = -1; x <= sizeCol; x++) {
+                if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
+                    System.out.print(wall + "\t");
+                } else if (board[y][x] == 0) {
+                    System.out.print(red_car + "\t");
+                } else if (board[y][x] == -1) {
+                    System.out.print(road + "\t");
+                } else {
+                    System.out.print(board[y][x] + "\t");
+                }
+            }
+            System.out.println("");
+        }
+    }
+
+    /**
+     * Resets the board to the starting state
+     */
+    public void reset() {
+        this.board = initialState.getGameBoard();
+        this.vehicleMap = initialState.getVehicleMap();
+        undo.removeAllElements();
+        redo.removeAllElements();
+        moves = 0;
+    }
+
+    /**
+     * Redo a move that has previously been undone
+     */
+    public void redo() {
+
+        if (!redo.empty()) {
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            MoveState ps = redo.pop();
+            this.board = ps.getGameBoard();
+            this.vehicleMap = ps.getVehicleMap();
+            moves += 1;
+        }
+    }
+
+    /**
+     * Reverse a move made by the user
+     */
+    public void undo() {
+        if (!undo.empty()) {
+            redo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            MoveState ps = undo.pop();
+            this.board = ps.getGameBoard();
+            this.vehicleMap = ps.getVehicleMap();
+            moves -=1;
+        }
+    }
+
+    private int[][] copyBoard(int[][] board) {
+        int[][] copy = new int[sizeRow][sizeCol];
+        for (int y = 0; y < sizeRow; y++) {
+            System.arraycopy(board[y], 0, copy[y], 0, sizeCol);
+        }
+        return copy;
+    }
+
+    private Map<Integer, Vehicle> copyVehicleMap() {
+        Map<Integer, Vehicle> copy = new HashMap<>();
+        for (Vehicle v : getVehicles()) {
+            copy.put(v.getID(), new Vehicle(v));
+        }
+        return copy;
+    }
+
+    public void initState() {
+        initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap());
+    }
+
+    public int getMoves(){
+        return moves;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
