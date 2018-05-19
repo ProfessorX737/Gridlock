@@ -59,6 +59,10 @@ public class RushHourServerEV extends Thread{
                         offlineUser(parts[1]);
                         break;
 
+                    case "decline":
+                        declineUser(parts[1],parts[2]);
+                        break;
+
                     default:
                         break;
                 }
@@ -191,7 +195,10 @@ public class RushHourServerEV extends Thread{
         info.resetPlayingAgainst();
         info.setBusy(false);
 
+    }
 
-
+    private void declineUser(String user1, String user2){
+        // Notify other user he has been declined
+        send(user2,"declined " + user1);
     }
 }
