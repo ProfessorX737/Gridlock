@@ -1,28 +1,20 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Represent the current board of the game
  */
-public class PuzzleGame {
+public class PuzzleGame implements Serializable{
+	//required for saving
+	private static final long serialVersionUID = 1L;
 	//sizeRow and sizeCol keeps track of the size of the board
 	private int sizeRow;
 	private int sizeCol;
@@ -675,106 +667,5 @@ public class PuzzleGame {
 
     public int getMoves(){
         return moves;
-    }
-    
-    /**
-     * Load save game from list
-     * @throws IOException 
-     */
-    public PuzzleGame loadPuzzleGame(String filename) throws IOException {
-    		//read save file
-    		File file = new File(filename + ".sav").getAbsoluteFile();
-    		FileReader reader = new FileReader(file);
-    		int c = -1;
-    		String savefile = "";
-    		while (true) {
-    			c = reader.read();
-    			if (c == -1) break;
-    			savefile = savefile + (char) c;
-    		}
-    		reader.close();
-
-		return null;
-    }
-    
-    /**
-     * Saves the current game
-     * @param filename is the name that will saved to the file, will overwrite file with same name
-     * @throws IOException 
-     */
-    public void savePuzzleGame(String filename) throws IOException {
-		/*Save the game in the current format
-    		 * Meta data
-    		 * Name of save file
-    		 * Date and time of save
-    		 * User who saved the file
-    		 * Game data
-    		 */
-    		//meta data
-    		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-    		LocalDateTime now = LocalDateTime.now();
-    		String dateTime = dtf.format(now);
-    		String username = "dude";
-    		//game data
-    		Integer sizeRow = this.sizeRow;
-    		String sizeRowSave = sizeRow.toString();
-    		Integer sizeCol = this.sizeCol;
-    		String sizeColSave = sizeCol.toString();
-    		Integer exitRow = this.exitRow;
-    		String exitRowSave = exitRow.toString();
-    		Integer exitCol = this.exitCol;
-    		String exitColSave = exitCol.toString();
-    		Integer moves = this.moves;
-    		String movesSave = moves.toString();
-		Integer requiredToSolve = this.requiredToSolve;
-		String requiredToSolveSave = requiredToSolve.toString();
-    		//saving vehicle hash map
-    		String vehicleMapSave = "";
-		for(Vehicle v : this.vehicleMap.values()) {
-			vehicleMapSave = vehicleMapSave + v.toString();
-		}
-		//saving stack
-		String redoStackSave = "";
-		for (MoveState state : this.redo) {
-			for (Vehicle v : state.getVehicleMap().values()) {
-				redoStackSave = redoStackSave + v.toString();
-			}
-		}
-		String undoStackSave = "";
-		for (MoveState state : this.undo) {
-			for (Vehicle v : state.getVehicleMap().values()) {
-				undoStackSave = undoStackSave + v.toString();
-			}
-		}
-		//saving initial state
-		String initialStateSave = "";
-		if (initialState != null) {
-			for (Vehicle v : this.initialState.getVehicleMap().values()) {
-				initialStateSave = initialStateSave + v.toString();
-			}
-		}
-		//Saving to file
-		List<String> lines = Arrays.asList(filename, dateTime,
-							username, sizeRowSave, sizeColSave, 
-							exitRowSave, exitColSave, movesSave,
-							requiredToSolveSave, vehicleMapSave,
-							undoStackSave, redoStackSave, initialStateSave);
-		Path file = Paths.get(filename + ".sav");
-		Files.write(file, lines, Charset.forName("UTF-8"));
-    }
-    
-    /**
-     * Get list of games that have been saved
-     * @return
-     */
-    public List<String> getSaveGameList() {
-    		List<String> fileList = new ArrayList<String>();
-    		File folder = new File("").getAbsoluteFile();
-    		for (File f : folder.listFiles()) {
-    			if (f.getName().endsWith(".sav")) {
-				fileList.add(f.getName());
-    			}
-    		}
-		return fileList;
     }
 }

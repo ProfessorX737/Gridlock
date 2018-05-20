@@ -1,7 +1,10 @@
+import java.io.Serializable;
 import java.util.Map;
 
-public class MoveState {
-    private int[][] gameBoard;
+public class MoveState implements Serializable{
+	//required for saving the file
+	private static final long serialVersionUID = 1L;
+	private int[][] gameBoard;
     private Map<Integer, Vehicle> vehicleMap;
 
     public MoveState(int[][] gameBoard, Map<Integer, Vehicle> vehicleMap) {
@@ -9,10 +12,6 @@ public class MoveState {
         this.vehicleMap = vehicleMap;
     }
     
-    public MoveState(int height, int width, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
-    	
-    }
-
     public int[][] getGameBoard() {
         return gameBoard;
     }

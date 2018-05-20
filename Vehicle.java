@@ -1,9 +1,11 @@
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Represents vehicles on the board
  */
-public class Vehicle {
+public class Vehicle implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private final boolean isVertical;
 	private final int length;
