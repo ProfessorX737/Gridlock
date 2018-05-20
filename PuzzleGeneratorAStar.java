@@ -2,9 +2,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -160,7 +158,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator{
 		List<Integer> exit = randomExit(6, 6);
 		int exitRow = exit.get(0);
 		int exitCol = exit.get(1);
-		return generatePuzzle(6, 6, exitRow, exitCol, 5);
+		return generatePuzzle(6, 6, exitRow, exitCol, 10);
 		
 	}
 

@@ -1,17 +1,17 @@
-import java.awt.Color;
+import java.awt.*;
+import java.io.Serializable;
 
 /**
- * Represents vehicles on the board 
- *
+ * Represents vehicles on the board
  */
-public class Vehicle {
+public class Vehicle implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private final boolean isVertical;
 	private final int length;
+	private Color color;
 	private int row;
 	private int col;
-	private Color color;
-	
 	/**
 	 * Constructor for vehicles, takes the parameters
 	 * @post 
@@ -99,9 +99,9 @@ public class Vehicle {
 	
 	@Override
 	public String toString() {
-		String x = "Vehicle ID: " + this.id + ", isVertical: " + 
-					this.isVertical + ", length: " + this.length + 
-					", row: " + this.row + ", col: " + this.col;
+		String x = "" + this.id + "," + this.isVertical + "," 
+					+ this.length + "," + this.row + ","
+					+ this.col + "," + this.color.toString() + ":";
 		return x;
 	}
 }

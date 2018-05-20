@@ -13,3 +13,5 @@ bin/Graph\.class
 
 src/Edge\.java
 /bin/
+
+*.class
