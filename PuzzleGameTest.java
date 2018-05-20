@@ -12,6 +12,7 @@ public class PuzzleGameTest {
 		PuzzleGame bah = foo.generateEasyPuzzle();
 		bah.showBoard();
 		bah.savePuzzleGame("save_file");
+		bah.loadPuzzleGame("save_file");
 		for (String s : bah.getSaveGameList()) {
 			System.out.println(s);
 		}

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Random;
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -677,8 +679,21 @@ public class PuzzleGame {
     
     /**
      * Load save game from list
+     * @throws IOException 
      */
-    public PuzzleGame loadPuzzleGame() {
+    public PuzzleGame loadPuzzleGame(String filename) throws IOException {
+    		//read save file
+    		File file = new File(filename + ".sav").getAbsoluteFile();
+    		FileReader reader = new FileReader(file);
+    		int c = -1;
+    		String savefile = "";
+    		while (true) {
+    			c = reader.read();
+    			if (c == -1) break;
+    			savefile = savefile + (char) c;
+    		}
+    		reader.close();
+
 		return null;
     }
     
