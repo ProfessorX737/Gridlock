@@ -36,6 +36,18 @@ public class PuzzleGame implements Serializable{
     private MoveState initialState;
     private int moves;
 
+    public PuzzleGame(int sizeRow, int sizeCol) {
+    		this.sizeRow = sizeRow;
+    		this.sizeCol = sizeCol;
+    		this.exitRow = 0;
+    		this.exitCol = 0;
+    		this.vehicleMap = new HashMap<>();
+    		this.undo = new Stack<>();
+    		this.redo = new Stack<>();
+    		this.initBoard();
+    		this.moves = 0;
+    		this.requiredToSolve = 0;
+    }
 
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
@@ -401,6 +413,18 @@ public class PuzzleGame implements Serializable{
 	}
 	public int getExitCol() {
 		return this.exitCol;
+	}
+	
+	public void setExitRow(int row) {
+		this.exitRow = row;
+	}
+	
+	public void setExitCol(int col) {
+		this.exitCol = col;
+	}
+	
+	public int getVehicleMapSize() {
+		return vehicleMap.size();
 	}
 	
 	@Override
