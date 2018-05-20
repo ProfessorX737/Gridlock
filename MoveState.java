@@ -8,6 +8,10 @@ public class MoveState {
         this.gameBoard = gameBoard;
         this.vehicleMap = vehicleMap;
     }
+    
+    public MoveState(int height, int width, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
+    	
+    }
 
     public int[][] getGameBoard() {
         return gameBoard;

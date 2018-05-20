@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -681,9 +684,10 @@ public class PuzzleGame {
     
     /**
      * Saves the current game
+     * @param filename is the name that will saved to the file, will overwrite file with same name
      * @throws IOException 
      */
-    public void savePuzzleGame(String file_name) throws IOException {
+    public void savePuzzleGame(String filename) throws IOException {
 		/*Save the game in the current format
     		 * Meta data
     		 * Name of save file
@@ -692,11 +696,55 @@ public class PuzzleGame {
     		 * Game data
     		 */
     		//meta data
-    		String date_time = "today";
-    		String user_name = "dude";
+    		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+    		LocalDateTime now = LocalDateTime.now();
+    		String dateTime = dtf.format(now);
+    		String username = "dude";
     		//game data
-		List<String> lines = Arrays.asList(file_name, date_time, user_name);
-		Path file = Paths.get(file_name);
+    		Integer sizeRow = this.sizeRow;
+    		String sizeRowSave = sizeRow.toString();
+    		Integer sizeCol = this.sizeCol;
+    		String sizeColSave = sizeCol.toString();
+    		Integer exitRow = this.exitRow;
+    		String exitRowSave = exitRow.toString();
+    		Integer exitCol = this.exitCol;
+    		String exitColSave = exitCol.toString();
+    		Integer moves = this.moves;
+    		String movesSave = moves.toString();
+		Integer requiredToSolve = this.requiredToSolve;
+		String requiredToSolveSave = requiredToSolve.toString();
+    		//saving vehicle hash map
+    		String vehicleMapSave = "";
+		for(Vehicle v : this.vehicleMap.values()) {
+			vehicleMapSave = vehicleMapSave + v.toString();
+		}
+		//saving stack
+		String redoStackSave = "";
+		for (MoveState state : this.redo) {
+			for (Vehicle v : state.getVehicleMap().values()) {
+				redoStackSave = redoStackSave + v.toString();
+			}
+		}
+		String undoStackSave = "";
+		for (MoveState state : this.undo) {
+			for (Vehicle v : state.getVehicleMap().values()) {
+				undoStackSave = undoStackSave + v.toString();
+			}
+		}
+		//saving initial state
+		String initialStateSave = "";
+		if (initialState != null) {
+			for (Vehicle v : this.initialState.getVehicleMap().values()) {
+				initialStateSave = initialStateSave + v.toString();
+			}
+		}
+		//Saving to file
+		List<String> lines = Arrays.asList(filename, dateTime,
+							username, sizeRowSave, sizeColSave, 
+							exitRowSave, exitColSave, movesSave,
+							requiredToSolveSave, vehicleMapSave,
+							undoStackSave, redoStackSave, initialStateSave);
+		Path file = Paths.get(filename + ".sav");
 		Files.write(file, lines, Charset.forName("UTF-8"));
     }
     
@@ -705,7 +753,13 @@ public class PuzzleGame {
      * @return
      */
     public List<String> getSaveGameList() {
-    	
-		return null;
+    		List<String> fileList = new ArrayList<String>();
+    		File folder = new File("").getAbsoluteFile();
+    		for (File f : folder.listFiles()) {
+    			if (f.getName().endsWith(".sav")) {
+				fileList.add(f.getName());
+    			}
+    		}
+		return fileList;
     }
 }

@@ -97,9 +97,9 @@ public class Vehicle {
 	
 	@Override
 	public String toString() {
-		String x = "Vehicle ID: " + this.id + ", isVertical: " + 
-					this.isVertical + ", length: " + this.length + 
-					", row: " + this.row + ", col: " + this.col;
+		String x = "" + this.id + "," + this.isVertical + "," 
+					+ this.length + "," + this.row + ","
+					+ this.col + "," + this.color.toString() + ":";
 		return x;
 	}
 }
