@@ -10,14 +10,16 @@ import java.util.Random;
  */
 public class PuzzleGeneratorAStar implements PuzzleGenerator {
     //limit of how many tries to generate board
-    private static final int TRIES_LIMIT = 200;
+    private static final int TRIES_LIMIT = 1000;
     private static final int DEFAULT_BOARD_SIZE = 6;
+    private static final int DEFAULT_CAR_LENGTH = 2;
+
     private static final int DEFAULT_VERY_EASY_MIN_MOVES = 7;
     private static final int DEFAULT_EASY_MIN_MOVES = 10;
     private static final int DEFAULT_MEDIUM_MIN_MOVES = 15;
     private static final int DEFAULT_HARD_MIN_MOVES = 20;
-    private static final int DEFAULT_ULTRA_MIN_MOVES = 25;
-    private static final int DEFAULT_CAR_LENGTH = 2;
+    private static final int DEFAULT_SUPER_HARD_MIN_MOVES = 25;
+    private static final int DEFAULT_ULTRA_MIN_MOVES = 30;
 
     public PuzzleGeneratorAStar() {
     }
@@ -73,7 +75,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 				//System.out.println("found more difficult puzzle");
 				movesRequired = newPuzzle.getMinMoves();
 				puzzle = newPuzzle;
-            	//System.out.printf("min moves %d%n", puzzle.getMinMoves());
+            	System.out.printf("min moves %d%n", puzzle.getMinMoves());
 			}
         }
         System.out.printf("num tries: %d%n", tries);
@@ -222,6 +224,16 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     public PuzzleGame generateHardPuzzle() {
     	try {
 			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_HARD_MIN_MOVES);
+			return puzzle;
+    	} catch(Exception e) {
+    		return null;
+    	}
+    }
+
+    @Override
+    public PuzzleGame generateSuperHardPuzzle() {
+    	try {
+			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_SUPER_HARD_MIN_MOVES);
 			return puzzle;
     	} catch(Exception e) {
     		return null;

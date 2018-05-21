@@ -13,29 +13,39 @@ public interface PuzzleGenerator {
 	public PuzzleGame generatePuzzle(int minMoves) throws Exception;
 	
 	/**
-	 * Super easy puzzle
+	 * Generate a 6x6 board with random exit that takes at least 7 moves to solve.
 	 * @return
 	 */
 	public PuzzleGame generateVeryEasyPuzzle();
 	
 	/**
-	 * Generate a 6x6 board with random exit that takes around 15 moves to solve.
+	 * Generate a 6x6 board with random exit that takes at least 10 moves to solve.
 	 * @return
 	 */
 	public PuzzleGame generateEasyPuzzle();
 	
 	/**
-	 * Generate a 12x6 board with random exit that takes around 30 moves to solve.
+	 * Generate a 6x6 board with random exit that takes at least 15 moves to solve.
 	 * @return
 	 */
 	public PuzzleGame generateMediumPuzzle();
 	
 	/**
-	 * Generate a 18x6 board with random exit that takes around 45 moves to solve.
+	 * Generate a 6x6 board with random exit that takes at least 20 moves to solve.
 	 * @return
 	 */
 	public PuzzleGame generateHardPuzzle();
 	
+	/**
+	 * Generate a 6x6 board with random exit that takes at least 25 moves to solve
+	 * @return
+	 */
+	public PuzzleGame generateSuperHardPuzzle();
+	
+	/**
+	 * Generate a 6x6 board with random exit that takes at least 30 moves to solve.
+	 * @return
+	 */
 	public PuzzleGame generateUltraPuzzle();
 	
 }
