@@ -20,13 +20,21 @@ public class PuzzleView extends JPanel {
     public PuzzleView(PuzzleGame puzzleGame, int cellLength) {
         this.puzzleGame = puzzleGame;
         this.cellLength = cellLength;
-        this.width = puzzleGame.getNumCols() * cellLength;
-        this.height = puzzleGame.getNumRows() * cellLength;
         this.vehicles = new HashMap<>();
-        this.setLayout(null);
-        this.setPreferredSize(new Dimension(this.width, this.height));
         this.setBackground(Color.white);
+        this.updateSize(this.cellLength);
 
+
+    }
+
+    public void updateSize(int cellLength){
+        this.cellLength = cellLength;
+        this.setLayout(null);
+        this.width = puzzleGame.getNumCols() * this.cellLength;
+        this.height = puzzleGame.getNumRows() * this.cellLength;
+        this.setPreferredSize(new Dimension(this.width, this.height));
+        this.removeAll();
+        this.vehicles.clear();
         for (Vehicle v : puzzleGame.getVehicles()) {
             JComponent dc = new JPanel();
             int vWidth = this.cellLength;
@@ -60,5 +68,9 @@ public class PuzzleView extends JPanel {
 
     public JComponent getVehicle(int id) {
         return this.vehicles.get(id);
+    }
+
+    public Map<Integer,JComponent> getVehicles() {
+        return vehicles;
     }
 }

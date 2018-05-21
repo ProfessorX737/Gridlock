@@ -1,10 +1,12 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
 public class ButtonPanel extends JPanel {
 
+    private final JButton menuButton;
     // Variables declaration
     private JComboBox<String> DifficultyBox;
     private JLabel DifficultyLabel;
@@ -34,12 +36,14 @@ public class ButtonPanel extends JPanel {
         LevelLabel = new JLabel();
         LevelBox = new JComboBox<>();
         CreateBtn = new JButton();
+        menuButton = new JButton();
 
-        this.setPreferredSize(new java.awt.Dimension(300, 280));
-        this.setBorder(javax.swing.BorderFactory.createTitledBorder("Rush Hour"));
+
+        this.setPreferredSize(new java.awt.Dimension(150, 300));
+        this.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         LoadGameBtn.setText("Load Game");
-        jTimeLabel.setText("Time: 00:00:00");
+        jTimeLabel.setText("00:00:00");
         MoveCount.setText("Moves: 0");
         jResetBtn.setText("Reset");
         HintBtn.setText("Hint");
@@ -48,84 +52,38 @@ public class ButtonPanel extends JPanel {
         DifficultyLabel.setText("Difficulty:");
         LevelLabel.setText("Puzzle: ");
         CreateBtn.setText("Create Randomized Game");
+        menuButton.setText("Menu");
 
         DifficultyBox.setModel(new DefaultComboBoxModel<>(new String[]{"Novice", "Intermediate",
                 "Expert"}));
         LevelBox.setModel(new DefaultComboBoxModel<>(new String[]{"Puzzle 1", "Puzzle 2", "Puzzle 100"}));
 
-        javax.swing.GroupLayout ButtonPanelLayout = new GroupLayout(this);
-        this.setLayout(ButtonPanelLayout);
-        ButtonPanelLayout.setHorizontalGroup(
-                ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment
-                                                        .LEADING)
-                                                        .addComponent(DifficultyLabel)
-                                                        .addComponent(DifficultyBox, GroupLayout.PREFERRED_SIZE, 87,
-                                                                GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(UndoBtn)
-                                                        .addComponent(RedoBtn))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment
-                                                        .TRAILING)
-                                                        .addComponent(jTimeLabel)
-                                                        .addComponent(MoveCount))
-                                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing
-                                                        .GroupLayout.Alignment.LEADING)
-                                                        .addComponent(LevelLabel)
-                                                        .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                                                .addComponent(LevelBox, GroupLayout.PREFERRED_SIZE,
-                                                                        GroupLayout.DEFAULT_SIZE, GroupLayout
-                                                                                .PREFERRED_SIZE)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement
-                                                                        .UNRELATED)
-                                                                .addComponent(LoadGameBtn, GroupLayout
-                                                                        .PREFERRED_SIZE, 100, GroupLayout
-                                                                        .PREFERRED_SIZE))
-                                                        .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout
-                                                                .Alignment.TRAILING)
-                                                                .addComponent(HintBtn)
-                                                                .addComponent(CreateBtn)
-                                                                .addComponent(jResetBtn)))
-                                                .addGap(0, 0, Short.MAX_VALUE))))
-        );
-        ButtonPanelLayout.setVerticalGroup(
-                ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(ButtonPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(DifficultyLabel)
-                                        .addComponent(jTimeLabel))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(DifficultyBox, GroupLayout.PREFERRED_SIZE, GroupLayout
-                                                .DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(MoveCount))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(LevelLabel)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(LevelBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(LoadGameBtn))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CreateBtn)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(HintBtn)
-                                        .addComponent(UndoBtn))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(ButtonPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jResetBtn)
-                                        .addComponent(RedoBtn))
-                                .addContainerGap())
-        );
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
+        c.gridx = 0;
+        c.gridy = 0;
+        this.add(jTimeLabel, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        this.add(MoveCount, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        this.add(menuButton, c);
+
+        c.gridx = 0;
+        c.gridy = 3;
+        this.add(UndoBtn, c);
+
+        c.gridx = 0;
+        c.gridy = 4;
+        this.add(RedoBtn, c);
+
+        c.gridx = 0;
+        c.gridy = 5;
+        this.add(jResetBtn, c);
     }
 
     public void setController(ButtonController c) {
@@ -148,7 +106,7 @@ public class ButtonPanel extends JPanel {
     }
 
     public void displayTime(String time){
-        jTimeLabel.setText("Time: " + time);
+        jTimeLabel.setText(time);
     }
 
     public void displayMoves(int moves){
