@@ -10,7 +10,7 @@ public interface PuzzleGenerator {
 	 * @param moves, the number of moves required to solve the puzzle
 	 * @return
 	 */
-	public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves);
+	public PuzzleGame generatePuzzle(int minMoves) throws Exception;
 	
 	/**
 	 * Generate a 6x6 board with random exit that takes around 15 moves to solve.
@@ -29,5 +29,7 @@ public interface PuzzleGenerator {
 	 * @return
 	 */
 	public PuzzleGame generateHardPuzzle();
+	
+	public PuzzleGame generateUltraPuzzle();
 	
 }

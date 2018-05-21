@@ -66,13 +66,12 @@ public class GridLock {
         f.setLayout(new BorderLayout());
         f.setBackground(Color.BLACK);
         PuzzleGeneratorAStar foo = new PuzzleGeneratorAStar();
-        PuzzleGame puzzleGame = foo.generateEasyPuzzle();
+
+		final long startTime = System.currentTimeMillis();
+        PuzzleGame puzzleGame = foo.generateUltraPuzzle();
+		final long endTime = System.currentTimeMillis();
+		System.out.printf("Puzzle generation time: %d ms", (endTime - startTime));
         puzzleGame.initState();
-        List<int[][]> path = PuzzleSolver.solve(puzzleGame);
-        for (int[][] state : path) {
-            showBoard(puzzleGame, state);
-            System.out.println("");
-        }
 
         PuzzleView pv = new PuzzleView(puzzleGame, 50);
         PuzzleController pc = new PuzzleController(puzzleGame, pv);

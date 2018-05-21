@@ -14,13 +14,37 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     //limit of which to generate random vehicle
     private final static int randomLimit = 20;
     //limit of how many tries to generate board
-    private final static int triesLimit = 1;
+    private final static int triesLimit = 200;
     //number of different puzzles to generate each time
     private final static int jumbleLimit = 10;
     //number of directions
     private final static int numDirections = 4;
+    // default board size
+    private static final int DEFAULT_BOARD_SIZE = 6;
+    private static final int DEFAULT_EASY_MIN_MOVES = 10;
+    private static final int DEFAULT_MEDIUM_MIN_MOVES = 15;
+    private static final int DEFAULT_HARD_MIN_MOVES = 20;
+    private static final int DEFAULT_ULTRA_MIN_MOVES = 25;
 
     public PuzzleGeneratorAStar() {
+    }
+
+    
+    /**
+     * Same as generatePuzzle(int,int,int,int,int)
+     * Uses default board size
+     * Generates a random exit
+     * @param minMoves
+     * @return
+     * @throws PuzzleGenerationException 
+     */
+	@Override
+    public PuzzleGame generatePuzzle(int minMoves) throws Exception {
+        List<Integer> exit = randomExit(6, 6);
+        int exitRow = exit.get(0);
+        int exitCol = exit.get(1);
+		PuzzleGame puzzle = generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol, minMoves);
+		return puzzle;
     }
 
     /**
@@ -35,8 +59,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      * @param move,       the number of moves required to complete the game
      * @return puzzleGame,
      */
-    @Override
-    public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves) {
+    public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves) throws Exception {
         int movesRequired = 1;
         int tries = 0;
         //generate initial puzzle
@@ -45,26 +68,24 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
         while (movesRequired <= moves) {
             if (tries > triesLimit) {
                 //if tries exceeds tries limit then it is too difficult to generate
-                return null;
+            	throw new Exception(String.format("A puzzle cannot be generated on a %dx%d board with a minimum of %d moves", width,height,moves));
             }
             //add random vehicle
             PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
-            if (newPuzzle == null) {
-                return puzzle;
-            } else {
-                //puzzle = jumbleVehicles(puzzle);
-                List<int[][]> puzzleSolved = PuzzleSolver.solve(newPuzzle);
-                if (puzzleSolved == null) {
-                    //couldn't Solve puzzle restart
-                    movesRequired = 0;
-                    puzzle = generateInitialState(width, height, exitRow, exitCol);
-                    tries++;
-                } else {
-                    movesRequired = puzzleSolved.size() - 1;
-                    puzzle = newPuzzle;
-                }
-            }
+			if (newPuzzle == null) {
+				//couldn't find more difficult puzzle, so restart
+				movesRequired = 0;
+				puzzle = generateInitialState(width, height, exitRow, exitCol);
+				tries++;
+			} else {
+				//System.out.println("found more difficult puzzle");
+				movesRequired = newPuzzle.getMinMoves();
+				puzzle = newPuzzle;
+            	//System.out.printf("min moves %d%n", puzzle.getMinMoves());
+			}
         }
+        System.out.printf("num tries: %d%n", tries);
+        System.out.printf("min moves: %d%n", puzzle.getMinMoves());
         return puzzle;
     }
 
@@ -78,7 +99,8 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      */
     private PuzzleGame mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
         //get all possible location for the vehicle
-        List<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
+        //List<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
+        List<Vehicle> possibleVehicle = puzzle.getPossibleIntersects();
         //shuffle for random outcome, is this correct
         Collections.shuffle(possibleVehicle);
         //add every possible vehicle to the board and see if it makes the game harder
@@ -91,6 +113,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
             if (puzzleSolved != null) {
                 if (puzzleSolved.size() - 1 > currentMoves) {
                     //found a harder puzzle
+                	newPuzzle.setMinMoves(puzzleSolved.size() - 1);
                     return newPuzzle;
                 }
             }
@@ -335,50 +358,55 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 
     @Override
     public PuzzleGame generateEasyPuzzle() {
-        List<Integer> exit = randomExit(6, 6);
-        int exitRow = exit.get(0);
-        int exitCol = exit.get(1);
-        return generatePuzzle(6, 6, exitRow, exitCol, 20);
+    	try {
+			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_EASY_MIN_MOVES);
+			return puzzle;
+    	} catch(Exception e) {
+    		return null;
+    	}
     }
 
-    /**
-     * Generate a 12x6 puzzle.
-     */
     @Override
     public PuzzleGame generateMediumPuzzle() {
-        List<Integer> exit = randomExit(6, 6);
-        int exitRow = exit.get(0);
-        int exitCol = exit.get(1);
-        //generate two different puzzles and merge them together
-        PuzzleGame mainPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
-        PuzzleGame secondPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
-        return puzzleMerge(mainPuzzle, secondPuzzle);
+    	try {
+			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_MEDIUM_MIN_MOVES);
+			return puzzle;
+    	} catch(Exception e) {
+    		return null;
+    	}
     }
 
-    /**
-     * Generate a 18x6 puzzle.
-     */
     @Override
     public PuzzleGame generateHardPuzzle() {
+    	try {
+			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_HARD_MIN_MOVES);
+			return puzzle;
+    	} catch(Exception e) {
+    		return null;
+    	}
+    }
+    
+    @Override
+    public PuzzleGame generateUltraPuzzle() {
+    	try {
+			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_ULTRA_MIN_MOVES);
+			return puzzle;
+    	} catch(Exception e) {
+    		return null;
+    	}
+    }
+    
+    
+    public PuzzleGame generateMergedPuzzle(int numToMerge, int minMovesPerPuzzle) throws Exception {
         List<Integer> exit = randomExit(6, 6);
         int exitRow = exit.get(0);
         int exitCol = exit.get(1);
-        //generate two different puzzles and merge them together
-        PuzzleGame mainPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
-        PuzzleGame secondPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
-        PuzzleGame thirdPuzzle = generatePuzzle(6, 6, exitRow, exitCol, 20);
-        PuzzleGame firstMerge = puzzleMerge(mainPuzzle, secondPuzzle);
-        return puzzleMerge(firstMerge, thirdPuzzle);
-    }
-
-    public PuzzleGame generateSpicyPuzzle() {
-        List<Integer> exit = randomExit(5, 7);
-        int exitRow = exit.get(0);
-        int exitCol = exit.get(1);
-        //generate two different puzzles and merge them together
-        PuzzleGame mainPuzzle = generatePuzzle(5, 7, exitRow, exitCol, 20);
-        PuzzleGame secondPuzzle = generatePuzzle(5, 7, exitRow, exitCol, 20);
-        return puzzleMerge(mainPuzzle, secondPuzzle);
+        PuzzleGame mainPuzzle = this.generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol, minMovesPerPuzzle);
+        for(int i = 0; i < numToMerge; i++) {
+        	PuzzleGame puzzle = this.generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol, minMovesPerPuzzle); 
+        	mainPuzzle = this.puzzleMerge(mainPuzzle, puzzle);
+        }
+        return mainPuzzle;
     }
 }
 

@@ -25,7 +25,7 @@ public class PuzzleGame {
 	//possible size of vehicles, or should this be added to vehicle class
 	private static final int[] vehicleSize = new int[] {2, 3};
 	//minimum moves to solve is the minimum required moves to solve this puzzle
-	private int requiredToSolve;
+	private int minMoves;
     //Used for printing out to the console
     // private PuzzleState puzzleState;
     private Stack<MoveState> undo;
@@ -48,7 +48,7 @@ public class PuzzleGame {
         this.redo = new Stack<>();
         this.initBoard();
         this.moves = 0;
-		this.requiredToSolve = 0;
+		this.minMoves = 0;
     }
 	/**
 	 * Constructor for the board, when the size of the board and map of vehicles is provided
@@ -66,7 +66,7 @@ public class PuzzleGame {
 		for(Vehicle v : this.vehicleMap.values()) {
 			this.fillVehicleSpace(v, v.getID());
 		}
-		//this.requiredToSolve
+		//this.minMoves
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class PuzzleGame {
 			this.vehicleMap.put(v.getID(), new Vehicle(v));
 		}
 		this.board = this.cloneBoard(g.board);
-		this.requiredToSolve = g.requiredToSolve;
+		this.minMoves = g.minMoves;
         this.undo = new Stack<>();
         this.redo = new Stack<>();
 	}
@@ -397,7 +397,11 @@ public class PuzzleGame {
 	}
 	
 	public int getMinMoves() {
-		return this.requiredToSolve;
+		return this.minMoves;
+	}
+	
+	public void setMinMoves(int minMoves) {
+		this.minMoves = minMoves;
 	}
 	
 	@Override
@@ -534,6 +538,21 @@ public class PuzzleGame {
 		return possibleVehicle;
 	}
 	
+	public List<Vehicle> getPossibleIntersects() {
+		List<Vehicle> intersects = new ArrayList<>();
+		for(Vehicle v : this.vehicleMap.values()) {
+			intersects.addAll(this.getPossibleIntersects(v.getID()));
+		}
+		return intersects;
+	}
+	
+	public List<Vehicle> getPossibleIntersects(int vId) {
+		List<Vehicle> intersects = new ArrayList<>();
+		intersects.addAll(this.getPossibleIntersects(vId, 2));
+		intersects.addAll(this.getPossibleIntersects(vId, 3));
+		return intersects;
+	}
+	
 	public List<Vehicle> getPossibleIntersects(int vId, int vLength) {
 		List<Vehicle> possibleVehicles = new ArrayList<>();
 		int newId = this.vehicleMap.size();
@@ -549,8 +568,8 @@ public class PuzzleGame {
 				}
 			}
 			for(int i = 0; i < this.canMoveDown(vId); i++) {
-				int row = v.getRow() + vLength + i;
-				for(int l = 0; i <= this.canMoveDown(vId); i++) {
+				int row = v.getRow() + v.getLength() + i;
+				for(int l = 0; l < vLength; l++) {
 					int col = v.getCol() - l;
 					if(this.canAddVehicle(false, vLength, row, col)) {
 						possibleVehicles.add(new Vehicle(newId,false,vLength,row,col,Color.ORANGE));
@@ -568,7 +587,7 @@ public class PuzzleGame {
 				}
 			}
 			for(int i = 0; i < this.canMoveRight(vId); i++) {
-				int col = v.getCol() + vLength + i;
+				int col = v.getCol() + v.getLength() + i;
 				for(int l = 0; l < vLength; l++) {
 					int row = v.getRow() - l;
 					if(this.canAddVehicle(true, vLength, row, col)) {
