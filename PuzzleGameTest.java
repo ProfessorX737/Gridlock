@@ -10,7 +10,7 @@ public class PuzzleGameTest {
 		PuzzleGeneratorAStar foo = new PuzzleGeneratorAStar();
 		PuzzleGame bah = foo.generateEasyPuzzle();
 		bah.showBoard();
-		FileSystemImplementation mak = new FileSystemImplementation();
+		FileSystemImp mak = new FileSystemImp();
 		mak.savePuzzleGame(bah, "jim");
 		PuzzleGame jim_save = mak.loadPuzzleGame("jim");
 		jim_save.showBoard();

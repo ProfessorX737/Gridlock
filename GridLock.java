@@ -68,9 +68,9 @@ public class GridLock {
         PuzzleGeneratorAStar foo = new PuzzleGeneratorAStar();
 
 		final long startTime = System.currentTimeMillis();
-        PuzzleGame puzzleGame = foo.generateHardPuzzle();
+        PuzzleGame puzzleGame = foo.generateEasyPuzzle();
 		final long endTime = System.currentTimeMillis();
-		System.out.printf("Puzzle generation time: %d ms", (endTime - startTime));
+		System.out.printf("Puzzle generation time: %d ms%n", (endTime - startTime));
         puzzleGame.initState();
 
         PuzzleView pv = new PuzzleView(puzzleGame, 50);

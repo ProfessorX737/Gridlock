@@ -9,11 +9,13 @@ import java.util.Random;
  *
  */
 public class PuzzleGeneratorAStar implements PuzzleGenerator {
+	//number of difficulty levels that can be generated
+    public static final int NUM_LEVELS = 6;
     //limit of how many tries to generate board
     private static final int TRIES_LIMIT = 1000;
+    //default values
     private static final int DEFAULT_BOARD_SIZE = 6;
     private static final int DEFAULT_CAR_LENGTH = 2;
-
     private static final int DEFAULT_VERY_EASY_MIN_MOVES = 7;
     private static final int DEFAULT_EASY_MIN_MOVES = 10;
     private static final int DEFAULT_MEDIUM_MIN_MOVES = 15;
@@ -23,6 +25,22 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 
     public PuzzleGeneratorAStar() {
     }
+    
+//    public void generateAndAddPuzzles(PuzzleManager puzzleManager, int minPuzzlesPerLevel) {
+//    	boolean[] canAdd = new boolean[NUM_LEVELS];
+//    	for(int i = 0; i < NUM_LEVELS; i++) {
+//    		if(puzzleManager.getNumPuzzles(i) < minPuzzlesPerLevel) {
+//    			
+//    		}
+//    	}
+//    }
+//    
+//    private int updateStatus(PuzzleManager puzzleManager, boolean[] canAdd) {
+//    	for(int i = 0; i < NUM_LEVELS; i++) {
+//    		if(canAdd[i] == true) {
+//    		}
+//    	}
+//    }
     
     /**
      * Same as generatePuzzle(int,int,int,int,int)

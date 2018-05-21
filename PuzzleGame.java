@@ -12,7 +12,9 @@ import java.util.*;
 /**
  * Represent the current board of the game
  */
-public class PuzzleGame implements Serializable{
+public class PuzzleGame implements Serializable {
+	//puzzle identification
+	private int id;
 	//required for saving
 	private static final long serialVersionUID = 1L;
 	//sizeRow and sizeCol keeps track of the size of the board
@@ -35,13 +37,27 @@ public class PuzzleGame implements Serializable{
     private MoveState initialState;
     private int moves;
 
-
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
 	 * @param sizeRow, the number of rows in the board
 	 * @param sizeCol, the number of columns in the board
 	 */
+    public PuzzleGame(int id, int sizeRow, int sizeCol, int exitRow, int exitCol) {
+    	this.id = id;
+        this.sizeRow = sizeRow;
+        this.sizeCol = sizeCol;
+        this.exitRow = exitRow;
+        this.exitCol = exitCol;
+        this.vehicleMap = new HashMap<>();
+        this.undo = new Stack<>();
+        this.redo = new Stack<>();
+        this.initBoard();
+        this.moves = 0;
+		this.minMoves = 0;
+    }
+
     public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol) {
+    	this.id = 0;
         this.sizeRow = sizeRow;
         this.sizeCol = sizeCol;
         this.exitRow = exitRow;
@@ -405,6 +421,14 @@ public class PuzzleGame implements Serializable{
 	
 	public void setMinMoves(int minMoves) {
 		this.minMoves = minMoves;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	@Override
