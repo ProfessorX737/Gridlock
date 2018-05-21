@@ -13,6 +13,12 @@ public interface PuzzleGenerator {
 	public PuzzleGame generatePuzzle(int minMoves) throws Exception;
 	
 	/**
+	 * Super easy puzzle
+	 * @return
+	 */
+	public PuzzleGame generateVeryEasyPuzzle();
+	
+	/**
 	 * Generate a 6x6 board with random exit that takes around 15 moves to solve.
 	 * @return
 	 */

@@ -1,18 +1,20 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Represent the current board of the game
  */
-public class PuzzleGame {
+public class PuzzleGame implements Serializable{
+	//required for saving
+	private static final long serialVersionUID = 1L;
 	//sizeRow and sizeCol keeps track of the size of the board
 	private int sizeRow;
 	private int sizeCol;
@@ -32,6 +34,7 @@ public class PuzzleGame {
     private Stack<MoveState> redo;
     private MoveState initialState;
     private int moves;
+
 
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
@@ -66,7 +69,7 @@ public class PuzzleGame {
 		for(Vehicle v : this.vehicleMap.values()) {
 			this.fillVehicleSpace(v, v.getID());
 		}
-		//this.minMoves
+		this.minMoves = 0;
 	}
 
 	/**
