@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class PuzzleGeneratorAStar implements PuzzleGenerator {
 	//number of difficulty levels that can be generated
-    public static final int NUM_LEVELS = 6;
+    public static final int NUM_LEVELS = 3;
     //limit of how many tries to generate board
     private static final int TRIES_LIMIT = 1000;
     //default values
@@ -63,7 +63,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 						puzzleManager.addNewPuzzle(i, puzzle);
 						canAdd[i] = false;
 						numLeft[i]--;
-						System.out.printf("%d%n", i);
+						System.out.printf("%d%n",i);
 					}
 				}
 				int lastIndex = NUM_LEVELS-1;
@@ -71,8 +71,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 					puzzleManager.addNewPuzzle(lastIndex, puzzle);
 					canAdd[lastIndex] = false;
 					numLeft[lastIndex]--;
-					puzzle.showBoard();
-					System.out.printf("%d%n", lastIndex);
+					System.out.printf("%d%n",lastIndex);
 				}
 				
 			}

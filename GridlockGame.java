@@ -1,9 +1,14 @@
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Automatically loads the puzzles when instance of GridlockGame is created
+ * @author Xavier Poon
+ *
+ */
 public class GridlockGame {
 	PuzzleGenerator puzzleGenerator;
-	PuzzleManager puzzleManger;
+	PuzzleManager puzzleManager;
 	FileSystem fileSys;
 	private final static int MAX_PUZZLES_PER_LEVEL = 10;
 	private final static String MAIN_FOLDER_NAME = "src/puzzles/";
@@ -12,15 +17,25 @@ public class GridlockGame {
 	public GridlockGame() {
 		FileSystem fileSys = new FileSystemImp();
 		this.puzzleGenerator = new PuzzleGeneratorAStar();
-		this.puzzleManger = new PuzzleManager(PuzzleGeneratorAStar.NUM_LEVELS);
+		this.puzzleManager = new PuzzleManager(PuzzleGeneratorAStar.NUM_LEVELS);
 		for(int i = 0; i < PuzzleGeneratorAStar.NUM_LEVELS; i++) {
 			for(PuzzleGame puzzle : fileSys.loadPuzzlesFromFolder(MAIN_FOLDER_NAME + LEVEL_NAMES[i])) {
-				this.puzzleManger.addExistingPuzzle(i, puzzle);
+				this.puzzleManager.addExistingPuzzle(i, puzzle);
 			}
 		}
 	}
 	public void generatePuzzles() {
-		this.puzzleGenerator.generateAndAddPuzzles(this.puzzleManger, MAX_PUZZLES_PER_LEVEL);
+		this.puzzleGenerator.generateAndAddPuzzles(this.puzzleManager, MAX_PUZZLES_PER_LEVEL);
 	}
-
+	public PuzzleGame getPuzzle(int level, int puzzleId) {
+		return this.puzzleManager.getPuzzle(level, puzzleId);
+	}
+	public List<PuzzleGame> getPuzzles(int level) {
+		return this.puzzleManager.getPuzzles(level);
+	}
+	public void savePuzzles() {
+		for(int i = 0; i < PuzzleGeneratorAStar.NUM_LEVELS; i++) {
+			fileSys.savePuzzlesToFolder(this.puzzleManager.getPuzzles(i), MAIN_FOLDER_NAME + LEVEL_NAMES[i]);
+		}
+	}
 }

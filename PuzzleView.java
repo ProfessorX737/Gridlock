@@ -23,8 +23,6 @@ public class PuzzleView extends JPanel {
         this.vehicles = new HashMap<>();
         this.setBackground(Color.white);
         this.updateSize(this.cellLength);
-
-
     }
 
     public void updateSize(int cellLength){
@@ -33,6 +31,7 @@ public class PuzzleView extends JPanel {
         this.width = puzzleGame.getNumCols() * this.cellLength;
         this.height = puzzleGame.getNumRows() * this.cellLength;
         this.setPreferredSize(new Dimension(this.width, this.height));
+        this.setSize(new Dimension(this.width, this.height));
         this.removeAll();
         this.vehicles.clear();
         for (Vehicle v : puzzleGame.getVehicles()) {
@@ -46,7 +45,7 @@ public class PuzzleView extends JPanel {
             }
             dc.setPreferredSize(new Dimension(vWidth, vHeight));
             dc.setBackground(v.getColor());
-            dc.setBorder(new LineBorder(Color.black, 2));
+            dc.setBorder(new LineBorder(Color.white, 2));
             dc.setBounds(v.getCol() * this.cellLength, v.getRow() * this.cellLength, vWidth, vHeight);
             this.vehicles.put(v.getID(), dc);
             this.add(dc);

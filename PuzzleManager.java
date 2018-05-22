@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class PuzzleManager {
@@ -51,7 +52,7 @@ public class PuzzleManager {
 	}
 
 	public List<PuzzleGame> getPuzzles(int typeIndex) {
-		return (List<PuzzleGame>) this.puzzles[typeIndex].values();
+		return new ArrayList<>(this.puzzles[typeIndex].values());
 	}
 	
 	/**
@@ -63,19 +64,6 @@ public class PuzzleManager {
 	public PuzzleGame getPuzzle(int typeIndex, int puzzleId) {
 		if(this.puzzles[typeIndex].containsKey(puzzleId)) {
 			return this.puzzles[typeIndex].get(puzzleId);
-		}
-		return null;
-	}
-
-	/**
-	 * @param puzzleId
-	 * @return the puzzle with the puzzleId or null of puzzleId does not exist
-	 */
-	public PuzzleGame getPuzzle(int puzzleId) {
-		for(int i = 0; i < this.numPuzzleTypes; i++) {
-			if(this.puzzles[i].containsKey(puzzleId)) {
-				return this.puzzles[i].get(puzzleId);
-			}
 		}
 		return null;
 	}
