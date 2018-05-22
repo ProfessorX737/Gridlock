@@ -9,10 +9,15 @@ public class GridLock {
 	public static void main(String[] args) {
 		JFrame f = new JFrame("GridLock");
 		String fileName = "puzzle1.txt";
-		new MainMenu(f,fileName);
+		f.add(new Animation(f,fileName));
+		f.setSize(400, 400);                       // set the size of the window
+        f.setLocationRelativeTo(null);             // set the window to center of the screen
+        f.setVisible(true);                        // indicate window
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // exit program when click the close button of window
 	}
 	
-	public static void board(JFrame f, String fileName) {
+	public static void board(String fileName) {
+		JFrame f = new JFrame("GridLock");
 		JPanel container = new JPanel();
 		ButtonPanel panelTwo = new ButtonPanel(container, f);
 		

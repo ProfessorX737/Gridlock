@@ -14,7 +14,6 @@ import java.util.Scanner;
 public class RegisterScreen {
 	private static JFrame myFrame;
 	private static JPanel control;
-	private JFrame f;
 	private String fileName;
 	JLabel pageName;
 	JButton Done;
@@ -32,8 +31,7 @@ public class RegisterScreen {
 	JLabel info;
 	boolean correct = true;
 	
-	public RegisterScreen(JFrame f, String fileName) {
-		this.f = f;
+	public RegisterScreen(String fileName) {
 		this.fileName = fileName;
 		
 		myFrame = new JFrame();
@@ -67,7 +65,6 @@ public class RegisterScreen {
         
         Done = new JButton("Done");
         Done.setVerticalTextPosition(AbstractButton.CENTER);
-        Done.setMnemonic(KeyEvent.VK_P);
         Done.setActionCommand("Done");
         Done.setBounds(160,250,80,30);
         Done.setIcon(bg);
@@ -75,7 +72,6 @@ public class RegisterScreen {
         
         Exit = new JButton("Exit");
         Exit.setVerticalTextPosition(AbstractButton.CENTER);
-        Exit.setMnemonic(KeyEvent.VK_P);
         Exit.setActionCommand("Start");
         Exit.setBounds(260,250,80,30);
         Exit.setIcon(bg);
@@ -83,7 +79,6 @@ public class RegisterScreen {
         
         Back = new JButton("Back");
         Back.setVerticalTextPosition(AbstractButton.CENTER);
-        Back.setMnemonic(KeyEvent.VK_P);
         Back.setActionCommand("Start");
         Back.setBounds(60,250,80,30);
         Back.setIcon(bg);
@@ -106,7 +101,7 @@ public class RegisterScreen {
             	boolean authenticated = isCorrect(userTxt,passTxt);
             	if (authenticated == true) {
             		JOptionPane.showMessageDialog(myFrame, "Register Successfully!!\n");
-            		new TitleScreen(f,fileName);
+            		new TitleScreen(fileName);
             		myFrame.dispose();
             	} else if (authenticated == false) {
             		//JOptionPane.showMessageDialog(myFrame, "Wrong Username or Password\nPlease try again");
@@ -119,7 +114,7 @@ public class RegisterScreen {
         
         Back.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               new MainMenu(f,fileName);
+               new MainMenu(fileName);
                myFrame.dispose();
             }  
         });

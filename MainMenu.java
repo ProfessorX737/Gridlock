@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class MainMenu {
 	private static JFrame myFrame;
 	private static JPanel control;
-	private JFrame f;
 	private String fileName;
 	JLabel gameName;
 	JButton Login;
@@ -30,8 +29,7 @@ public class MainMenu {
 	JLabel info;
 	boolean correct = false;
 	
-	public MainMenu(JFrame f, String fileName) {
-		this.f = f;
+	public MainMenu(String fileName) {
 		this.fileName = fileName;
 		
 		myFrame = new JFrame();
@@ -68,7 +66,6 @@ public class MainMenu {
         
         Guest = new JButton("Guest");
         Guest.setVerticalTextPosition(AbstractButton.CENTER);
-        Guest.setMnemonic(KeyEvent.VK_P);
         Guest.setActionCommand("Guest");
         Guest.setBounds(160,250,80,30);
         Guest.setIcon(bg);
@@ -76,7 +73,6 @@ public class MainMenu {
         
         Exit = new JButton("Exit");
         Exit.setVerticalTextPosition(AbstractButton.CENTER);
-        Exit.setMnemonic(KeyEvent.VK_P);
         Exit.setActionCommand("Start");
         Exit.setBounds(260,250,80,30);
         Exit.setIcon(bg);
@@ -84,7 +80,6 @@ public class MainMenu {
         
         Login = new JButton("Login");
         Login.setVerticalTextPosition(AbstractButton.CENTER);
-        Login.setMnemonic(KeyEvent.VK_P);
         Login.setActionCommand("Start");
         Login.setBounds(60,250,80,30);
         Login.setIcon(bg);
@@ -93,7 +88,6 @@ public class MainMenu {
         //add a register button 
         register = new JButton("Register");
         register.setVerticalTextPosition(AbstractButton.CENTER);
-        register.setMnemonic(KeyEvent.VK_P);
         register.setActionCommand("Start");
         register.setBounds(260,190,80,30);
         register.setIcon(bg);
@@ -112,7 +106,7 @@ public class MainMenu {
         //add a register action
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               new RegisterScreen(f,fileName);
+               new RegisterScreen(fileName);
                myFrame.dispose();
             }  
         });
@@ -124,7 +118,7 @@ public class MainMenu {
             	boolean authenticated = isCorrect(userTxt,passTxt);
             	if (authenticated == true) {
             		JOptionPane.showMessageDialog(myFrame, "Welcome!!\n");
-            		new TitleScreen(f, fileName);
+            		new TitleScreen(fileName);
             		myFrame.dispose();
             	} else if (authenticated == false) {
             		//JOptionPane.showMessageDialog(myFrame, "Wrong Username or Password\nPlease try again");
@@ -137,7 +131,7 @@ public class MainMenu {
         
         Guest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               new TitleScreen(f, fileName);
+               new TitleScreen(fileName);
                myFrame.dispose();
             }  
         });
@@ -156,9 +150,9 @@ public class MainMenu {
         gameName.setSize(350,100);
         gameName.setBounds(100,100,210,30);
         
-        control.add(register); // eve add register button to JPanel
-        control.add(usernameTit); // eve add user name label to JPanel
-        control.add(passwordTit); // eve add password label to JPanel
+        control.add(register); // add register button to JPanel
+        control.add(usernameTit); // add user name label to JPanel
+        control.add(passwordTit); // add password label to JPanel
         control.add(Guest);
         control.add(Exit);
         control.add(Login);

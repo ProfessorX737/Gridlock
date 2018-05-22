@@ -111,11 +111,10 @@ public class ButtonPanel extends JPanel {
         	 			System.out.println(text);
         	 			// dispose the frame
         	 			f.dispose();
-        	 			// generate a new frame
-        	 			JFrame Newf = new JFrame("GridLock");
+        	 			// get net fileNmae
         	 			String[] s = text.split(" ");;
         	 			String fileName = "puzzle"+s[1]+".txt";
-        	 			GridLock.board(Newf,fileName);
+        	 			new Board(fileName);
         	 		}
          	}
         });   

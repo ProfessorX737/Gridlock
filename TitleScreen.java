@@ -15,12 +15,10 @@ public class TitleScreen extends JPanel implements ActionListener {
 	static JButton instructions;
 	static JButton exit;
 	private static JLabel statusLabel;
-	private JFrame f;
 	private String fileName;
 	JLabel background;
 	
-	public TitleScreen(JFrame f, String fileName) {
-		this.f = f;
+	public TitleScreen(String fileName) {
 		this.fileName = fileName;
 		
 		myFrame = new JFrame();
@@ -48,7 +46,6 @@ public class TitleScreen extends JPanel implements ActionListener {
         
         start = new JButton("Start");
         start.setVerticalTextPosition(AbstractButton.CENTER);
-        start.setMnemonic(KeyEvent.VK_P);
         start.setActionCommand("Start");
         start.setBounds(130,150,130,40);
         start.setIcon(bg);
@@ -56,7 +53,6 @@ public class TitleScreen extends JPanel implements ActionListener {
         
         lvSelect = new JButton("Level Select");
         lvSelect.setVerticalTextPosition(AbstractButton.CENTER);
-        lvSelect.setMnemonic(KeyEvent.VK_P);
         lvSelect.setActionCommand("lvSelect");
         lvSelect.setBounds(130,200,130,40);
         lvSelect.setIcon(bg);
@@ -64,7 +60,6 @@ public class TitleScreen extends JPanel implements ActionListener {
         
         instructions = new JButton("Instructions");
         instructions.setVerticalTextPosition(AbstractButton.CENTER);
-        instructions.setMnemonic(KeyEvent.VK_P);
         instructions.setActionCommand("Instruct");
         instructions.setBounds(130,250,130,40);
         instructions.setIcon(bg);
@@ -72,7 +67,6 @@ public class TitleScreen extends JPanel implements ActionListener {
         
         exit = new JButton("Logout");
         exit.setVerticalTextPosition(AbstractButton.CENTER);
-        exit.setMnemonic(KeyEvent.VK_P);
         exit.setActionCommand("Exit");
         exit.setBounds(130,300,130,40);
         exit.setIcon(bg);
@@ -95,7 +89,8 @@ public class TitleScreen extends JPanel implements ActionListener {
         
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	GridLock.board(f,fileName);
+            	//new Board(fileName);
+            	GridLock.board(fileName);
             	myFrame.dispose();
             }  
         });
@@ -120,7 +115,7 @@ public class TitleScreen extends JPanel implements ActionListener {
         
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	new MainMenu(f, fileName);
+            	new MainMenu(fileName);
             	myFrame.dispose();
             }  
         });
