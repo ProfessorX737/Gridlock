@@ -50,13 +50,20 @@ public class FileSystemImp implements FileSystem {
 	
 	@Override
 	public List<PuzzleGame> loadPuzzlesFromFolder(String folderPath) {
-		List<PuzzleGame> puzzles = new ArrayList<PuzzleGame>();
-		File folder = new File(folderPath);
-		for(File f : folder.listFiles()) {
-			PuzzleGame puzzle = this.loadPuzzleGame(new File(folderPath,f.getName()).getPath());
-			puzzles.add(puzzle);
+		try {
+			List<PuzzleGame> puzzles = new ArrayList<PuzzleGame>();
+			File folder = new File(folderPath).getAbsoluteFile();
+			for(File f : folder.listFiles()) {
+				PuzzleGame puzzle = this.loadPuzzleGame(new File(folderPath,f.getName()).getPath());
+				puzzles.add(puzzle);
+			}
+			return puzzles;
+		} catch(NullPointerException e) {
+			System.out.print("Cannot access folder ");
+			if(folderPath != null) System.out.printf("%s",folderPath);
+			System.out.println("");
 		}
-		return puzzles;
+		return null;
 	}
 	
 	/**

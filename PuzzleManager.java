@@ -1,6 +1,6 @@
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class PuzzleManager {
 	private final int numPuzzleTypes;
@@ -10,9 +10,9 @@ public class PuzzleManager {
 	public PuzzleManager(int numPuzzleTypes) {
 		this.numPuzzleTypes = numPuzzleTypes;
 		this.numPuzzles = 0;
-		puzzles = new HashMap[this.numPuzzleTypes];
+		puzzles = new LinkedHashMap[this.numPuzzleTypes];
 		for(int i = 0; i < this.numPuzzleTypes; i++) {
-			puzzles[i] = new HashMap<>();
+			puzzles[i] = new LinkedHashMap<>();
 		}
 	}
 

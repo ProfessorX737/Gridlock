@@ -151,12 +151,12 @@ public class PuzzleGame implements Serializable {
 	}
 
 	/**
-	 * @pre row < this.sizeRow, col < this.sizeCol
 	 * @param row
 	 * @param col
-	 * @return
+	 * @return true if the current cell is occupied, also returns true if the cell does not exist
 	 */
 	public boolean isOccupied(int row, int col) {
+		if(this.isOutOfBounds(row, col)) return true;
 		if (board[row][col] == -1) {
 			return false;
 		} else {
@@ -184,8 +184,7 @@ public class PuzzleGame implements Serializable {
 		int row = v.getRow() - 1;
 		int col = v.getCol();
 		int numLegal = 0;
-		while(!this.isOutOfBounds(row, col)) {
-			if(this.isOccupied(row,col)) break;
+		while(!this.isOccupied(row, col)) {
 			row--;
 			numLegal++;
 		}
@@ -208,10 +207,7 @@ public class PuzzleGame implements Serializable {
 		int row = v.getRow() + v.getLength();
 		int col = v.getCol();
 		int numLegal = 0;
-		while(!this.isOutOfBounds(row, col)) {
-			if(this.isOccupied(row, col)) {
-				break;
-			}
+		while(!this.isOccupied(row, col)) {
 			row++;
 			numLegal++;
 		}
@@ -234,8 +230,7 @@ public class PuzzleGame implements Serializable {
 		int row = v.getRow();
 		int col = v.getCol() - 1;
 		int numLegal = 0;
-		while(!this.isOutOfBounds(row, col)) {
-			if(this.isOccupied(row, col)) break;
+		while(!this.isOccupied(row, col)) {
 			col--;
 			numLegal++;
 		}
@@ -258,8 +253,7 @@ public class PuzzleGame implements Serializable {
 		int row = v.getRow();
 		int col = v.getCol() + v.getLength();
 		int numLegal = 0;
-		while(!this.isOutOfBounds(row, col)) {
-			if(this.isOccupied(row, col)) break;
+		while(!this.isOccupied(row, col)) {
 			col++;
 			numLegal++;
 		}
@@ -566,27 +560,28 @@ public class PuzzleGame implements Serializable {
 	}
 	
 	public List<Vehicle> getPossibleIntersects() {
-		List<Vehicle> intersects = new ArrayList<>();
+		Set<Vehicle> intersects = new HashSet<>();
 		for(Vehicle v : this.vehicleMap.values()) {
 			intersects.addAll(this.getPossibleIntersects(v.getID()));
 		}
-		return intersects;
+		return new ArrayList<Vehicle>(intersects);
 	}
 	
-	public List<Vehicle> getPossibleIntersects(int vId) {
-		List<Vehicle> intersects = new ArrayList<>();
+	public Set<Vehicle> getPossibleIntersects(int vId) {
+		Set<Vehicle> intersects = new HashSet<>();
 		intersects.addAll(this.getPossibleIntersects(vId, 2));
 		intersects.addAll(this.getPossibleIntersects(vId, 3));
 		return intersects;
 	}
 	
-	public List<Vehicle> getPossibleIntersects(int vId, int vLength) {
-		List<Vehicle> possibleVehicles = new ArrayList<>();
+	public Set<Vehicle> getPossibleIntersects(int vId, int vLength) {
+		Set<Vehicle> possibleVehicles = new HashSet<>();
 		int newId = this.vehicleMap.size();
 		Vehicle v = this.vehicleMap.get(vId);
 		if(v.getIsVertical()) {
 			for(int i = 1; i <= this.canMoveUp(vId); i++) {
 				int row = v.getRow() - i;
+				if(!isClearVerticalPath(row,v.getRow()-1,v.getCol())) break;
 				for(int l = 0; l < vLength; l++) {
 					int col = v.getCol() - l;
 					if(this.canAddVehicle(false, vLength, row, col)) {
@@ -594,8 +589,10 @@ public class PuzzleGame implements Serializable {
 					}
 				}
 			}
+			int rowBelowV = v.getRow() + v.getLength();
 			for(int i = 0; i < this.canMoveDown(vId); i++) {
-				int row = v.getRow() + v.getLength() + i;
+				int row = rowBelowV + i;
+				if(!isClearVerticalPath(rowBelowV,row,v.getCol())) break;
 				for(int l = 0; l < vLength; l++) {
 					int col = v.getCol() - l;
 					if(this.canAddVehicle(false, vLength, row, col)) {
@@ -606,6 +603,7 @@ public class PuzzleGame implements Serializable {
 		} else {
 			for(int i = 1; i <= this.canMoveLeft(vId); i++) {
 				int col = v.getCol() - i;
+				if(!isClearHorizontalPath(col,v.getCol()-1,v.getRow())) break;
 				for(int l = 0; l < vLength; l++) {
 					int row = v.getRow() - l;
 					if(this.canAddVehicle(true, vLength, row, col)) {
@@ -613,8 +611,10 @@ public class PuzzleGame implements Serializable {
 					}
 				}
 			}
+			int colRightOfV = v.getCol() + v.getLength();
 			for(int i = 0; i < this.canMoveRight(vId); i++) {
-				int col = v.getCol() + v.getLength() + i;
+				int col = colRightOfV + i;
+				if(!isClearHorizontalPath(colRightOfV,col,v.getRow())) break;
 				for(int l = 0; l < vLength; l++) {
 					int row = v.getRow() - l;
 					if(this.canAddVehicle(true, vLength, row, col)) {
@@ -624,6 +624,20 @@ public class PuzzleGame implements Serializable {
 			}
 		}
 		return possibleVehicles;
+	}
+	
+	private boolean isClearVerticalPath(int fromRow, int toRow, int col) {
+		for(int i = fromRow; i <= toRow; i++) {
+			if(this.isOccupied(i, col)) return false;
+		}
+		return true;
+	}
+
+	private boolean isClearHorizontalPath(int fromCol, int toCol, int row) {
+		for(int i = fromCol; i <= toCol; i++) {
+			if(this.isOccupied(row, i)) return false;
+		}
+		return true;
 	}
 
     /**

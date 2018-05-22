@@ -104,6 +104,38 @@ public class Vehicle implements Serializable{
 					+ this.col + "," + this.color.toString() + ":";
 		return x;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + col;
+		result = prime * result + (isVertical ? 1231 : 1237);
+		result = prime * result + length;
+		result = prime * result + row;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vehicle other = (Vehicle) obj;
+		if (col != other.col)
+			return false;
+		if (isVertical != other.isVertical)
+			return false;
+		if (length != other.length)
+			return false;
+		if (row != other.row)
+			return false;
+		return true;
+	}
+	
 }
 
 

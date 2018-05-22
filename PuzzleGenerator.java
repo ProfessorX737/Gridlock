@@ -10,6 +10,8 @@ public interface PuzzleGenerator {
 	 * @param moves, the number of moves required to solve the puzzle
 	 * @return
 	 */
+	public void generateAndAddPuzzles(PuzzleManager puzzleManager, int maxPuzzlesPerLevel);
+	
 	public PuzzleGame generatePuzzle(int minMoves) throws Exception;
 	
 	/**
@@ -40,12 +42,12 @@ public interface PuzzleGenerator {
 	 * Generate a 6x6 board with random exit that takes at least 25 moves to solve
 	 * @return
 	 */
-	public PuzzleGame generateSuperHardPuzzle();
+	public PuzzleGame generateVeryHardPuzzle();
 	
 	/**
 	 * Generate a 6x6 board with random exit that takes at least 30 moves to solve.
 	 * @return
 	 */
-	public PuzzleGame generateUltraPuzzle();
+	public PuzzleGame generateUltraHardPuzzle();
 	
 }

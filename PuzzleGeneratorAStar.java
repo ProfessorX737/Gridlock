@@ -1,8 +1,14 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.PriorityQueue;
+import java.util.LinkedList;
 
 /**
  * Generate a puzzle using AStar. 
@@ -16,32 +22,83 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     //default values
     private static final int DEFAULT_BOARD_SIZE = 6;
     private static final int DEFAULT_CAR_LENGTH = 2;
-    private static final int DEFAULT_VERY_EASY_MIN_MOVES = 7;
-    private static final int DEFAULT_EASY_MIN_MOVES = 10;
-    private static final int DEFAULT_MEDIUM_MIN_MOVES = 15;
-    private static final int DEFAULT_HARD_MIN_MOVES = 20;
-    private static final int DEFAULT_SUPER_HARD_MIN_MOVES = 25;
-    private static final int DEFAULT_ULTRA_MIN_MOVES = 30;
+
+    private static final int VERY_EASY = 0;
+    private static final int EASY = 1;
+    private static final int MEDIUM = 2;
+    private static final int HARD = 3;
+    private static final int VERY_HARD = 4;
+    private static final int ULTRA_HARD = 5;
+
+    private static final int[] MIN_MOVES = {7,10,15,20,25,30};
 
     public PuzzleGeneratorAStar() {
     }
     
-//    public void generateAndAddPuzzles(PuzzleManager puzzleManager, int minPuzzlesPerLevel) {
-//    	boolean[] canAdd = new boolean[NUM_LEVELS];
-//    	for(int i = 0; i < NUM_LEVELS; i++) {
-//    		if(puzzleManager.getNumPuzzles(i) < minPuzzlesPerLevel) {
-//    			
-//    		}
-//    	}
-//    }
-//    
-//    private int updateStatus(PuzzleManager puzzleManager, boolean[] canAdd) {
-//    	for(int i = 0; i < NUM_LEVELS; i++) {
-//    		if(canAdd[i] == true) {
-//    		}
-//    	}
-//    }
+    @Override
+    public void generateAndAddPuzzles(PuzzleManager puzzleManager, int maxPuzzlesPerLevel) {
+        int minMoves = 1;
+        int[] numLeft = getNumLeft(puzzleManager, maxPuzzlesPerLevel);
+
+        boolean[] canAdd = new boolean[NUM_LEVELS];
+        for(int i = 0; i < NUM_LEVELS; i++) {
+        	canAdd[i] = true;
+        }
+
+        PuzzleGame puzzle = this.generateRandomStart();
+        while(this.sumNumLeft(numLeft) != 0) {
+            puzzle = mostDifficultAdd(puzzle, minMoves);
+			if (puzzle == null) {
+				// could not find a more difficult puzzle, needs to be restarted
+				minMoves = 0;
+				puzzle = this.generateRandomStart();
+				for(int i = 0; i < NUM_LEVELS; i++) {
+					canAdd[i] = true;
+				}
+			} else {
+				minMoves = puzzle.getMinMoves();
+				
+				for(int i = 0; i < NUM_LEVELS-1; i++) {
+					if(minMoves >= MIN_MOVES[i] && minMoves < MIN_MOVES[i+1] && canAdd[i] == true && numLeft[i] != 0) {
+						puzzleManager.addNewPuzzle(i, puzzle);
+						canAdd[i] = false;
+						numLeft[i]--;
+						System.out.printf("%d%n", i);
+					}
+				}
+				int lastIndex = NUM_LEVELS-1;
+				if(minMoves >= MIN_MOVES[lastIndex] && canAdd[lastIndex] == true && numLeft[lastIndex] != 0) {
+					puzzleManager.addNewPuzzle(lastIndex, puzzle);
+					canAdd[lastIndex] = false;
+					numLeft[lastIndex]--;
+					puzzle.showBoard();
+					System.out.printf("%d%n", lastIndex);
+				}
+				
+			}
+        }
+    }
     
+    private int[] getNumLeft(PuzzleManager puzzleManager, int maxPuzzlesPerLevel) {
+    	int[] numLeft = new int[NUM_LEVELS];
+    	for(int i = 0; i < NUM_LEVELS; i++) {
+    		if(puzzleManager.getNumPuzzles(i) < maxPuzzlesPerLevel) {
+    			numLeft[i] = maxPuzzlesPerLevel - puzzleManager.getNumPuzzles(i);
+    		} else {
+    			numLeft[i] = 0;
+    		}
+    	}
+    	return numLeft;
+    }
+
+    private int sumNumLeft(int[] numLeft) {
+    	int sum = 0;
+    	for(int i = 0; i < NUM_LEVELS; i++) {
+    		sum += numLeft[i];
+    	}
+    	return sum;
+    }
+
     /**
      * Same as generatePuzzle(int,int,int,int,int)
      * Uses default board size
@@ -52,12 +109,36 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      */
 	@Override
     public PuzzleGame generatePuzzle(int minMoves) throws Exception {
-        List<Integer> exit = randomExit(6, 6);
-        int exitRow = exit.get(0);
-        int exitCol = exit.get(1);
-		PuzzleGame puzzle = generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol, minMoves);
+		PuzzleGame puzzle = generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, minMoves);
 		return puzzle;
     }
+	
+	public PuzzleGame generatePuzzle(int width, int height, int minMoves) throws Exception {
+        int movesRequired = 1;
+        int tries = 0;
+        //generate initial puzzle
+        PuzzleGame puzzle = this.generateRandomStart();
+        //Keep generating until we have a suitable puzzle
+        while (movesRequired <= minMoves) {
+            if (tries > TRIES_LIMIT) {
+                //if tries exceeds tries limit then it is too difficult to generate
+            	throw new Exception(String.format("A puzzle cannot be generated on a %dx%d board with a minimum of %d moves", width,height, minMoves));
+            }
+            //add random vehicle
+            PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
+			if (newPuzzle == null) {
+				//couldn't find more difficult puzzle, so restart
+				movesRequired = 0;
+				puzzle = this.generateRandomStart();
+				tries++;
+			} else {
+				//System.out.println("found more difficult puzzle");
+				movesRequired = newPuzzle.getMinMoves();
+				puzzle = newPuzzle;
+			}
+        }
+        return puzzle;
+	}
 
     /**
      * Given the parameters generate a random puzzle using those parameters
@@ -100,6 +181,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
         System.out.printf("min moves: %d%n", puzzle.getMinMoves());
         return puzzle;
     }
+    
 
 
     /**
@@ -134,6 +216,13 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
         return null;
     }
 
+	private PuzzleGame generateRandomStart() {
+        List<Integer> exit = randomExit(6, 6);
+        int exitRow = exit.get(0);
+        int exitCol = exit.get(1);
+        return generateInitialState(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol);
+	}
+
 	/**
 	 * Places the main vehicle in a random place on the map, place it at the end of the map.
 	 * The exit is randomly generated, although max difficulty puzzles might need the exit near the middle
@@ -147,8 +236,11 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 		//Indicates that the exit is on the right of the board
 		boolean isVertical = false;
 		int carRow = exitRow;
+//		Random rand = new Random();
+//		int carCol = rand.nextInt(exitCol - 1);
 		int carCol = 0;
 		puzzle.addVehicle(isVertical, DEFAULT_CAR_LENGTH, carRow, carCol, Color.RED);
+		puzzle.setMinMoves(1);
 		return puzzle;
 	}
 
@@ -211,7 +303,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 	@Override 
 	public PuzzleGame generateVeryEasyPuzzle() {
     	try {
-			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_VERY_EASY_MIN_MOVES);
+			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[VERY_EASY]);
 			return puzzle;
     	} catch(Exception e) {
     		return null;
@@ -221,7 +313,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     @Override
     public PuzzleGame generateEasyPuzzle() {
     	try {
-			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_EASY_MIN_MOVES);
+			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[EASY]);
 			return puzzle;
     	} catch(Exception e) {
     		return null;
@@ -231,7 +323,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     @Override
     public PuzzleGame generateMediumPuzzle() {
     	try {
-			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_MEDIUM_MIN_MOVES);
+			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[MEDIUM]);
 			return puzzle;
     	} catch(Exception e) {
     		return null;
@@ -241,7 +333,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     @Override
     public PuzzleGame generateHardPuzzle() {
     	try {
-			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_HARD_MIN_MOVES);
+			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[HARD]);
 			return puzzle;
     	} catch(Exception e) {
     		return null;
@@ -249,9 +341,9 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     }
 
     @Override
-    public PuzzleGame generateSuperHardPuzzle() {
+    public PuzzleGame generateVeryHardPuzzle() {
     	try {
-			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_SUPER_HARD_MIN_MOVES);
+			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[VERY_HARD]);
 			return puzzle;
     	} catch(Exception e) {
     		return null;
@@ -259,9 +351,9 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     }
     
     @Override
-    public PuzzleGame generateUltraPuzzle() {
+    public PuzzleGame generateUltraHardPuzzle() {
     	try {
-			PuzzleGame puzzle = this.generatePuzzle(DEFAULT_ULTRA_MIN_MOVES);
+			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[ULTRA_HARD]);
 			return puzzle;
     	} catch(Exception e) {
     		return null;
