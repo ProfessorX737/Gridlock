@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 public class LevelEditorImplementation implements LevelEditor{
 	PuzzleGame puzzle;
@@ -26,13 +27,16 @@ public class LevelEditorImplementation implements LevelEditor{
 
 	@Override
 	public boolean isSolvable() {
-		// TODO Auto-generated method stub
-		return false;
+		List<int[][]>puzzleSolved = PuzzleSolver.solve(this.puzzle);
+		if (puzzleSolved == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
 	public boolean canAddVehicle(Vehicle v) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -44,19 +48,18 @@ public class LevelEditorImplementation implements LevelEditor{
 
 	@Override
 	public void addVehicle(Vehicle v) {
-		// TODO Auto-generated method stub
+		puzzle.addVehicle(v);
 		
 	}
 
 	@Override
 	public void addVehicle(boolean isVertical, int length, int row, int col, Color color) {
-		// TODO Auto-generated method stub
+		puzzle.addVehicle(isVertical, length, row, col, color);
 		
 	}
 
 	@Override
 	public void removeVehicleAtLocation(int row, int col) {
-		// TODO Auto-generated method stub
 		
 	}
 
