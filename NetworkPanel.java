@@ -11,6 +11,7 @@ public class NetworkPanel extends JPanel {
     private JButton QuitBtn;
     private JButton SetUserBtn;
     private JButton UpdateBtn;
+    private JButton ForfeitBtn;
     private JLabel UserLabel;
     private JComboBox<String> UserListBox;
     private JTextField UserTxtField;
@@ -30,6 +31,7 @@ public class NetworkPanel extends JPanel {
         WinLabel = new JLabel();
         LossLabel = new JLabel();
         ConnectBtn = new JButton();
+        ForfeitBtn = new JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -45,7 +47,7 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.anchor = GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(UserListBox, gridBagConstraints);
 
         ChallengeBtn.setText("Challenge");
@@ -54,7 +56,7 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.anchor = GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(ChallengeBtn, gridBagConstraints);
 
         SetUserBtn.setText("Set");
@@ -67,7 +69,7 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 4, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 4, 0, 0);
         add(SetUserBtn, gridBagConstraints);
 
         UserTxtField.setText("Username");
@@ -81,7 +83,7 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(UserTxtField, gridBagConstraints);
 
         UpdateBtn.setText("Update");
@@ -89,14 +91,14 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(UpdateBtn, gridBagConstraints);
 
         UserLabel.setText("Username:  ");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(UserLabel, gridBagConstraints);
 
         OnlineUsrLabel.setText("Online Users:  ");
@@ -104,17 +106,17 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridheight = 2;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(OnlineUsrLabel, gridBagConstraints);
 
         QuitBtn.setText("Quit");
         gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 8, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(QuitBtn, gridBagConstraints);
 
         OppoLabel.setText("Playing Against:");
@@ -122,28 +124,37 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(OppoLabel, gridBagConstraints);
 
         WinLabel.setText("Wins: 0");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(WinLabel, gridBagConstraints);
 
         LossLabel.setText("Losses: 0");
         gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         add(LossLabel, gridBagConstraints);
 
         ConnectBtn.setText("Connect To Server");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor =GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new Insets(10, 0, 0, 10);
         add(ConnectBtn, gridBagConstraints);
+
+        ForfeitBtn.setText("Forfeit");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        add(ForfeitBtn, gridBagConstraints);
 
     }
 
@@ -153,6 +164,7 @@ public class NetworkPanel extends JPanel {
         this.UpdateBtn.addActionListener(c.getUpdateBtnListener());
         this.ConnectBtn.addActionListener(c.ConnectBtnListener());
         this.QuitBtn.addActionListener(c.QuitBtnListener());
+        this.ForfeitBtn.addActionListener(c.ForfeitListener());
     }
 
     public static void main(String[] args) {
