@@ -425,12 +425,14 @@ public class PuzzleGame {
         int row;
         int col;
         String colour;
+        int id;
 
         for (Vehicle v: getVehicles()){
             vert = ( v.getIsVertical() ) ? 1 : 0;
             length = v.getLength();
             row = v.getRow();
             col = v.getCol();
+            id = v.getID();
             colour = (v.getColor().getRGB() == Color.RED.getRGB()) ? "red" : "orange" ;
             sb.append("| " + Integer.toString(vert));
             sb.append(" " + Integer.toString(length));
