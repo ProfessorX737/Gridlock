@@ -36,11 +36,7 @@ public class NetworkPanel extends JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         UserListBox.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-//        UserListBox.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                UserListBoxActionPerformed(evt);
-//            }
-//        });
+
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -60,11 +56,7 @@ public class NetworkPanel extends JPanel {
         add(ChallengeBtn, gridBagConstraints);
 
         SetUserBtn.setText("Set");
-//        SetUserBtn.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                SetUserBtnActionPerformed(evt);
-//            }
-//        });
+
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
@@ -73,11 +65,6 @@ public class NetworkPanel extends JPanel {
         add(SetUserBtn, gridBagConstraints);
 
         UserTxtField.setText("Username");
-//        UserTxtField.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                UserTxtFieldActionPerformed(evt);
-//            }
-//        });
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -168,13 +155,26 @@ public class NetworkPanel extends JPanel {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("FrameDemo");
+        JFrame frame = new JFrame("Networking");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         NetworkPanel panel = new NetworkPanel();
+        NetUIController controller = new NetUIController(panel, "localhost", 55555);
+        panel.setController(controller);
 
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    // Username approved, username locked for session
+    public void setUsername(String name){
+        UserTxtField.setEditable(false);
+        UserTxtField.setText(name);
+        SetUserBtn.setEnabled(false);
+    }
+
+    public String getUsername(){
+        return UserTxtField.getText();
     }
 }

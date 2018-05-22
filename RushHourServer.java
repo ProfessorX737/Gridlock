@@ -99,6 +99,8 @@ public class RushHourServer {
 								ClientInfo newInfo = new ClientInfo(username);
 								clients.put(username, newInfo);
 								ConnectionHandler newConn = new ConnectionHandler(newInfo, eventQueue, newClient);
+								os.println("login success \n");
+								os.flush();
 
 								// Should limit how many threads, need one for each active connection right now!
 								System.out.println("Thread created and started for " + username);
