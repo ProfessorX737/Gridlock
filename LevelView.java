@@ -6,32 +6,37 @@ import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 public class LevelView extends JPanel {
-	private int width;
-	private int height;
 	private int puzzleSize;
     private Map<Integer, JButton> buttons;
 
-	public LevelView(List<PuzzleGame> puzzles, int width, int height, int puzzleSize) {
-		this.width = width;
-		this.height = height;
+	public LevelView(List<PuzzleGame> puzzles, int puzzleSize) {
 		this.buttons = new HashMap<>();
 		this.puzzleSize = puzzleSize;
 
-		this.setLayout(new GridLayout(5,2));
-		this.setPreferredSize(new Dimension(this.width, this.height));
+		JPanel main = new JPanel();
+		main.setLayout(new GridLayout(puzzles.size(),1));
+		main.setSize(new Dimension(puzzleSize*3,this.puzzleSize*puzzles.size()));
+        //main.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		
 		for(PuzzleGame puzzle : puzzles) {
-			PuzzleView pv = new PuzzleView(puzzle,this.puzzleSize);
+			PuzzleView pv = new PuzzleView(puzzle,puzzleSize/GridlockGame.DEFAULT_BOARD_SIZE);
 			JButton button = new JButton(" Puzzle " + Integer.toString(puzzle.getId()),this.createImageIcon(pv));
+			button.setHorizontalAlignment(SwingConstants.LEFT);
 			this.buttons.put(puzzle.getId(), button);
-			this.add(button);
+			main.add(button);
 		}
-
+		
+		JScrollPane scroll = new JScrollPane(main);
+		scroll.setPreferredSize(new Dimension(puzzleSize*3,puzzleSize*3));
+		this.add(scroll);
 	}
 	
 	private ImageIcon createImageIcon(JPanel panel) {

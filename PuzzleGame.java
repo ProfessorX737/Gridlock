@@ -69,24 +69,24 @@ public class PuzzleGame implements Serializable {
         this.moves = 0;
 		this.minMoves = 0;
     }
-	/**
-	 * Constructor for the board, when the size of the board and map of vehicles is provided
-	 * @param sizeRow, the number of rows in the board
-	 * @param sizeCol, the number of columns in the board
-	 * @param vehicleMap, a map of all the vehicles on the board
-	 */
-	public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
-		this.sizeRow = sizeRow;
-		this.sizeCol = sizeCol;
-		this.exitRow = exitRow;
-		this.exitCol = exitCol;
-		this.vehicleMap = vehicleMap;//does this work
-		this.initBoard();
-		for(Vehicle v : this.vehicleMap.values()) {
-			this.fillVehicleSpace(v, v.getID());
-		}
-		this.minMoves = 0;
-	}
+//	/**
+//	 * Constructor for the board, when the size of the board and map of vehicles is provided
+//	 * @param sizeRow, the number of rows in the board
+//	 * @param sizeCol, the number of columns in the board
+//	 * @param vehicleMap, a map of all the vehicles on the board
+//	 */
+//	public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
+//		this.sizeRow = sizeRow;
+//		this.sizeCol = sizeCol;
+//		this.exitRow = exitRow;
+//		this.exitCol = exitCol;
+//		this.vehicleMap = vehicleMap;//does this work
+//		this.initBoard();
+//		for(Vehicle v : this.vehicleMap.values()) {
+//			this.fillVehicleSpace(v, v.getID());
+//		}
+//		this.minMoves = 0;
+//	}
 
 	/**
 	 * Copy constructor

@@ -54,10 +54,10 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 				}
 			} else {
 				minMoves = puzzle.getMinMoves();
+				puzzle.initState();
 				
 				for(int i = 0; i < this.numLevels-1; i++) {
 					if(minMoves >= levelMinMoves[i] && minMoves < levelMinMoves[i+1] && canAdd[i] == true && numLeft[i] != 0) {
-						puzzle.initState();
 						puzzleManager.addNewPuzzle(i, puzzle);
 						canAdd[i] = false;
 						numLeft[i]--;
@@ -66,7 +66,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 				}
 				int lastIndex = this.numLevels-1;
 				if(minMoves >= levelMinMoves[lastIndex] && canAdd[lastIndex] == true && numLeft[lastIndex] != 0) {
-					puzzle.initState();
 					puzzleManager.addNewPuzzle(lastIndex, puzzle);
 					canAdd[lastIndex] = false;
 					numLeft[lastIndex]--;
