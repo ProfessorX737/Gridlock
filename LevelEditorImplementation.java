@@ -18,13 +18,13 @@ public class LevelEditorImplementation implements LevelEditor{
 
 	@Override
 	public PuzzleGame loadSavedLevel(String filename) {
-		FileSystem f = new FileSystemImplementation();
+		FileSystem f = new FileSystemImp();
 		return f.loadPuzzleGame(filename);
 	}
 
 	@Override
 	public void saveLevel(String filename) {
-		FileSystem f = new FileSystemImplementation();
+		FileSystem f = new FileSystemImp();
 		f.savePuzzleGame(puzzle, filename);
 	}
 

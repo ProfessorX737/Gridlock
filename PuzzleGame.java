@@ -47,7 +47,7 @@ public class PuzzleGame implements Serializable {
     		this.redo = new Stack<>();
     		this.initBoard();
     		this.moves = 0;
-    		this.requiredToSolve = 0;
+    		this.minMoves= 0;
     }
 
 	/**
