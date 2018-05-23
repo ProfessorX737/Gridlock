@@ -76,7 +76,7 @@ public class RushHourServerEV extends Thread{
     private void getList(String username){
         StringBuilder builder = new StringBuilder("userList ");
         for (String names : userList.keySet()){
-            builder.append(names + "| ");
+            builder.append(names + " ");
         }
 
         String result = builder.toString();

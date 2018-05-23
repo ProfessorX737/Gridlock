@@ -177,4 +177,13 @@ public class NetworkPanel extends JPanel {
     public String getUsername(){
         return UserTxtField.getText();
     }
+
+    public void setUserListBox(String[] users){
+        UserListBox.setModel(new DefaultComboBoxModel<>(users));
+    }
+
+    public String getOpponentName(){
+        return (String) UserListBox.getEditor().getItem();
+    }
+
 }
