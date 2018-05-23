@@ -40,6 +40,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     public ActionListener getChallengeBtnListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                System.out.println(" THIS IS OPPONENT's NAME" + np.getOpponentName());
                 message("challenge " + username + " " + np.getOpponentName());
                 createDialogBox("You have challenged" + np.getOpponentName());
             }
@@ -224,6 +225,10 @@ public class NetUIController implements NetworkUIController, Runnable{
 
             case "declined":
                 declined(message);
+                break;
+
+            case "puzzle":
+                displayPuzzle(message);
 
             default:
                 break;
@@ -282,6 +287,7 @@ public class NetUIController implements NetworkUIController, Runnable{
 
     private void displayPuzzle(String message){
         // Create the puzzle
+        System.out.println(message);
     }
 
     private void createDialogBox(String message){

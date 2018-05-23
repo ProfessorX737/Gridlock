@@ -16,6 +16,7 @@ public class NetworkPanel extends JPanel {
     private JComboBox<String> UserListBox;
     private JTextField UserTxtField;
     private JLabel WinLabel;
+    private String currentOppo;
     public NetworkPanel(){
         GridBagConstraints gridBagConstraints;
 
@@ -180,10 +181,11 @@ public class NetworkPanel extends JPanel {
 
     public void setUserListBox(String[] users){
         UserListBox.setModel(new DefaultComboBoxModel<>(users));
+        currentOppo = users[0];
     }
 
     public String getOpponentName(){
-        return (String) UserListBox.getEditor().getItem();
+        return (String) UserListBox.getSelectedItem();
     }
 
     public void resetPlayingAgainst(){
