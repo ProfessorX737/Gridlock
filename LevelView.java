@@ -36,7 +36,6 @@ public class LevelView extends JPanel {
 	}
 	
 	private ImageIcon createImageIcon(JPanel panel) {
-		System.out.printf("%d,%d%n", panel.getWidth(), panel.getHeight());
 		BufferedImage image = new BufferedImage(panel.getWidth(),panel.getHeight(),BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = image.createGraphics();
 		panel.paint(g);

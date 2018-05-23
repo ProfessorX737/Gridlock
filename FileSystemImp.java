@@ -18,10 +18,17 @@ public class FileSystemImp implements FileSystem {
 	}
 	
 	@Override
-	public void savePuzzlesToFolder(List<PuzzleGame> puzzles, String folderName) {
-		File folder = new File(folderName);
-		for(PuzzleGame puzzle : puzzles) {
-			this.savePuzzleGame(puzzle, new File(folder,folder + String.format("%d", puzzle.getId())).getPath());
+	public void savePuzzlesToFolder(List<PuzzleGame> puzzles, String folderPath) {
+		try {
+			File folder = new File(folderPath);
+			for(PuzzleGame puzzle : puzzles) {
+				File file = new File(folderPath, folder.getName() + String.format("%d", puzzle.getId()));
+				this.savePuzzleGame(puzzle, file.getPath());
+			}
+		} catch(NullPointerException e) {
+			System.out.print("Cannot access folder ");
+			if(folderPath != null) System.out.printf("%s",folderPath);
+			System.out.println("");
 		}
 	}
 	/**
@@ -33,9 +40,8 @@ public class FileSystemImp implements FileSystem {
 	public void savePuzzleGame(PuzzleGame puzzle, String filename) {
 		SaveFile f = new SaveFile(puzzle, filename);
 		try {
-			FileOutputStream fileOutput = new FileOutputStream(new File(filename + ".sav"));
+			FileOutputStream fileOutput = new FileOutputStream(filename + ".sav");
 			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
-			
 			//write save file
 			objectOutput.writeObject(f);
 			
@@ -52,9 +58,9 @@ public class FileSystemImp implements FileSystem {
 	public List<PuzzleGame> loadPuzzlesFromFolder(String folderPath) {
 		try {
 			List<PuzzleGame> puzzles = new ArrayList<PuzzleGame>();
-			File folder = new File(folderPath).getAbsoluteFile();
+			File folder = new File(folderPath);
 			for(File f : folder.listFiles()) {
-				PuzzleGame puzzle = this.loadPuzzleGame(new File(folderPath,f.getName()).getPath());
+				PuzzleGame puzzle = this.loadPuzzleGame(f.getPath());
 				puzzles.add(puzzle);
 			}
 			return puzzles;
@@ -75,7 +81,7 @@ public class FileSystemImp implements FileSystem {
 	@Override
 	public PuzzleGame loadPuzzleGame(String filename) {
 		try {
-			FileInputStream fileInput = new FileInputStream(new File(filename + ".sav"));
+			FileInputStream fileInput = new FileInputStream(filename);
 			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 			
 			//reading save file from file
@@ -94,34 +100,4 @@ public class FileSystemImp implements FileSystem {
 		}
 		return null;
 	}
-	
-    /**
-     * Get list of games that have been saved
-     * @return
-     */
-	public List<String> getSaveGameList() {
-    		List<String> fileList = new ArrayList<String>();
-    		File folder = new File("").getAbsoluteFile();
-    		for (File f : folder.listFiles()) {
-    			if (f.getName().endsWith(".sav")) {
-				fileList.add(f.getName());
-    			}
-    		}
-		return fileList;
-    }
-
-    /**
-     * Get list of games that have been saved
-     * @return
-     */
-	public List<String> getFileListFromFolder(String folderPath) {
-    		List<String> fileList = new ArrayList<String>();
-    		File folder = new File(folderPath).getAbsoluteFile();
-    		for (File f : folder.listFiles()) {
-    			if (f.getName().endsWith(".sav")) {
-				fileList.add(f.getName());
-    			}
-    		}
-		return fileList;
-    }
 }

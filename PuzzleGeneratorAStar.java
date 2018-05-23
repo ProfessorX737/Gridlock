@@ -16,32 +16,35 @@ import java.util.LinkedList;
  */
 public class PuzzleGeneratorAStar implements PuzzleGenerator {
 	//number of difficulty levels that can be generated
-    public static final int NUM_LEVELS = 3;
+    private final int numLevels;
     //limit of how many tries to generate board
+    private final int[] levelMinMoves;
+    private final int boardSize;
+    private final int carLength;
     private static final int TRIES_LIMIT = 1000;
-    //default values
-    private static final int DEFAULT_BOARD_SIZE = 6;
-    private static final int DEFAULT_CAR_LENGTH = 2;
-
-    private static final int VERY_EASY = 0;
-    private static final int EASY = 1;
-    private static final int MEDIUM = 2;
-    private static final int HARD = 3;
-    private static final int VERY_HARD = 4;
-    private static final int ULTRA_HARD = 5;
-
-    private static final int[] MIN_MOVES = {7,10,15,20,25,30};
 
     public PuzzleGeneratorAStar() {
+    	this.levelMinMoves = GridlockGame.LEVEL_MIN_MOVES;
+    	this.numLevels = GridlockGame.NUM_LEVELS;
+    	this.boardSize = GridlockGame.DEFAULT_BOARD_SIZE;
+    	this.carLength = GridlockGame.DEFAULT_CAR_LENGTH;
     }
+
+    public PuzzleGeneratorAStar(int numLevels, int[] levelMinMoves, int boardSize, int carLength) {
+    	this.levelMinMoves = levelMinMoves;
+    	this.numLevels = numLevels;
+    	this.boardSize = boardSize;
+    	this.carLength = carLength;
+    }
+
     
     @Override
     public void generateAndAddPuzzles(PuzzleManager puzzleManager, int maxPuzzlesPerLevel) {
         int minMoves = 1;
         int[] numLeft = getNumLeft(puzzleManager, maxPuzzlesPerLevel);
 
-        boolean[] canAdd = new boolean[NUM_LEVELS];
-        for(int i = 0; i < NUM_LEVELS; i++) {
+        boolean[] canAdd = new boolean[this.numLevels];
+        for(int i = 0; i < this.numLevels; i++) {
         	canAdd[i] = true;
         }
 
@@ -52,22 +55,24 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 				// could not find a more difficult puzzle, needs to be restarted
 				minMoves = 0;
 				puzzle = this.generateRandomStart();
-				for(int i = 0; i < NUM_LEVELS; i++) {
+				for(int i = 0; i < this.numLevels; i++) {
 					canAdd[i] = true;
 				}
 			} else {
 				minMoves = puzzle.getMinMoves();
 				
-				for(int i = 0; i < NUM_LEVELS-1; i++) {
-					if(minMoves >= MIN_MOVES[i] && minMoves < MIN_MOVES[i+1] && canAdd[i] == true && numLeft[i] != 0) {
+				for(int i = 0; i < this.numLevels-1; i++) {
+					if(minMoves >= levelMinMoves[i] && minMoves < levelMinMoves[i+1] && canAdd[i] == true && numLeft[i] != 0) {
+						puzzle.initState();
 						puzzleManager.addNewPuzzle(i, puzzle);
 						canAdd[i] = false;
 						numLeft[i]--;
 						System.out.printf("%d%n",i);
 					}
 				}
-				int lastIndex = NUM_LEVELS-1;
-				if(minMoves >= MIN_MOVES[lastIndex] && canAdd[lastIndex] == true && numLeft[lastIndex] != 0) {
+				int lastIndex = this.numLevels-1;
+				if(minMoves >= levelMinMoves[lastIndex] && canAdd[lastIndex] == true && numLeft[lastIndex] != 0) {
+					puzzle.initState();
 					puzzleManager.addNewPuzzle(lastIndex, puzzle);
 					canAdd[lastIndex] = false;
 					numLeft[lastIndex]--;
@@ -79,8 +84,8 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
     }
     
     private int[] getNumLeft(PuzzleManager puzzleManager, int maxPuzzlesPerLevel) {
-    	int[] numLeft = new int[NUM_LEVELS];
-    	for(int i = 0; i < NUM_LEVELS; i++) {
+    	int[] numLeft = new int[this.numLevels];
+    	for(int i = 0; i < this.numLevels; i++) {
     		if(puzzleManager.getNumPuzzles(i) < maxPuzzlesPerLevel) {
     			numLeft[i] = maxPuzzlesPerLevel - puzzleManager.getNumPuzzles(i);
     		} else {
@@ -92,7 +97,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 
     private int sumNumLeft(int[] numLeft) {
     	int sum = 0;
-    	for(int i = 0; i < NUM_LEVELS; i++) {
+    	for(int i = 0; i < this.numLevels; i++) {
     		sum += numLeft[i];
     	}
     	return sum;
@@ -108,7 +113,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      */
 	@Override
     public PuzzleGame generatePuzzle(int minMoves) throws Exception {
-		PuzzleGame puzzle = generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, minMoves);
+		PuzzleGame puzzle = generatePuzzle(this.boardSize, this.boardSize, minMoves);
 		return puzzle;
     }
 	
@@ -219,7 +224,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
         List<Integer> exit = randomExit(6, 6);
         int exitRow = exit.get(0);
         int exitCol = exit.get(1);
-        return generateInitialState(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol);
+        return generateInitialState(this.boardSize, this.boardSize, exitRow, exitCol);
 	}
 
 	/**
@@ -238,7 +243,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 //		Random rand = new Random();
 //		int carCol = rand.nextInt(exitCol - 1);
 		int carCol = 0;
-		puzzle.addVehicle(isVertical, DEFAULT_CAR_LENGTH, carRow, carCol, Color.RED);
+		puzzle.addVehicle(isVertical, this.carLength, carRow, carCol, Color.RED);
 		puzzle.setMinMoves(1);
 		return puzzle;
 	}
@@ -298,75 +303,14 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 
 		return mergedPuzzle;
 	}
-	
-	@Override 
-	public PuzzleGame generateVeryEasyPuzzle() {
-    	try {
-			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[VERY_EASY]);
-			return puzzle;
-    	} catch(Exception e) {
-    		return null;
-    	}
-	}
-
-    @Override
-    public PuzzleGame generateEasyPuzzle() {
-    	try {
-			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[EASY]);
-			return puzzle;
-    	} catch(Exception e) {
-    		return null;
-    	}
-    }
-
-    @Override
-    public PuzzleGame generateMediumPuzzle() {
-    	try {
-			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[MEDIUM]);
-			return puzzle;
-    	} catch(Exception e) {
-    		return null;
-    	}
-    }
-
-    @Override
-    public PuzzleGame generateHardPuzzle() {
-    	try {
-			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[HARD]);
-			return puzzle;
-    	} catch(Exception e) {
-    		return null;
-    	}
-    }
-
-    @Override
-    public PuzzleGame generateVeryHardPuzzle() {
-    	try {
-			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[VERY_HARD]);
-			return puzzle;
-    	} catch(Exception e) {
-    		return null;
-    	}
-    }
-    
-    @Override
-    public PuzzleGame generateUltraHardPuzzle() {
-    	try {
-			PuzzleGame puzzle = this.generatePuzzle(MIN_MOVES[ULTRA_HARD]);
-			return puzzle;
-    	} catch(Exception e) {
-    		return null;
-    	}
-    }
-    
     
     public PuzzleGame generateMergedPuzzle(int numToMerge, int minMovesPerPuzzle) throws Exception {
         List<Integer> exit = randomExit(6, 6);
         int exitRow = exit.get(0);
         int exitCol = exit.get(1);
-        PuzzleGame mainPuzzle = this.generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol, minMovesPerPuzzle);
+        PuzzleGame mainPuzzle = this.generatePuzzle(this.boardSize, this.boardSize, exitRow, exitCol, minMovesPerPuzzle);
         for(int i = 0; i < numToMerge; i++) {
-        	PuzzleGame puzzle = this.generatePuzzle(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE, exitRow, exitCol, minMovesPerPuzzle); 
+        	PuzzleGame puzzle = this.generatePuzzle(this.boardSize, this.boardSize, exitRow, exitCol, minMovesPerPuzzle); 
         	mainPuzzle = this.puzzleMerge(mainPuzzle, puzzle);
         }
         return mainPuzzle;

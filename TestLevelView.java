@@ -11,9 +11,11 @@ public class TestLevelView {
         
         
     	GridlockGame game = new GridlockGame();
+    	System.out.printf("size of firt level: %d%n",game.getPuzzles(GridlockGame.ULTRA_HARD).size());
     	game.generatePuzzles();
+    	game.savePuzzles();
     	
-    	LevelView lv = new LevelView(game.getPuzzles(2),300,500,10);
+    	LevelView lv = new LevelView(game.getPuzzles(GridlockGame.ULTRA_HARD),300,500,10);
 
         f.add(lv, BorderLayout.CENTER);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
