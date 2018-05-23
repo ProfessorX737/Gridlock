@@ -94,8 +94,14 @@ public class LevelEditorImplementation implements LevelEditor{
 			int currLength = puzzle.getVehicle(id).getLength();
 
 			if (currIsVertical != isVertical) {
-				if (puzzle.canAddVehicle(isVertical, currLength, currRow, currCol)) {
-					puzzle.changeIsVertical(id, isVertical);
+				if (isVertical == true) {
+					if (puzzle.canAddVehicle(isVertical, currLength - 1, currRow + 1, currCol)) {
+						puzzle.changeIsVertical(id, isVertical);
+					}
+				} else {
+					if (puzzle.canAddVehicle(isVertical, currLength - 1, currRow, currCol + 1)) {
+						puzzle.changeIsVertical(id, isVertical);
+					}
 				}
 			}
 		}
