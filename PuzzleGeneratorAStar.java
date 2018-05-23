@@ -1,14 +1,8 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Queue;
-import java.util.PriorityQueue;
-import java.util.LinkedList;
 
 /**
  * Generate a puzzle using AStar. 
@@ -50,7 +44,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 
         PuzzleGame puzzle = this.generateRandomStart();
         while(this.sumNumLeft(numLeft) != 0) {
-            puzzle = mostDifficultAdd(puzzle, minMoves);
+            puzzle = getMoreDifficultPuzzle(puzzle, minMoves);
 			if (puzzle == null) {
 				// could not find a more difficult puzzle, needs to be restarted
 				minMoves = 0;
@@ -129,7 +123,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
             	throw new Exception(String.format("A puzzle cannot be generated on a %dx%d board with a minimum of %d moves", width,height, minMoves));
             }
             //add random vehicle
-            PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
+            PuzzleGame newPuzzle = getMoreDifficultPuzzle(puzzle, movesRequired);
 			if (newPuzzle == null) {
 				//couldn't find more difficult puzzle, so restart
 				movesRequired = 0;
@@ -168,7 +162,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
             	throw new Exception(String.format("A puzzle cannot be generated on a %dx%d board with a minimum of %d moves", width,height,moves));
             }
             //add random vehicle
-            PuzzleGame newPuzzle = mostDifficultAdd(puzzle, movesRequired);
+            PuzzleGame newPuzzle = getMoreDifficultPuzzle(puzzle, movesRequired);
 			if (newPuzzle == null) {
 				//couldn't find more difficult puzzle, so restart
 				movesRequired = 0;
@@ -195,7 +189,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      * @param puzzle
      * @param currentMoves, number of moves required to solve the current puzzle
      */
-    private PuzzleGame mostDifficultAdd(PuzzleGame puzzle, int currentMoves) {
+    private PuzzleGame getMoreDifficultPuzzle(PuzzleGame puzzle, int currentMoves) {
         //get all possible location for the vehicle
         //List<Vehicle> possibleVehicle = puzzle.getPossibleVehicle();
         List<Vehicle> possibleVehicle = puzzle.getPossibleIntersects();
