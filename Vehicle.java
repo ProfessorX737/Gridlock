@@ -7,9 +7,9 @@ public class Vehicle {
 	private int id;
 	private final boolean isVertical;
 	private final int length;
-	private Color color;
 	private int row;
 	private int col;
+	private boolean main;
 	/**
 	 * Constructor for vehicles, takes the parameters
 	 * @post 
@@ -18,15 +18,15 @@ public class Vehicle {
 	 * @param length, length of the vehicle, must be positive
 	 * @param row, row coordinate
 	 * @param col, column coordinate
-	 * @param color, color of the car
+	 * @param main, true if the block is the main block, false if otherwise
 	 */
-	public Vehicle(int id, boolean isVertical, int length, int row, int col, Color color) {
+	public Vehicle(int id, boolean isVertical, int length, int row, int col, boolean main) {
 		this.id = id;
 		this.isVertical = isVertical;
 		this.length = length;
 		this.row = row;
 		this.col = col;
-		this.color = color;
+		this.main = main;
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class Vehicle {
 		this.length = v.length;
 		this.row = v.row;
 		this.col = v.col;
-		this.color = v.color;
+		this.main = v.main;
 	}
 	
 	/**
@@ -49,15 +49,7 @@ public class Vehicle {
 	public void setID(int ID) {
 		this.id = ID;
 	}
-	
-	/**
-	 * Set the color of the vehicle
-	 * @param color
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
+
 	public int getID() {
 		return id;
 	}
@@ -70,10 +62,7 @@ public class Vehicle {
 		return length;
 	}
 	
-	public Color getColor() {
-		return color;
-	}
-	
+
 	public int getRow() {
 		return this.row;
 	}
@@ -81,6 +70,8 @@ public class Vehicle {
 	public int getCol() {
 		return this.col;
 	}
+
+	public boolean getMain(){return this.main;}
 	
 	public void setPos(int row, int col) {
 		this.row = row;

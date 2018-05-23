@@ -80,11 +80,13 @@ public class GridLock {
 
         ButtonPanel bp = new ButtonPanel();
         SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
+        BorderedPuzzleView borderedPuzzleView = new BorderedPuzzleView(pv);
         // bp.setController(bc);
         // pc.setButtonController(bc);
         // pv.setController(bc.getMouseAdapter());
-        GameView gameView = new GameView(bp, bc, pv, pc);
-        GameController gameController = new GameController(gameView, pc);
+        GameView gameView = new GameView(bp, bc, pv, pc, borderedPuzzleView);
+        BorderedPuzzleController borderedPuzzleController = new BorderedPuzzleController(borderedPuzzleView);
+        GameController gameController = new GameController(gameView, borderedPuzzleController);
         // f.setMinimumSize(new Dimension(450, 300));
 
 
@@ -102,8 +104,10 @@ public class GridLock {
 //		container.add(bp);
 //
 //		f.add(container);
+//        f.add(pv);
         f.add(gameView);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        f.add(new BorderedPuzzleView(pv));
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.pack();
         System.out.println(gameView.getSize());
         f.setMinimumSize(new Dimension(gameView.getWidth(), gameView.getHeight() + 23));

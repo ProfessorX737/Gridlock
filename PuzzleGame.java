@@ -101,7 +101,6 @@ public class PuzzleGame {
 	 * Check whether the vehicle can be added to the location.
 	 * @param row
 	 * @param col
-	 * @param vehicle
 	 * @return
 	 */
 	public boolean canAddVehicle(boolean isVertical, int length, int row, int col) {
@@ -494,7 +493,7 @@ public class PuzzleGame {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, Color.ORANGE));
+							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, false));
 						}
 					}
 				} else {
@@ -516,7 +515,7 @@ public class PuzzleGame {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, Color.ORANGE));
+							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, false));
 						}
 					}
 				} else {
@@ -535,11 +534,11 @@ public class PuzzleGame {
      * @param length
      * @param row
      * @param col
-     * @param color
+     * @param main
      */
-    public void addVehicle(boolean isVertical, int length, int row, int col, Color color) {
+    public void addVehicle(boolean isVertical, int length, int row, int col, boolean main){
         int id = vehicleMap.size();
-        Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
+        Vehicle v = new Vehicle(id, isVertical, length, row, col, main);
         this.vehicleMap.put(id, v);
         this.fillVehicleSpace(v, id);
     }
@@ -558,7 +557,7 @@ public class PuzzleGame {
         Vehicle v = this.vehicleMap.get(id);
         if (v.getRow() != newRow || v.getCol() != newCol){
             redo.removeAllElements();
-            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap(this.vehicleMap)));
             this.fillVehicleSpace(v, -1);
             v.setPos(newRow, newCol);
             this.fillVehicleSpace(v, id);
@@ -594,8 +593,8 @@ public class PuzzleGame {
      * Resets the board to the starting state
      */
     public void reset() {
-        this.board = initialState.getGameBoard();
-        this.vehicleMap = initialState.getVehicleMap();
+        this.board = copyBoard(initialState.getGameBoard());
+        this.vehicleMap = copyVehicleMap(initialState.getVehicleMap());
         undo.removeAllElements();
         redo.removeAllElements();
         moves = 0;
@@ -607,7 +606,7 @@ public class PuzzleGame {
     public void redo() {
 
         if (!redo.empty()) {
-            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap(this.vehicleMap)));
             MoveState ps = redo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
@@ -620,7 +619,7 @@ public class PuzzleGame {
      */
     public void undo() {
         if (!undo.empty()) {
-            redo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            redo.add(new MoveState(copyBoard(this.board), copyVehicleMap(this.vehicleMap)));
             MoveState ps = undo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
@@ -636,16 +635,16 @@ public class PuzzleGame {
         return copy;
     }
 
-    private Map<Integer, Vehicle> copyVehicleMap() {
+    private Map<Integer, Vehicle> copyVehicleMap(Map<Integer, Vehicle> map) {
         Map<Integer, Vehicle> copy = new HashMap<>();
-        for (Vehicle v : getVehicles()) {
+        for (Vehicle v : map.values()) {
             copy.put(v.getID(), new Vehicle(v));
         }
         return copy;
     }
 
     public void initState() {
-        initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap());
+        initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap(this.vehicleMap));
     }
 
     public int getMoves(){

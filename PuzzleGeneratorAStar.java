@@ -1,6 +1,4 @@
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Generate a puzzle using AStar.
@@ -27,12 +25,11 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      * Given the parameters generate a random puzzle using those parameters
      * It may be impossible to include numVehicles and moves as params as time to generate would be too long
      *
-     * @param width,      the width of the board
-     * @param height,     the height of the board
-     * @param exitRow,    the row which the vehicle can exit
-     * @param exitCol,    the col which the vehicle can exit
-     * @param numVehicle, the number of vehicles on the board
-     * @param move,       the number of moves required to complete the game
+     * @param width,   the width of the board
+     * @param height,  the height of the board
+     * @param exitRow, the row which the vehicle can exit
+     * @param exitCol, the col which the vehicle can exit
+     * @param moves,   the number of moves required to complete the game
      * @return puzzleGame,
      */
     @Override
@@ -157,16 +154,16 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
                 carRow = randomGenerator.nextInt(height);
                 carCol = randomGenerator.nextInt(width - len + 1);
             }
-            if (isVertical == true && carCol != mainCol) {
+            if (isVertical && carCol != mainCol) {
                 //vertical but not in same column
-                if (puzzle.canAddVehicle(isVertical, len, carRow, carCol)) {
-                    puzzle.addVehicle(isVertical, len, carRow, carCol, new Color(col0, col1, col2));
+                if (puzzle.canAddVehicle(true, len, carRow, carCol)) {
+                    puzzle.addVehicle(true, len, carRow, carCol, false);
                     return true;
                 }
-            } else if (isVertical == false && carRow != mainRow) {
+            } else if (!isVertical && carRow != mainRow) {
                 //horizontal but not in same row
-                if (puzzle.canAddVehicle(isVertical, len, carRow, carCol)) {
-                    puzzle.addVehicle(isVertical, len, carRow, carCol, new Color(col0, col1, col2));
+                if (puzzle.canAddVehicle(false, len, carRow, carCol)) {
+                    puzzle.addVehicle(false, len, carRow, carCol, false);
                     return true;
                 }
             }
@@ -211,7 +208,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
             carRow = exitRow;
             carCol = 0;
         }
-        puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, new Color(255, 0, 0));
+        puzzle.addVehicle(isVertical, mainCarLength, carRow, carCol, true);
         return puzzle;
     }
 

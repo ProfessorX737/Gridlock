@@ -3,20 +3,19 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 public class GameListener implements ComponentListener {
-    private PuzzleController puzzleController;
+    private BorderedPuzzleController borderedPuzzleController;
 
-    public GameListener(PuzzleController puzzleController) {
-        this.puzzleController = puzzleController;
+    public GameListener(BorderedPuzzleController borderedPuzzleController) {
+        this.borderedPuzzleController = borderedPuzzleController;
     }
 
     @Override
     public void componentResized(ComponentEvent e) {
-       System.out.println("Game was resized");
        GameView g = (GameView) e.getComponent();
        ButtonPanel b = g.getButtonPanel();
-       b.setPreferredSize(new Dimension(150,g.getHeight()));
-       int newCellSize = Math.min(g.getHeight(), g.getWidth() - 150)/6;
-       puzzleController.resize(newCellSize);
+       int newCellSize = Math.min(g.getHeight(), g.getWidth() - 150)/8;
+        b.setPreferredSize(new Dimension(newCellSize * 3,g.getHeight()));
+       borderedPuzzleController.resize(newCellSize);
 
     }
 

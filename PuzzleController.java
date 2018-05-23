@@ -1,8 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 /**
  * The C in the MVC, controls the board by listening to mouse input and mouse motion input
@@ -126,8 +124,8 @@ public class PuzzleController extends MouseAdapter {
                 this.view.setVehicleLocation(this.currentVehicleID, vc.getX(), row * this.view.getCellLength());
                 this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col);
             } else {
-                this.view.setVehicleLocation(this.currentVehicleID, vc.getX(), (row + 1) * this.view.getCellLength());
-                this.puzzleGame.moveVehicleState(this.currentVehicleID, row + 1, col);
+                this.view.setVehicleLocation(this.currentVehicleID, vc.getX(), row * this.view.getCellLength());
+                this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col);
             }
         } else {
             if (vc.getX() % this.view.getCellLength() <= this.view.getCellLength() / 2) {
@@ -135,8 +133,8 @@ public class PuzzleController extends MouseAdapter {
                 this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col);
                 //System.out.printf("same %d %d%n",row, col);
             } else {
-                this.view.setVehicleLocation(this.currentVehicleID, (col + 1) * this.view.getCellLength(), vc.getY());
-                this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col + 1);
+                this.view.setVehicleLocation(this.currentVehicleID, col * this.view.getCellLength(), vc.getY());
+                this.puzzleGame.moveVehicleState(this.currentVehicleID, row, col);
                 //System.out.printf("next %d %d%n",row, col+1);
             }
         }
