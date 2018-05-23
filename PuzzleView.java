@@ -18,6 +18,7 @@ public class PuzzleView extends JPanel {
     private Map<Integer, JComponent> vehicles;
 
     public PuzzleView(PuzzleGame puzzleGame, int cellLength) {
+        this.setLayout(null);
         this.puzzleGame = puzzleGame;
         this.cellLength = cellLength;
         this.vehicles = new HashMap<>();
@@ -27,7 +28,6 @@ public class PuzzleView extends JPanel {
 
     public void updateSize(int cellLength){
         this.cellLength = cellLength;
-        this.setLayout(null);
         this.width = puzzleGame.getNumCols() * this.cellLength;
         this.height = puzzleGame.getNumRows() * this.cellLength;
         this.setPreferredSize(new Dimension(this.width, this.height));

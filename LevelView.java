@@ -14,16 +14,22 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 public class LevelView extends JPanel {
+	private int width;
+	private int height;
 	private int puzzleSize;
     private Map<Integer, JButton> buttons;
+    
+    public static final int SCROLL_SPEED = 16;
 
-	public LevelView(List<PuzzleGame> puzzles, int puzzleSize) {
+	public LevelView(List<PuzzleGame> puzzles, int width, int height, int puzzleSize) {
+		this.width = width;
+		this.height = height;
 		this.buttons = new HashMap<>();
 		this.puzzleSize = puzzleSize;
 
 		JPanel main = new JPanel();
 		main.setLayout(new GridLayout(puzzles.size(),1));
-		main.setSize(new Dimension(puzzleSize*3,this.puzzleSize*puzzles.size()));
+		main.setSize(new Dimension(this.width,this.puzzleSize*puzzles.size()));
         //main.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		
 		for(PuzzleGame puzzle : puzzles) {
@@ -35,7 +41,9 @@ public class LevelView extends JPanel {
 		}
 		
 		JScrollPane scroll = new JScrollPane(main);
-		scroll.setPreferredSize(new Dimension(puzzleSize*3,puzzleSize*3));
+		scroll.setSize(new Dimension(this.width,this.height));
+		scroll.setPreferredSize(new Dimension(this.width,this.height));
+		scroll.getVerticalScrollBar().setUnitIncrement(SCROLL_SPEED);
 		this.add(scroll);
 	}
 	

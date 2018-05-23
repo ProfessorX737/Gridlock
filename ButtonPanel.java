@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 
 public class ButtonPanel extends JPanel {
 
@@ -21,6 +18,9 @@ public class ButtonPanel extends JPanel {
     private JButton jResetBtn;
     private JLabel jTimeLabel;
     private Timer timer;
+    
+    public static final int WIDTH = 150;
+    public static final int HEIGHT = 300;
 
     public ButtonPanel() {
 

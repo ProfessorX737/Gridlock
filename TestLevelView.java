@@ -26,38 +26,67 @@ public class TestLevelView {
     public static void test3() {
         JFrame f = new JFrame("GridLock");
         f.setLayout(new BorderLayout());
-        f.setLayout(new BorderLayout());
         f.setBackground(Color.BLACK);
-        
         
     	GridlockGame game = new GridlockGame();
     	game.generatePuzzles();
     	game.savePuzzles();
     	
-    	LevelView lv = new LevelView(game.getPuzzles(GridlockGame.ULTRA_HARD),50);
+    	int cellSize = 50;
+    	int height = cellSize * GridlockGame.DEFAULT_BOARD_SIZE;
+    	int width = height + ButtonPanel.WIDTH;
+    	LevelView lv = new LevelView(game.getPuzzles(GridlockGame.ULTRA_HARD),width,height,cellSize);
 
         f.add(lv, BorderLayout.CENTER);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setVisible(true);
     }
-    
-    public static void test1() {
+
+    public static void test4() {
 		JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 
-		JScrollPane scroll = new JScrollPane(new TestPane());
+    	GridlockGame game = new GridlockGame();
+    	game.generatePuzzles();
+    	game.savePuzzles();
+    	
+    	int cellSize = 50;
+    	int height = cellSize * GridlockGame.DEFAULT_BOARD_SIZE;
+    	int width = height + ButtonPanel.WIDTH;
+    	LevelView lv = new LevelView(game.getPuzzles(GridlockGame.ULTRA_HARD),width,height,cellSize);
 
-		frame.add(scroll);
+		BackFrame bframe = new BackFrame("Select Puzzle", lv, 25);
 
-		frame.setSize(500, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		frame.add(bframe,BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void test5() {
+		JFrame frame = new JFrame();
+		frame.setLayout(new BorderLayout());
+
+    	GridlockGame game = new GridlockGame();
+    	game.generatePuzzles();
+    	game.savePuzzles();
+    	
+    	int cellSize = 50;
+    	int height = cellSize * GridlockGame.DEFAULT_BOARD_SIZE;
+    	int width = height + ButtonPanel.WIDTH;
+    	LevelSelect ls = new LevelSelect(width,height);
+
+		BackFrame bframe = new BackFrame("Select Difficulty", ls, 25);
+
+		frame.add(bframe,BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     public static void main(String args[]) {
-    	test3();
+    	test5();
     }
 
 }

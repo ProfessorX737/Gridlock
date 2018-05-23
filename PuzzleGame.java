@@ -670,7 +670,7 @@ public class PuzzleGame implements Serializable {
         Vehicle v = this.vehicleMap.get(id);
         if (v.getRow() != newRow || v.getCol() != newCol){
             redo.removeAllElements();
-            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap(this.vehicleMap)));
             this.fillVehicleSpace(v, -1);
             v.setPos(newRow, newCol);
             this.fillVehicleSpace(v, id);
@@ -706,8 +706,8 @@ public class PuzzleGame implements Serializable {
      * Resets the board to the starting state
      */
     public void reset() {
-        this.board = initialState.getGameBoard();
-        this.vehicleMap = initialState.getVehicleMap();
+        this.board = this.copyBoard(initialState.getGameBoard());
+        this.vehicleMap = this.copyVehicleMap(initialState.getVehicleMap());
         undo.removeAllElements();
         redo.removeAllElements();
         moves = 0;
@@ -719,7 +719,7 @@ public class PuzzleGame implements Serializable {
     public void redo() {
 
         if (!redo.empty()) {
-            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            undo.add(new MoveState(copyBoard(this.board), copyVehicleMap(this.vehicleMap)));
             MoveState ps = redo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
@@ -732,7 +732,7 @@ public class PuzzleGame implements Serializable {
      */
     public void undo() {
         if (!undo.empty()) {
-            redo.add(new MoveState(copyBoard(this.board), copyVehicleMap()));
+            redo.add(new MoveState(copyBoard(this.board), copyVehicleMap(this.vehicleMap)));
             MoveState ps = undo.pop();
             this.board = ps.getGameBoard();
             this.vehicleMap = ps.getVehicleMap();
@@ -748,16 +748,16 @@ public class PuzzleGame implements Serializable {
         return copy;
     }
 
-    private Map<Integer, Vehicle> copyVehicleMap() {
+    private Map<Integer, Vehicle> copyVehicleMap(Map<Integer,Vehicle> map) {
         Map<Integer, Vehicle> copy = new HashMap<>();
-        for (Vehicle v : getVehicles()) {
+        for (Vehicle v : map.values()) {
             copy.put(v.getID(), new Vehicle(v));
         }
         return copy;
     }
 
     public void initState() {
-        initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap());
+        initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap(this.vehicleMap));
     }
 
     public int getMoves(){
