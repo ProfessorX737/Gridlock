@@ -186,4 +186,11 @@ public class NetworkPanel extends JPanel {
         return (String) UserListBox.getEditor().getItem();
     }
 
+    public void resetPlayingAgainst(){
+        OppoLabel.setText("Playing Against:");
+    }
+
+    public void setPlayingAgainst(String player){
+        OppoLabel.setText("Playing Against: " + player);
+    }
 }

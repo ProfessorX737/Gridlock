@@ -17,6 +17,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     private static NetworkPanel np;
     private static String username;
     private boolean running;
+    private boolean lost;
 
 
     // Networking
@@ -138,7 +139,6 @@ public class NetUIController implements NetworkUIController, Runnable{
         try {
             String responseLine = is.readLine();
             System.out.println("From server: " + responseLine);
-            System.out.println("Why no print?");
             if (responseLine.indexOf("usertaken") != -1){
                 return false;
             }
@@ -216,6 +216,14 @@ public class NetUIController implements NetworkUIController, Runnable{
 
             case "challenged":
                 handleChallenge(message);
+                break;
+
+            case "puzzledone":
+                puzzleDone(message);
+                break;
+
+            case "declined":
+                declined(message);
 
             default:
                 break;
@@ -230,35 +238,58 @@ public class NetUIController implements NetworkUIController, Runnable{
     private void acceptChallenge(String message){
         // Notify challenge has been accepted
         String[] oppo = message.trim().split(" ");
-        createDialogBox("Your challenge with " + oppo[2]);
+        createDialogBox("Your challenge with " + oppo[2] + "has been accepted");
         // Update playing against
-
+        np.setPlayingAgainst(oppo[2]);
     }
 
     private void noUser(String message){
         // Notify person no user exists for that
+        createDialogBox("Sorry but no user named " + message.trim().split(" ")[1] + " exists");
     }
 
     private void userBusy(String message){
         // Notify person user currently busy
         // userbusy user2 currently busy
+        String player = message.trim().split(" ")[1];
+        createDialogBox("User: " + player + " is currently busy, please try again later");
     }
 
-    private void puzzleDone(){
+    private void puzzleDone(String message){
+        String player = message.trim().split(" ")[2];
+        createDialogBox("Puzzle has been completed by " + player);
+        lost = true;
         // Notify user, puzzle completed by other person
         // puzzledone by user1
     }
 
     private void handleChallenge(String message){
         // Pop up window, see if message is accepted or declined
+        String player = message.trim().split(" ")[3];
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Challenge from " + player +
+                ". Do you accept the challenge?", "Challenge notification", dialogButton);
+        if(dialogResult == 0) {
+            // send acceptance of
+            message("accepted " + username + player);
+            System.out.println("Sent: " + "accepted " + username + player);
+
+        } else {
+            message("decline " + username + " " + player);
+        }
         // User can wish to accept or decline the challenge
     }
 
-    private void generatePuzzle(String message){
+    private void displayPuzzle(String message){
         // Create the puzzle
     }
 
     private void createDialogBox(String message){
         JOptionPane.showMessageDialog(null, message);
+    }
+
+    private void declined(String message){
+        String player = message.trim().split(" ")[1];
+        createDialogBox("Your challenge with " + player + " has been declined");
     }
 }

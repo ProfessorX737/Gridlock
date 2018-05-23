@@ -35,10 +35,10 @@ public class RushHourServerEV extends Thread{
                 currentLine = eventQueue.take();
                 System.out.println("Event Handler: processing " + currentLine);
                 // Parse commands
-                parts = currentLine.trim().split(" ");
+                parts = currentLine.toLowerCase().trim().split(" ");
 
                 // Determine command
-                switch(parts[0].toLowerCase()){
+                switch(parts[0]){
                     case "getlist":
                         getList(parts[1].toLowerCase());
                         break;
