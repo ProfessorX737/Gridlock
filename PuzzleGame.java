@@ -763,4 +763,32 @@ public class PuzzleGame implements Serializable {
     public int getMoves(){
         return moves;
     }
+
+	public String getStringRep(){
+
+		// More efficient string appending
+		StringBuilder sb = new StringBuilder();
+		int vert;
+		int length;
+		int row;
+		int col;
+		String colour;
+		int id;
+
+		for (Vehicle v: getVehicles()){
+			vert = ( v.getIsVertical() ) ? 1 : 0;
+			length = v.getLength();
+			row = v.getRow();
+			col = v.getCol();
+			id = v.getID();
+			colour = (v.getColor().getRGB() == Color.RED.getRGB()) ? "red" : "orange" ;
+			sb.append("| " + Integer.toString(vert));
+			sb.append(" " + Integer.toString(length));
+			sb.append(" " + Integer.toString(row));
+			sb.append(" " + Integer.toString(col));
+			sb.append(" " + colour);
+			sb.append(" " + Integer.toString(id));
+		}
+		return sb.toString();
+	}
 }
