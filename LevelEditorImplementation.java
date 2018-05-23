@@ -79,21 +79,34 @@ public class LevelEditorImplementation implements LevelEditor{
 	}
 
 	@Override
-	public void changeVehiclePosition(int id, int row, int col) {
-		puzzle.moveVehicle(id, row, col);
-	}
-
-	@Override
-	public void changeVehicleIsVertical(int id, boolean isVertical) {
-		boolean currIsVertical = puzzle.getVehicle(id).getIsVertical();
-		if (currIsVertical != isVertical) {
-			
+	public void changeVehiclePosition(int currRow, int currCol, int row, int col) {
+		int id = puzzle.getVehicleIDAtLocation(currRow, currCol);
+		if (id > -1) {
+			puzzle.moveVehicle(id, row, col);
 		}
 	}
 
 	@Override
-	public void changeVehicleColor(int id, Color color) {
-		puzzle.getVehicle(id).setColor(color);
+	public void changeVehicleIsVertical(int currRow, int currCol, boolean isVertical) {
+		int id = puzzle.getVehicleIDAtLocation(currRow, currCol);
+		if (id > -1) {
+			boolean currIsVertical = puzzle.getVehicle(id).getIsVertical();
+			int currLength = puzzle.getVehicle(id).getLength();
+
+			if (currIsVertical != isVertical) {
+				if (puzzle.canAddVehicle(isVertical, currLength, currRow, currCol)) {
+					puzzle.changeIsVertical(id, isVertical);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void changeVehicleColor(int row, int col, Color color) {
+		int id = puzzle.getVehicleIDAtLocation(row, col);
+		if (id > -1) {
+			puzzle.getVehicle(id).setColor(color);
+		}
 	}
 
 

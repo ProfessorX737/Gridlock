@@ -626,6 +626,13 @@ public class PuzzleGame implements Serializable{
             moves += 1;
         }
     }
+    
+    public void changeIsVertical(int id, boolean isVertical) {
+    		Vehicle v = this.vehicleMap.get(id);
+    		this.fillVehicleSpace(v, -1);
+    		v.setIsVertical(isVertical);
+    		this.fillVehicleSpace(v, id);
+    }
 
     public void moveVehicle(int id, int newRow, int newCol) {
         Vehicle v = this.vehicleMap.get(id);

@@ -84,11 +84,12 @@ public interface LevelEditor {
 	/**
 	 * Change the position of the vehicle with the given ID to a new
 	 * position.
-	 * @param id
+	 * @param currRow current row of the vehicle
+	 * @param currCol current col of the vehicle
 	 * @param row
 	 * @param col
 	 */
-	public void changeVehiclePosition(int id, int row, int col);
+	public void changeVehiclePosition(int currRow, int currCol, int row, int col);
 	
 	/**
 	 * Essential rotates the vehicle around depending on whether
@@ -96,13 +97,13 @@ public interface LevelEditor {
 	 * @param id
 	 * @param isVertical
 	 */
-	public void changeVehicleIsVertical(int id, boolean isVertical);
+	public void changeVehicleIsVertical(int currRow, int currCol, boolean isVertical);
 
 	/**
 	 * Change the color of the vehicle.
 	 * @param color
 	 */
-	public void changeVehicleColor(int id, Color color);
+	public void changeVehicleColor(int currRow, int currCol, Color color);
 }
 
 
