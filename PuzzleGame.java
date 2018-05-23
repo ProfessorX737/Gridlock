@@ -116,6 +116,19 @@ public class PuzzleGame implements Serializable{
 	
 	/**
 	 * Check whether the vehicle can be added to the location.
+	 * @param vehicle
+	 * @return
+	 */
+	public boolean canAddVehicle(Vehicle v) {
+		boolean isVertical = v.getIsVertical();
+		int length = v.getLength();
+		int row = v.getRow();
+		int col = v.getCol();
+		return canAddVehicle(isVertical, length, row, col);
+	}
+	
+	/**
+	 * Check whether the vehicle can be added to the location.
 	 * @param row
 	 * @param col
 	 * @param vehicle
@@ -483,6 +496,13 @@ public class PuzzleGame implements Serializable{
 				}
 			}
 			System.out.println("");
+		}
+	}
+	
+	public void removeVehicleAtLocation(int row, int col) {
+		int id  = getVehicleIDAtLocation(row, col);
+		if (id > -1) {
+			removeVehicle(id);
 		}
 	}
 	

@@ -47,13 +47,6 @@ public interface LevelEditor {
 	
 	/**
 	 * Check whether a vehicle can be added.
-	 * @param v
-	 * @return
-	 */
-	public boolean canAddVehicle(Vehicle v);
-	
-	/**
-	 * Check whether a vehicle can be added.
 	 * @param isVertical
 	 * @param length
 	 * @param row
@@ -62,11 +55,6 @@ public interface LevelEditor {
 	 */
 	public boolean canAddVehicle(boolean isVertical, int length, int row, int col);
 
-	/**
-	 * Add vehicle.
-	 * @param v
-	 */
-	public void addVehicle(Vehicle v);
 	
 	/**
 	 * Add vehicle.
@@ -78,6 +66,15 @@ public interface LevelEditor {
 	public void addVehicle(boolean isVertical, int length, int row, int col, Color color);
 	
 	/**
+	 * Returns the vehicle id at a location, if there is no vehicle there
+	 * returns -1.
+	 * @param row
+	 * @param col
+	 * @return
+	 */
+	public int getVehicleIDAtLocation(int row, int col);
+	
+	/**
 	 * Remove vehicle at location.
 	 * @param row
 	 * @param col
@@ -85,9 +82,64 @@ public interface LevelEditor {
 	public void removeVehicleAtLocation(int row, int col);
 	
 	/**
-	 * Generate a vehicle.
-	 * @return
+	 * Change the position of the vehicle with the given ID to a new
+	 * position.
+	 * @param id
+	 * @param row
+	 * @param col
 	 */
-	public Vehicle generateVehicle(boolean isVertical, int length, int row, int col, Color color);
+	public void changeVehiclePosition(int id, int row, int col);
+	
+	/**
+	 * Essential rotates the vehicle around depending on whether
+	 * it is currently vertical or not. 
+	 * @param id
+	 * @param isVertical
+	 */
+	public void changeVehicleIsVertical(int id, boolean isVertical);
 
+	/**
+	 * Change the color of the vehicle.
+	 * @param color
+	 */
+	public void changeVehicleColor(int id, Color color);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

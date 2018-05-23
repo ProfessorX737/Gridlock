@@ -4,25 +4,28 @@ import java.util.List;
 public class LevelEditorImplementation implements LevelEditor{
 	PuzzleGame puzzle;
 	
-	public LevelEditorImplementation() {
+	/*
+	 * Need to specify the initial size of the board.
+	 */
+	public LevelEditorImplementation(int row, int col) {
+		this.puzzle = new PuzzleGame(row, col);
 	}
 
 	@Override
 	public PuzzleGame exportLevel() {
-		// TODO Auto-generated method stub
-		return null;
+		return puzzle;
 	}
 
 	@Override
 	public PuzzleGame loadSavedLevel(String filename) {
-		// TODO Auto-generated method stub
-		return null;
+		FileSystem f = new FileSystemImplementation();
+		return f.loadPuzzleGame(filename);
 	}
 
 	@Override
 	public void saveLevel(String filename) {
-		// TODO Auto-generated method stub
-		
+		FileSystem f = new FileSystemImplementation();
+		f.savePuzzleGame(puzzle, filename);
 	}
 
 	@Override
@@ -36,20 +39,8 @@ public class LevelEditorImplementation implements LevelEditor{
 	}
 
 	@Override
-	public boolean canAddVehicle(Vehicle v) {
-		return false;
-	}
-
-	@Override
 	public boolean canAddVehicle(boolean isVertical, int length, int row, int col) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void addVehicle(Vehicle v) {
-		puzzle.addVehicle(v);
-		
+		return puzzle.canAddVehicle(isVertical, length, row, col);
 	}
 
 	@Override
@@ -60,12 +51,7 @@ public class LevelEditorImplementation implements LevelEditor{
 
 	@Override
 	public void removeVehicleAtLocation(int row, int col) {
-		
-	}
-
-	@Override
-	public Vehicle generateVehicle(boolean isVertical, int length, int row, int col, Color color) {
-		return new Vehicle(puzzle.getVehicleMapSize(), isVertical, length, row, col, color);
+		puzzle.removeVehicleAtLocation(row, col);
 	}
 
 	/**
@@ -86,5 +72,29 @@ public class LevelEditorImplementation implements LevelEditor{
 		this.puzzle.setExitCol(exitRow);
 		this.puzzle.setExitRow(exitCol);
 	}
+
+	@Override
+	public int getVehicleIDAtLocation(int row, int col) {
+		return puzzle.getVehicleIDAtLocation(row, col);
+	}
+
+	@Override
+	public void changeVehiclePosition(int id, int row, int col) {
+		puzzle.moveVehicle(id, row, col);
+	}
+
+	@Override
+	public void changeVehicleIsVertical(int id, boolean isVertical) {
+		boolean currIsVertical = puzzle.getVehicle(id).getIsVertical();
+		if (currIsVertical != isVertical) {
+			
+		}
+	}
+
+	@Override
+	public void changeVehicleColor(int id, Color color) {
+		puzzle.getVehicle(id).setColor(color);
+	}
+
 
 }
