@@ -1,4 +1,5 @@
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 public interface ButtonController {
     public ActionListener getRedoButtonListener();
@@ -14,6 +15,6 @@ public interface ButtonController {
     public ActionListener getResetButtonListener();
 
 	public ActionListener getTimerListener();
-
-	public void updateMoves();
+	
+	public MouseAdapter getMouseAdapter();
 }
