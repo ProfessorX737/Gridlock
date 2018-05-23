@@ -676,6 +676,16 @@ public class PuzzleGame implements Serializable {
             v.setPos(newRow, newCol);
             this.fillVehicleSpace(v, id);
             moves += 1;
+
+			if (isSolved()) {
+				System.out.println("PUZZLE SOLVED");
+				System.out.println("PUZZLE SOLVED");
+				System.out.println("PUZZLE SOLVED");
+				System.out.println("PUZZLE SOLVED");
+				if (nuic != null) {
+					nuic.puzzleDone();
+				}
+			}
         }
     }
 

@@ -305,7 +305,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     }
 
     private void displayPuzzle(String message){
-
+        lost = false;
         f = new JFrame("GridLock");
 
         f.setLayout(new BorderLayout());
@@ -341,6 +341,8 @@ public class NetUIController implements NetworkUIController, Runnable{
         gameView = new GameView(bp, bc, pv, pc);
         gameController = new GameController(gameView, pc);
 
+        puzzleGame.setNUIController(this);
+
         f.add(gameView);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
@@ -359,13 +361,12 @@ public class NetUIController implements NetworkUIController, Runnable{
     }
 
     public void puzzleDone(){
+        System.out.println("PUZZLE DONE CALLED");
+        createDialogBox("Congratulations, you won");
         // Hide all the windows etc
         if (!lost){
             message("done " + username + " " + opponent);
             lost = true;
         }
-        System.out.println("PUZZLE DONE");
-        System.out.println("PUZZLE DONE");
-        System.out.println("PUZZLE DONE");
     }
 }
