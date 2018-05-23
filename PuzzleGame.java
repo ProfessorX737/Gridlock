@@ -146,7 +146,6 @@ public class PuzzleGame implements Serializable {
 	 * Check whether the vehicle can be added to the location.
 	 * @param row
 	 * @param col
-	 * @param vehicle
 	 * @return
 	 */
 	public boolean canAddVehicle(boolean isVertical, int length, int row, int col) {
@@ -570,7 +569,7 @@ public class PuzzleGame implements Serializable {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, Color.ORANGE));
+							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, false));
 						}
 					}
 				} else {
@@ -592,7 +591,7 @@ public class PuzzleGame implements Serializable {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, Color.ORANGE));
+							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, false));
 						}
 					}
 				} else {
@@ -692,11 +691,11 @@ public class PuzzleGame implements Serializable {
      * @param length
      * @param row
      * @param col
-     * @param color
+     * @param main
      */
-    public void addVehicle(boolean isVertical, int length, int row, int col, Color color) {
+    public void addVehicle(boolean isVertical, int length, int row, int col, boolean main){
         int id = vehicleMap.size();
-        Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
+        Vehicle v = new Vehicle(id, isVertical, length, row, col, main);
         this.vehicleMap.put(id, v);
         this.fillVehicleSpace(v, id);
     }

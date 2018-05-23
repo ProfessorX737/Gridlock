@@ -42,14 +42,21 @@ public class MenuController implements ActionListener {
 	
 	private JFrame createGameView(PuzzleGame puzzleGame) {
 
-        PuzzleView pv = new PuzzleView(puzzleGame, PuzzleView.DEFAULT_CELL_SIZE);
-        PuzzleController pc = new PuzzleController(puzzleGame, pv);
+        // PuzzleView pv = new PuzzleView(puzzleGame, PuzzleView.DEFAULT_CELL_SIZE);
+        // PuzzleController pc = new PuzzleController(puzzleGame, pv);
+        // ButtonPanel bp = new ButtonPanel();
+        // SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
+        // GameView gameView = new GameView(bp, bc, pv, pc);
+        // new GameController(gameView, pc);
 
+        PuzzleView pv = new PuzzleView(puzzleGame, 50);
+        PuzzleController pc = new PuzzleController(puzzleGame, pv);
         ButtonPanel bp = new ButtonPanel();
         SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
-
-        GameView gameView = new GameView(bp, bc, pv, pc);
-        new GameController(gameView, pc);
+        BorderedPuzzleView borderedPuzzleView = new BorderedPuzzleView(pv);
+        GameView gameView = new GameView(bp, bc, pv, pc, borderedPuzzleView);
+        BorderedPuzzleController borderedPuzzleController = new BorderedPuzzleController(borderedPuzzleView);
+        GameController gameController = new GameController(gameView, borderedPuzzleController);
         
         return this.createFrame(gameView);
 	}
