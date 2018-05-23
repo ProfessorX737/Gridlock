@@ -102,7 +102,7 @@ public class RushHourServerEV extends Thread{
 
         System.out.println("Challenge to " + user2 + "from " + user1);
         if (clients.containsKey(user2)){
-            System.out.println("user2 exists");
+            System.out.println(user2 + " exists");
             ClientInfo otherUser = clients.get("user2");
             if (!otherUser.isBusy()){
                 send(user1, "challenging " + user2);
@@ -145,20 +145,9 @@ public class RushHourServerEV extends Thread{
 
     // Hard coded for now
     private PuzzleGame createPuzzle(){
-        PuzzleGame puzzleGame = new PuzzleGame(6,6,2,5);
-        puzzleGame.addVehicle(false, 2, 2, 2, Color.RED);
-        puzzleGame.addVehicle(false, 3, 0, 0, Color.ORANGE);
-        puzzleGame.addVehicle(true, 2, 0, 3, Color.ORANGE);
-        puzzleGame.addVehicle(true, 3, 0, 4, Color.ORANGE);
-        puzzleGame.addVehicle(true, 3, 0, 5, Color.ORANGE);
-        puzzleGame.addVehicle(true, 2, 1, 0, Color.ORANGE);
-        puzzleGame.addVehicle(false, 2, 1, 1, Color.ORANGE);
-        puzzleGame.addVehicle(false, 2, 3, 0, Color.ORANGE);
-        puzzleGame.addVehicle(true, 2, 3, 2, Color.ORANGE);
-        puzzleGame.addVehicle(true, 2, 4, 1, Color.ORANGE);
-        puzzleGame.addVehicle(false, 2, 5, 2, Color.ORANGE);
-        puzzleGame.addVehicle(false, 2, 4, 4, Color.ORANGE);
-        puzzleGame.addVehicle(false, 2, 5, 4, Color.ORANGE);
+        GridlockGame game = new GridlockGame();
+        PuzzleGame puzzleGame = game.getPuzzle(GridlockGame.VERY_EASY, 1);
+        puzzleGame.initState();
         return puzzleGame;
     }
 

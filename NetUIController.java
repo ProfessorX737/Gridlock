@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -18,6 +19,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     private static String username;
     private boolean running;
     private boolean lost;
+    private String opponent;
 
 
     // Networking
@@ -29,6 +31,18 @@ public class NetUIController implements NetworkUIController, Runnable{
 
     private static BufferedReader inputLine = null;
     private static boolean closed = false;
+
+    // Game frame
+    private JFrame f;
+    private PuzzleGame puzzleGame;
+    private PuzzleView pv;
+    private PuzzleController pc;
+
+    private ButtonPanel bp;
+    private SideButtonController bc;
+
+    private GameView gameView;
+    private GameController gameController;
 
     public NetUIController(NetworkPanel np, String host, int portNumber){
         this.np = np;
@@ -231,6 +245,8 @@ public class NetUIController implements NetworkUIController, Runnable{
                 break;
 
             case "puzzle":
+                System.out.println(" ----------- PUZZLE CREATION ----------");
+                System.out.println(message);
                 displayPuzzle(message);
 
             default:
@@ -289,8 +305,48 @@ public class NetUIController implements NetworkUIController, Runnable{
     }
 
     private void displayPuzzle(String message){
+
+        f = new JFrame("GridLock");
+
+        f.setLayout(new BorderLayout());
+        f.setBackground(Color.BLACK);
+
+        puzzleGame = new PuzzleGame(6,6,2,5); // NOT SURE ABOUT THE EXIT CONDITION
         // Create the puzzle
         System.out.println(message);
+
+        System.out.println("---------------------");
+        String[] parts = message.split("-");
+        for (String s: parts){
+            System.out.println(s);
+
+        }
+        System.out.println("---------------------");
+        boolean skip = false;
+        for (String s: parts){
+            if (!skip){
+                skip = true;
+                continue;
+            }
+            Vehicle v = Vehicle.strToVehicle(s.trim());
+            puzzleGame.addVehicle(v);
+        }
+
+        pv = new PuzzleView(puzzleGame, 50);
+        pc = new PuzzleController(puzzleGame, pv);
+
+        bp = new ButtonPanel();
+        bc = new SideButtonController(pv, puzzleGame, bp);
+
+        gameView = new GameView(bp, bc, pv, pc);
+        gameController = new GameController(gameView, pc);
+
+        f.add(gameView);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.pack();
+        f.setMinimumSize(new Dimension(gameView.getWidth(), gameView.getHeight() + 23));
+        f.setVisible(true);
+
     }
 
     private void createDialogBox(String message){
@@ -300,5 +356,16 @@ public class NetUIController implements NetworkUIController, Runnable{
     private void declined(String message){
         String player = message.trim().split(" ")[1];
         createDialogBox("Your challenge with " + player + " has been declined");
+    }
+
+    public void puzzleDone(){
+        // Hide all the windows etc
+        if (!lost){
+            message("done " + username + " " + opponent);
+            lost = true;
+        }
+        System.out.println("PUZZLE DONE");
+        System.out.println("PUZZLE DONE");
+        System.out.println("PUZZLE DONE");
     }
 }

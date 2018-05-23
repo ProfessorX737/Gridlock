@@ -181,7 +181,9 @@ public class NetworkPanel extends JPanel {
 
     public void setUserListBox(String[] users){
         UserListBox.setModel(new DefaultComboBoxModel<>(users));
-        currentOppo = users[0];
+        if (users.length > 0){
+            currentOppo = users[0];
+        }
     }
 
     public String getOpponentName(){

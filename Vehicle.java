@@ -137,15 +137,18 @@ public class Vehicle implements Serializable{
 	}
 
 	public static Vehicle strToVehicle(String s){
+		System.out.println("strToVehicle parameter: " + s);
 		s = s.trim();
 		String[] parts = s.split(" ");
+		System.out.println(parts[0]);
 
-		Boolean isVert = (Integer.getInteger(parts[0]) == 1) ? true : false;
+		Boolean isVert = (parts[0].equals("0")) ? true : false;
 		int length = Integer.parseInt(parts[1]);
 		int row = Integer.parseInt(parts[2]);
 		int col = Integer.parseInt(parts[3]);
-		Color colour = (parts[4] == "red") ? Color.RED: Color.ORANGE;
-		int id = Integer.getInteger(parts[5]);
+		Color colour = (parts[4].equals("red")) ? Color.RED: Color.ORANGE;
+		System.out.println(parts[5]);
+		int id = Integer.parseInt(parts[5]);
 
 		Vehicle v = new Vehicle(id, isVert, length, row, col, colour);
 		return v;

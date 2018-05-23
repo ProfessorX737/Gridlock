@@ -36,6 +36,7 @@ public class PuzzleGame implements Serializable {
     private Stack<MoveState> redo;
     private MoveState initialState;
     private int moves;
+	private NetUIController nuic;
 
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
@@ -683,6 +684,16 @@ public class PuzzleGame implements Serializable {
 		this.fillVehicleSpace(v, -1);
 		v.setPos(newRow, newCol);
 		this.fillVehicleSpace(v, id);
+
+		if (isSolved()){
+			System.out.println("PUZZLE SOLVED");
+			System.out.println("PUZZLE SOLVED");
+			System.out.println("PUZZLE SOLVED");
+			System.out.println("PUZZLE SOLVED");
+			if (nuic != null){
+				nuic.puzzleDone();
+			}
+		}
     }
 
     private void printBoard(int[][] board) {
@@ -776,13 +787,13 @@ public class PuzzleGame implements Serializable {
 		int id;
 
 		for (Vehicle v: getVehicles()){
-			vert = ( v.getIsVertical() ) ? 1 : 0;
+			vert = ( v.getIsVertical() ) ? 0 : 1;
 			length = v.getLength();
 			row = v.getRow();
 			col = v.getCol();
 			id = v.getID();
 			colour = (v.getColor().getRGB() == Color.RED.getRGB()) ? "red" : "orange" ;
-			sb.append("| " + Integer.toString(vert));
+			sb.append("- " + Integer.toString(vert));
 			sb.append(" " + Integer.toString(length));
 			sb.append(" " + Integer.toString(row));
 			sb.append(" " + Integer.toString(col));
@@ -790,5 +801,9 @@ public class PuzzleGame implements Serializable {
 			sb.append(" " + Integer.toString(id));
 		}
 		return sb.toString();
+	}
+
+	public void setNUIController(NetUIController nuic){
+    	this.nuic = nuic;
 	}
 }
