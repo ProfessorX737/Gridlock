@@ -23,7 +23,7 @@ public class MenuController implements ActionListener {
 			LevelController puzzleSelectController = new LevelController(this.puzzleSelect[i],this.game.getPuzzles(i));
 			lv.setController(puzzleSelectController);
 		}
-    	LevelSelect ls = new LevelSelect(MainMenu.WIDTH,MainMenu.HEIGHT);
+    		LevelSelect ls = new LevelSelect(MainMenu.WIDTH,MainMenu.HEIGHT);
 		this.levelSelect = this.createFrame(new BackFrame("Select A Level", ls, BackFrame.DEFAULT_BAR_HEIGHT));
 		LevelSelectController lvlContr = new LevelSelectController(this.levelSelect,this.puzzleSelect);
 		ls.setController(lvlContr);
