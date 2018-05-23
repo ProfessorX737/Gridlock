@@ -85,8 +85,12 @@ public class TestLevelView {
         frame.setVisible(true);
     }
 
+    public static void test6() {
+    	new MainMenu();
+    }
+
     public static void main(String args[]) {
-    	test5();
+    	test6();
     }
 
 }

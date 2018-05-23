@@ -16,6 +16,16 @@ public class PuzzleView extends JPanel {
     private int height;
     private int cellLength;
     private Map<Integer, JComponent> vehicles;
+    public static final int DEFAULT_CELL_SIZE = 50;
+
+    public PuzzleView(PuzzleGame puzzleGame) {
+        this.setLayout(null);
+        this.puzzleGame = puzzleGame;
+        this.cellLength = DEFAULT_CELL_SIZE;
+        this.vehicles = new HashMap<>();
+        this.setBackground(Color.white);
+        this.updateSize(this.cellLength);
+    }
 
     public PuzzleView(PuzzleGame puzzleGame, int cellLength) {
         this.setLayout(null);

@@ -9,7 +9,7 @@ public class GridLock {
         f.setLayout(new BorderLayout());
         f.setBackground(Color.BLACK);
         GridlockGame game = new GridlockGame();
-        PuzzleGame puzzleGame = game.getPuzzle(GridlockGame.EASY, 0);
+        PuzzleGame puzzleGame = game.getPuzzle(GridlockGame.ULTRA_HARD, 0);
         puzzleGame.initState();
 
         PuzzleView pv = new PuzzleView(puzzleGame, 50);
