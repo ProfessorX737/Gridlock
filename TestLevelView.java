@@ -86,7 +86,10 @@ public class TestLevelView {
     }
 
     public static void test6() {
-    	new MainMenu();
+    	MainMenu menu = new MainMenu();
+    	GridlockGame game = new GridlockGame();
+    	MenuController menuContr = new MenuController(game,menu);
+    	menu.setController(menuContr);
     }
 
     public static void main(String args[]) {

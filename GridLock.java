@@ -27,9 +27,16 @@ public class GridLock {
         f.setMinimumSize(new Dimension(gameView.getWidth(), gameView.getHeight() + 23));
         f.setVisible(true);
     }
+    
+    public static void test0() {
+    	MainMenu menu = new MainMenu();
+    	GridlockGame game = new GridlockGame();
+    	MenuController menuContr = new MenuController(game,menu);
+    	menu.setController(menuContr);
+    }
 
     public static void main(String args[]) {
-        test1();
+        test0();
     }
 }
 

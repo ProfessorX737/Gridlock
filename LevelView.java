@@ -3,6 +3,7 @@ import java.util.Map;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -35,6 +36,7 @@ public class LevelView extends JPanel {
 		for(PuzzleGame puzzle : puzzles) {
 			PuzzleView pv = new PuzzleView(puzzle,puzzleSize/GridlockGame.DEFAULT_BOARD_SIZE);
 			JButton button = new JButton(" Puzzle " + Integer.toString(puzzle.getId()),this.createImageIcon(pv));
+			button.setActionCommand(Integer.toString(puzzle.getId()));
 			button.setHorizontalAlignment(SwingConstants.LEFT);
 			this.buttons.put(puzzle.getId(), button);
 			main.add(button);
@@ -53,5 +55,11 @@ public class LevelView extends JPanel {
 		panel.paint(g);
 		g.dispose();
 		return new ImageIcon(image);
+	}
+	
+	public void setController(ActionListener al) {
+		for(JButton b : this.buttons.values()) {
+			b.addActionListener(al);
+		}
 	}
 }

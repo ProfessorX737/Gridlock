@@ -11,6 +11,8 @@ public class BackFrame extends JPanel {
 	private JLabel title;
 	private JButton backButton;
 
+	public final static int DEFAULT_BAR_HEIGHT = 25;
+
 	public BackFrame(String title, JComponent main, int topBarHeight) {
 		this.setLayout(new BorderLayout(topBarHeight,topBarHeight));
 

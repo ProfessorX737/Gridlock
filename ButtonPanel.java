@@ -23,7 +23,7 @@ public class ButtonPanel extends JPanel {
     public static final int HEIGHT = 300;
 
     public ButtonPanel() {
-
+ 
         LoadGameBtn = new JButton();
         jResetBtn = new JButton();
         jTimeLabel = new JLabel();
