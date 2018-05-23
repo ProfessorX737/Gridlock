@@ -91,6 +91,7 @@ public class NetUIController implements NetworkUIController, Runnable{
                             running = true;
                             np.setUsername(username);
                             new Thread(new NetUIController(np, host, portNumber)).start();
+                            return;
                         }
                         else{
                             return;
@@ -117,7 +118,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     public ActionListener QuitBtnListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-
+                System.exit(0);
             }
         };
         return al;
@@ -141,9 +142,11 @@ public class NetUIController implements NetworkUIController, Runnable{
             String responseLine = is.readLine();
             System.out.println("From server: " + responseLine);
             if (responseLine.indexOf("usertaken") != -1){
+                createDialogBox("Username is currently online");
                 return false;
             }
             else if (responseLine.indexOf("closed") != -1){
+                createDialogBox("Something wrong happened");
                 return false;
             }
 

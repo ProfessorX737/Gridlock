@@ -64,6 +64,9 @@ public class RushHourServer {
 				while(true){
 					try {
 						line = is.readLine();
+						if (line == null){
+							break;
+						}
 						System.out.println("From Host:" + line);
 						String[] parts = (line.trim()).split(" ");
 
@@ -83,6 +86,8 @@ public class RushHourServer {
 								// Username is free, can be used
 								else{
 									System.out.println(username + " has been online before");
+									os.println("Online before");
+									os.flush();
 									userList.put(username,newClient); // Add mapping username to online socket
 									ClientInfo existingUser = clients.get(username);
 									existingUser.setOnline(true);
