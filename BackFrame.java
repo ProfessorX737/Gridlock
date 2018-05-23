@@ -26,7 +26,7 @@ public class BackFrame extends JPanel {
 		topBar.setLayout(new BorderLayout(topBarHeight,0));
 		topBar.add(backButton, BorderLayout.WEST);
 		topBar.add(this.title, BorderLayout.CENTER);
-		topBar.setSize(new Dimension(main.getWidth(),topBarHeight));
+		topBar.setPreferredSize(new Dimension(main.getWidth(),topBarHeight));
 		this.add(topBar, BorderLayout.PAGE_START);
 		this.add(main, BorderLayout.CENTER);
 

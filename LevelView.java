@@ -31,7 +31,6 @@ public class LevelView extends JPanel {
 		JPanel main = new JPanel();
 		main.setLayout(new GridLayout(puzzles.size(),1));
 		main.setSize(new Dimension(this.width,this.puzzleSize*puzzles.size()));
-        //main.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		
 		for(PuzzleGame puzzle : puzzles) {
 			PuzzleView pv = new PuzzleView(puzzle,puzzleSize/GridlockGame.DEFAULT_BOARD_SIZE);

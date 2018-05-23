@@ -24,21 +24,16 @@ public class MainMenu extends JFrame {
 	private JButton playBtn;
 	private JButton puzzlesBtn;
 	private JButton exitBtn;
-	private JLabel background;
 	
 	public static final int BTN_WIDTH = 100;
 	public static final int BTN_HEIGHT = 30;
-	public static final int BTN_GAP = 5;
 	public static final String MENU_BKG_PIC = "src/pictures/MainMenu_bg.png";
 	public static final String MENU_BTN_PIC = "src/pictures/MainMenu_bt.png";
 	
-	public static final int HEIGHT = PuzzleView.DEFAULT_CELL_SIZE * GridlockGame.NUM_LEVELS;
+	public static final int HEIGHT = PuzzleView.DEFAULT_CELL_SIZE * GridlockGame.NUM_LEVELS + BackFrame.DEFAULT_BAR_HEIGHT;
 	public static final int WIDTH = HEIGHT + ButtonPanel.WIDTH;
 	
 	public MainMenu() {
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setTitle("Gridlock");
 		this.setLayout(new BorderLayout());
 		
@@ -49,7 +44,7 @@ public class MainMenu extends JFrame {
 		btnImg = new ImageIcon(btnImg.getImage().getScaledInstance(BTN_WIDTH,BTN_HEIGHT,Image.SCALE_SMOOTH)); 
 		
 		try {
-			this.setContentPane(new Background(MENU_BKG_PIC, WIDTH-15, HEIGHT-37));
+			this.setContentPane(new Background(MENU_BKG_PIC, WIDTH, HEIGHT));
 		} catch(IOException e) {
 			System.out.println("Could not open menu background image");
 		}
@@ -58,7 +53,6 @@ public class MainMenu extends JFrame {
 		gameName.setFont(new Font(Font.SERIF,Font.PLAIN,30));
 
 		this.buttonPanel = new JPanel();
-		this.buttonPanel.setSize(WIDTH, HEIGHT);
 		this.buttonPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -99,10 +93,11 @@ public class MainMenu extends JFrame {
 		
 		this.buttonPanel.setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		this.buttonPanel.setOpaque(false);
-		
-
-		this.setVisible(true);
 		this.add(buttonPanel,BorderLayout.CENTER);
+		
+		this.pack();
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
 	}
 	
 	public void setController(ActionListener al) {
