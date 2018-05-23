@@ -37,6 +37,19 @@ public class PuzzleGame implements Serializable {
     private MoveState initialState;
     private int moves;
 
+    public PuzzleGame(int sizeRow, int sizeCol) {
+    		this.sizeRow = sizeRow;
+    		this.sizeCol = sizeCol;
+    		this.exitRow = 0;
+    		this.exitCol = 0;
+    		this.vehicleMap = new HashMap<>();
+    		this.undo = new Stack<>();
+    		this.redo = new Stack<>();
+    		this.initBoard();
+    		this.moves = 0;
+    		this.minMoves= 0;
+    }
+
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
 	 * @param sizeRow, the number of rows in the board
@@ -114,6 +127,19 @@ public class PuzzleGame implements Serializable {
 				board[y][x]= -1;
 			}
 		}
+	}
+	
+	/**
+	 * Check whether the vehicle can be added to the location.
+	 * @param vehicle
+	 * @return
+	 */
+	public boolean canAddVehicle(Vehicle v) {
+		boolean isVertical = v.getIsVertical();
+		int length = v.getLength();
+		int row = v.getRow();
+		int col = v.getCol();
+		return canAddVehicle(isVertical, length, row, col);
 	}
 	
 	/**
@@ -425,6 +451,18 @@ public class PuzzleGame implements Serializable {
 		this.id = id;
 	}
 	
+	public void setExitRow(int row) {
+		this.exitRow = row;
+	}
+	
+	public void setExitCol(int col) {
+		this.exitCol = col;
+	}
+	
+	public int getVehicleMapSize() {
+		return vehicleMap.size();
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -485,6 +523,13 @@ public class PuzzleGame implements Serializable {
 				}
 			}
 			System.out.printf("%n%d",y+1);
+		}
+	}
+	
+	public void removeVehicleAtLocation(int row, int col) {
+		int id  = getVehicleIDAtLocation(row, col);
+		if (id > -1) {
+			removeVehicle(id);
 		}
 	}
 	
@@ -676,6 +721,13 @@ public class PuzzleGame implements Serializable {
             this.fillVehicleSpace(v, id);
             moves += 1;
         }
+    }
+    
+    public void changeIsVertical(int id, boolean isVertical) {
+    		Vehicle v = this.vehicleMap.get(id);
+    		this.fillVehicleSpace(v, -1);
+    		v.setIsVertical(isVertical);
+    		this.fillVehicleSpace(v, id);
     }
 
     public void moveVehicle(int id, int newRow, int newCol) {

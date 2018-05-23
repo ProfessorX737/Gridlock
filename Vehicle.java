@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Vehicle implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private final boolean isVertical;
+	private boolean isVertical;
 	private final int length;
 	private Color color;
 	private int row;
@@ -82,6 +82,10 @@ public class Vehicle implements Serializable{
 	
 	public int getCol() {
 		return this.col;
+	}
+	
+	public void setIsVertical(boolean isVertical) {
+		this.isVertical = isVertical;
 	}
 	
 	public void setPos(int row, int col) {
