@@ -1,4 +1,3 @@
-package cs2511;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
