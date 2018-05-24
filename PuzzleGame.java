@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
+
 import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
@@ -904,6 +907,19 @@ public class PuzzleGame implements Serializable {
 				System.out.println("PUZZLE SOLVED");
 				System.out.println("PUZZLE SOLVED");
 				System.out.println("PUZZLE SOLVED");
+				//show the pop up
+				int i = JOptionPane.showConfirmDialog(null, "You won the game in " + this.moves + " moves!\n" + "Continue to play？","Result:", JOptionPane.YES_NO_OPTION);
+			    if (i==JOptionPane.OK_OPTION) {
+			        System.out.println("play next puzzle");
+					MainMenu menu = new MainMenu();
+					GridlockGame game = new GridlockGame();
+					MenuController menuContr = new MenuController(game,menu);
+					menu.setController(menuContr);
+					menuContr.goToMainMenu();
+			    } else {
+					System.out.println("exit");
+					System.exit(0);
+				}
 				if (nuic != null) {
 					nuic.puzzleDone();
 				}

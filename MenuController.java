@@ -60,6 +60,11 @@ public class MenuController implements ActionListener {
         frame.setVisible(false);
         return frame;
 	}
+	
+	public void goToMainMenu() {
+		menu.setVisible(false);
+		this.levelSelect.setVisible(true);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
