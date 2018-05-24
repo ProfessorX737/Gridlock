@@ -15,7 +15,16 @@ public class PuzzleView extends JPanel implements Board{
     private int height;
     private int cellLength;
     private Map<Integer, JComponent> vehicles;
+    private ImageIcon vMainBlock;
+    private ImageIcon hMainBlock;
+    private ImageIcon vBlock;
+    private ImageIcon hBlock;
+    
     public static final int DEFAULT_CELL_SIZE = 50;
+    public static final String VERTICAL_MAIN_BLOCK = "Assets/vMainBlock.png";
+    public static final String HORIZONTAL_MAIN_BLOCK = "Assets/hMainBlock.png";
+    public static final String VERTICAL_BLOCK = "Assets/vBlock.png";
+    public static final String HORIZONTAL_BLOCK = "Assets/hBlock.png";
 
     public PuzzleView(PuzzleGame puzzleGame) {
         this.setLayout(null);
@@ -23,7 +32,12 @@ public class PuzzleView extends JPanel implements Board{
         this.cellLength = DEFAULT_CELL_SIZE;
         this.vehicles = new HashMap<>();
         this.setBackground(Color.white);
+        this.vMainBlock = new ImageIcon(this.getClass().getResource(VERTICAL_MAIN_BLOCK));
+        this.hMainBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_MAIN_BLOCK));
+        this.vBlock = new ImageIcon(this.getClass().getResource(VERTICAL_BLOCK));
+        this.hBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_BLOCK));
         this.updateSize(this.cellLength);
+        this.setOpaque(false);
     }
 
     public PuzzleView(PuzzleGame puzzleGame, int cellLength) {
@@ -31,7 +45,12 @@ public class PuzzleView extends JPanel implements Board{
         this.puzzleGame = puzzleGame;
         this.cellLength = cellLength;
         this.vehicles = new HashMap<>();
+        this.setBackground(Color.white);
         this.setLayout(null);
+        this.vMainBlock = new ImageIcon(this.getClass().getResource(VERTICAL_MAIN_BLOCK));
+        this.hMainBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_MAIN_BLOCK));
+        this.vBlock = new ImageIcon(this.getClass().getResource(VERTICAL_BLOCK));
+        this.hBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_BLOCK));
         this.updateSize(this.cellLength);
         this.setOpaque(false);
     }
@@ -57,22 +76,16 @@ public class PuzzleView extends JPanel implements Board{
             int vHeight = this.cellLength;
             if (v.getIsVertical()) {
                 vHeight = this.cellLength * v.getLength();
-                if (v.getID() == 0) block = new ImageIcon(this.getClass().getResource("Assets/vMainBlock.png"));
-                else block = new ImageIcon(this.getClass().getResource("Assets/vBlock.png"));
+                if(v.getID() == 0) block = this.vMainBlock;
+                else block = this.vBlock;
             } else {
-                if (v.getID() == 0) block = new ImageIcon(this.getClass().getResource("Assets/hMainBlock.png"));
-                else block = new ImageIcon(this.getClass().getResource("Assets/hBlock.png"));
                 vWidth = this.cellLength * v.getLength();
+                if(v.getID() == 0) block = this.hMainBlock;
+                else block = this.hBlock;
             }
             block = new ImageIcon(block.getImage().getScaledInstance(vWidth, vHeight, Image.SCALE_SMOOTH));
-            //JLabel test = new JLabel("", block, JLabel.CENTER);
             JComponent dc = new JLabel("", block, JLabel.CENTER);
-            // test.setSize(new Dimension(vWidth, vHeight));
-            // test.setBounds(v.getCol() * this.cellLength, v.getRow() * this.cellLength, vWidth, vHeight);
-            // this.add(test);
             dc.setPreferredSize(new Dimension(vWidth, vHeight));
-            //dc.setBackground(v.getColor());
-            //dc.setBorder(new LineBorder(Color.black, 2));
             dc.setBounds(v.getCol() * this.cellLength, v.getRow() * this.cellLength, vWidth, vHeight);
             this.vehicles.put(v.getID(), dc);
             this.add(dc);
