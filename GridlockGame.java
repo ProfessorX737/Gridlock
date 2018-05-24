@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Automatically loads the puzzles when instance of GridlockGame is created

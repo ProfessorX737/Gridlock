@@ -4,18 +4,23 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Background extends JPanel {
 	private Image background;
 
 	public Background(String filename, int width, int height) throws IOException {
-		background = ImageIO.read(new File(filename));
-		background = background.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+        ImageIcon bkgIcon = new ImageIcon(this.getClass().getResource(filename));
+//		background = ImageIO.read(new File(filename));
+//		background = ImageIO.read(new File(this.getClass().getResource(filename)));
+		background = bkgIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
 	}
 	
 	public Background(String filename) throws IOException {
-		background = ImageIO.read(new File(filename));
+        ImageIcon bkgIcon = new ImageIcon(this.getClass().getResource(filename));
+        //background = ImageIO.read(new File(filename));
+        this.background = bkgIcon.getImage();
 	}
 		
 	public void paintComponent(Graphics g) {
