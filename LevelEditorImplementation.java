@@ -62,11 +62,6 @@ public class LevelEditorImplementation implements LevelEditor{
 		this.puzzle = new PuzzleGame(row, col);
 	}
 
-	/**
-	 * Choose a different exit. 
-	 * @pre exitRow < height && exitCol < width
-	 * @post true
-	 */
 	@Override
 	public void chooseExit(int exitRow, int exitCol) {
 		this.puzzle.setExitCol(exitRow);
@@ -114,6 +109,4 @@ public class LevelEditorImplementation implements LevelEditor{
 			puzzle.getVehicle(id).setColor(color);
 		}
 	}
-
-
 }
