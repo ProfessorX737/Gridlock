@@ -569,7 +569,7 @@ public class PuzzleGame implements Serializable {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, false));
+							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, Color.ORANGE));
 						}
 					}
 				} else {
@@ -591,7 +591,7 @@ public class PuzzleGame implements Serializable {
 					emptySpace++;
 					for (int k = 0; k < vehicleSize.length; k++) {
 						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, false));
+							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, Color.ORANGE));
 						}
 					}
 				} else {
@@ -693,9 +693,9 @@ public class PuzzleGame implements Serializable {
      * @param col
      * @param main
      */
-    public void addVehicle(boolean isVertical, int length, int row, int col, boolean main){
+    public void addVehicle(boolean isVertical, int length, int row, int col, Color color){
         int id = vehicleMap.size();
-        Vehicle v = new Vehicle(id, isVertical, length, row, col, main);
+        Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
         this.vehicleMap.put(id, v);
         this.fillVehicleSpace(v, id);
     }
@@ -799,7 +799,7 @@ public class PuzzleGame implements Serializable {
         return copy;
     }
 
-    private Map<Integer, Vehicle> copyVehicleMap(Map<Integer,Vehicle> map) {
+    private Map<Integer, Vehicle> copyVehicleMap(Map<Integer, Vehicle> map) {
         Map<Integer, Vehicle> copy = new HashMap<>();
         for (Vehicle v : map.values()) {
             copy.put(v.getID(), new Vehicle(v));

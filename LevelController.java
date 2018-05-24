@@ -35,9 +35,11 @@ public class LevelController implements ActionListener {
 
         ButtonPanel bp = new ButtonPanel();
         SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
+        BorderedPuzzleView borderedPuzzleView = new BorderedPuzzleView(pv);
 
-        GameView gameView = new GameView(bp, bc, pv, pc);
-        new GameController(gameView, pc);
+        GameView gameView = new GameView(bp, bc, pv, pc, borderedPuzzleView);
+        BorderedPuzzleController borderedPuzzleController = new BorderedPuzzleController(borderedPuzzleView);
+        GameController gameController = new GameController(gameView, borderedPuzzleController);
         
         this.gameView = this.createFrame(gameView);
 	}
