@@ -141,12 +141,11 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      * Given the parameters generate a random puzzle using those parameters
      * It may be impossible to include numVehicles and moves as params as time to generate would be too long
      *
-     * @param width,      the width of the board
-     * @param height,     the height of the board
-     * @param exitRow,    the row which the vehicle can exit
-     * @param exitCol,    the col which the vehicle can exit
-     * @param numVehicle, the number of vehicles on the board
-     * @param move,       the number of moves required to complete the game
+     * @param width,   the width of the board
+     * @param height,  the height of the board
+     * @param exitRow, the row which the vehicle can exit
+     * @param exitCol, the col which the vehicle can exit
+     * @param moves,   the number of moves required to complete the game
      * @return puzzleGame,
      */
     public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves) throws Exception {

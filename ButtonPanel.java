@@ -4,17 +4,9 @@ import java.awt.*;
 public class ButtonPanel extends JPanel {
 
     private final JButton menuButton;
-    // Variables declaration
-    private JComboBox<String> DifficultyBox;
-    private JLabel DifficultyLabel;
-    private JButton HintBtn;
-    private JComboBox<String> LevelBox;
-    private JLabel LevelLabel;
-    private JButton LoadGameBtn;
     private JLabel MoveCount;
     private JButton RedoBtn;
     private JButton UndoBtn;
-    private JButton CreateBtn;
     private JButton jResetBtn;
     private JLabel jTimeLabel;
     private Timer timer;
@@ -23,41 +15,54 @@ public class ButtonPanel extends JPanel {
     public static final int HEIGHT = 300;
 
     public ButtonPanel() {
- 
-        LoadGameBtn = new JButton();
-        jResetBtn = new JButton();
-        jTimeLabel = new JLabel();
-        MoveCount = new JLabel();
-        HintBtn = new JButton();
-        UndoBtn = new JButton();
-        RedoBtn = new JButton();
-        DifficultyLabel = new JLabel();
-        DifficultyBox = new JComboBox<>();
-        LevelLabel = new JLabel();
-        LevelBox = new JComboBox<>();
-        CreateBtn = new JButton();
-        menuButton = new JButton();
+        ImageIcon button = new ImageIcon(this.getClass().getResource("Assets/button.png"));
+//        ImageIcon button = new ImageIcon("Assets/button.png");
+        button = new ImageIcon(button.getImage().getScaledInstance(100, 50, Image
+                .SCALE_SMOOTH));
+
+        ImageIcon label = new ImageIcon(this.getClass().getResource("Assets/textBg.png"));
+        label = new ImageIcon(label.getImage().getScaledInstance(100,50,Image.SCALE_SMOOTH));
+
+        jResetBtn = new JButton(button);
+        jTimeLabel = new JLabel(label);
+        MoveCount = new JLabel(label);
+        UndoBtn = new JButton(button);
+        RedoBtn = new JButton(button);
+        menuButton = new JButton(button);
+        this.setOpaque(false);
 
 
-        this.setPreferredSize(new java.awt.Dimension(150, 300));
-        this.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        this.setPreferredSize(new java.awt.Dimension(150, 400));
 
-        LoadGameBtn.setText("Load Game");
         jTimeLabel.setText("00:00:00");
         MoveCount.setText("Moves: 0");
         jResetBtn.setText("Reset");
-        HintBtn.setText("Hint");
         UndoBtn.setText("Undo");
         RedoBtn.setText("Redo");
-        DifficultyLabel.setText("Difficulty:");
-        LevelLabel.setText("Puzzle: ");
-        CreateBtn.setText("Create Randomized Game");
         menuButton.setText("Menu");
 
-        DifficultyBox.setModel(new DefaultComboBoxModel<>(new String[]{"Novice", "Intermediate",
-                "Expert"}));
-        LevelBox.setModel(new DefaultComboBoxModel<>(new String[]{"Puzzle 1", "Puzzle 2", "Puzzle 100"}));
+        menuButton.setBorder(BorderFactory.createEmptyBorder());
+        jTimeLabel.setBorder(BorderFactory.createEmptyBorder());
+        MoveCount.setBorder(BorderFactory.createEmptyBorder());
+        jResetBtn.setBorder(BorderFactory.createEmptyBorder());
+        UndoBtn.setBorder(BorderFactory.createEmptyBorder());
+        RedoBtn.setBorder(BorderFactory.createEmptyBorder());
 
+        menuButton.setHorizontalTextPosition(JButton.CENTER);
+        jTimeLabel.setHorizontalTextPosition(JButton.CENTER);
+        MoveCount.setHorizontalTextPosition(JButton.CENTER);
+        jResetBtn.setHorizontalTextPosition(JButton.CENTER);
+        UndoBtn.setHorizontalTextPosition(JButton.CENTER);
+        RedoBtn.setHorizontalTextPosition(JButton.CENTER);
+
+
+        /*jTimeLabel.setIcon(button);
+        jResetBtn.setIcon(button);
+        MoveCount.setIcon(button);
+        UndoBtn.setIcon(button);
+        RedoBtn.setIcon(button);
+        menuButton.setIcon(button);
+*/
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -89,9 +94,6 @@ public class ButtonPanel extends JPanel {
     public void setController(ButtonController c) {
         this.RedoBtn.addActionListener(c.getRedoButtonListener());
         this.UndoBtn.addActionListener(c.getUndoButtonListener());
-        this.HintBtn.addActionListener(c.getHintButtonListener());
-        this.LoadGameBtn.addActionListener(c.getLoadGameButtonListener());
-        this.CreateBtn.addActionListener(c.getCreateGameButtonListener());
         this.jResetBtn.addActionListener(c.getResetButtonListener());
         this.timer = new Timer(1000, c.getTimerListener());
         this.startTimer();
@@ -113,4 +115,13 @@ public class ButtonPanel extends JPanel {
         MoveCount.setText("Moves: " + Integer.toString(moves));
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        ImageIcon bg = new ImageIcon(this.getClass().getResource("Assets/sideBg.png"));
+        bg = new ImageIcon(bg.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH));
+        // Image board = bg.getImage();
+        // board = board.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
+        g.drawImage(bg.getImage(), 0, 0, null);
+    }
 }
