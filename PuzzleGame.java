@@ -872,9 +872,9 @@ public class PuzzleGame implements Serializable {
      * @param length
      * @param row
      * @param col
-     * @param color
+     * @param main
      */
-    public void addVehicle(boolean isVertical, int length, int row, int col, Color color) {
+    public void addVehicle(boolean isVertical, int length, int row, int col, Color color){
         int id = vehicleMap.size();
         Vehicle v = new Vehicle(id, isVertical, length, row, col, color);
         this.vehicleMap.put(id, v);

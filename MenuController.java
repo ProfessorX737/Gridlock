@@ -24,7 +24,7 @@ public class MenuController implements ActionListener {
 			lv.setController(puzzleSelectController);
 		}
     		LevelSelect ls = new LevelSelect(MainMenu.WIDTH,MainMenu.HEIGHT);
-		this.levelSelect = this.createFrame(new BackFrame("Select A Level", ls, BackFrame.DEFAULT_BAR_HEIGHT));
+		this.levelSelect = this.createFrame(new BackFrame("Select a Level", ls, BackFrame.DEFAULT_BAR_HEIGHT));
 		LevelSelectController lvlContr = new LevelSelectController(this.levelSelect,this.puzzleSelect);
 		ls.setController(lvlContr);
 		
@@ -40,19 +40,19 @@ public class MenuController implements ActionListener {
         return frame;
 	}
 	
-	private JFrame createGameView(PuzzleGame puzzleGame) {
-
-        PuzzleView pv = new PuzzleView(puzzleGame, PuzzleView.DEFAULT_CELL_SIZE);
-        PuzzleController pc = new PuzzleController(puzzleGame, pv);
-
-        ButtonPanel bp = new ButtonPanel();
-        SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
-
-        GameView gameView = new GameView(bp, bc, pv, pc);
-        new GameController(gameView, pc);
-        
-        return this.createFrame(gameView);
-	}
+//	private JFrame createGameView(PuzzleGame puzzleGame) {
+//
+//        PuzzleView pv = new PuzzleView(puzzleGame, PuzzleView.DEFAULT_CELL_SIZE);
+//        PuzzleController pc = new PuzzleController(puzzleGame, pv);
+//
+//        ButtonPanel bp = new ButtonPanel();
+//        SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
+//
+//        GameView gameView = new GameView(bp, bc, pv, pc);
+//        new GameController(gameView, pc);
+//        
+//        return this.createFrame(gameView);
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

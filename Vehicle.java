@@ -9,9 +9,9 @@ public class Vehicle implements Serializable{
 	private int id;
 	private boolean isVertical;
 	private final int length;
-	private Color color;
 	private int row;
 	private int col;
+	private Color color;
 	/**
 	 * Constructor for vehicles, takes the parameters
 	 * @post 
@@ -20,7 +20,7 @@ public class Vehicle implements Serializable{
 	 * @param length, length of the vehicle, must be positive
 	 * @param row, row coordinate
 	 * @param col, column coordinate
-	 * @param color, color of the car
+	 * @param color, color of the block
 	 */
 	public Vehicle(int id, boolean isVertical, int length, int row, int col, Color color) {
 		this.id = id;
@@ -51,15 +51,7 @@ public class Vehicle implements Serializable{
 	public void setID(int ID) {
 		this.id = ID;
 	}
-	
-	/**
-	 * Set the color of the vehicle
-	 * @param color
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
+
 	public int getID() {
 		return id;
 	}
@@ -72,10 +64,7 @@ public class Vehicle implements Serializable{
 		return length;
 	}
 	
-	public Color getColor() {
-		return color;
-	}
-	
+
 	public int getRow() {
 		return this.row;
 	}
@@ -83,11 +72,19 @@ public class Vehicle implements Serializable{
 	public int getCol() {
 		return this.col;
 	}
-	
+
+    public Color getColor(){
+    		return this.color;
+    	}
+    
+    public void setColor(Color color) {
+    		this.color = color; 
+    }
+    
 	public void setIsVertical(boolean isVertical) {
 		this.isVertical = isVertical;
 	}
-	
+
 	public void setPos(int row, int col) {
 		this.row = row;
 		this.col = col;

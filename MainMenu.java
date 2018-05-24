@@ -97,13 +97,13 @@ public class MainMenu extends JFrame {
 		
 		this.pack();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
 	}
 	
 	public void setController(ActionListener al) {
 		this.playBtn.addActionListener(al);
 		this.puzzlesBtn.addActionListener(al);
 		this.exitBtn.addActionListener(al);
+		this.setVisible(true);
 	}
 	
 }
