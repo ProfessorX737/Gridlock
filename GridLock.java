@@ -4,10 +4,10 @@ import java.awt.*;
 public class GridLock {
     
     public static void test0() {
-    	MainMenu menu = new MainMenu();
-    	GridlockGame game = new GridlockGame();
-    	MenuController menuContr = new MenuController(game,menu);
-    	menu.setController(menuContr);
+		MainMenu menu = new MainMenu();
+		GridlockGame game = new GridlockGame();
+		MenuController menuContr = new MenuController(game,menu);
+		menu.setController(menuContr);
     }
 
     public static void test1() {
@@ -32,7 +32,6 @@ public class GridLock {
         f.add(gameView);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.pack();
-        System.out.println(gameView.getSize());
         f.setMinimumSize(new Dimension(gameView.getWidth(), gameView.getHeight() + 23));
         f.setVisible(true);
     }
