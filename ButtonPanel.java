@@ -20,9 +20,12 @@ public class ButtonPanel extends JPanel {
         button = new ImageIcon(button.getImage().getScaledInstance(100, 50, Image
                 .SCALE_SMOOTH));
 
+        ImageIcon label = new ImageIcon(this.getClass().getResource("Assets/textBg.png"));
+        label = new ImageIcon(label.getImage().getScaledInstance(100,50,Image.SCALE_SMOOTH));
+
         jResetBtn = new JButton(button);
-        jTimeLabel = new JLabel(button);
-        MoveCount = new JLabel(button);
+        jTimeLabel = new JLabel(label);
+        MoveCount = new JLabel(label);
         UndoBtn = new JButton(button);
         RedoBtn = new JButton(button);
         menuButton = new JButton(button);

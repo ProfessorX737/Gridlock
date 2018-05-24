@@ -53,16 +53,15 @@ public class PuzzleView extends JPanel implements Board{
         this.vehicles.clear();
         ImageIcon block;
         for (Vehicle v : puzzleGame.getVehicles()) {
-            System.out.println("Drawing vehicle");
             //JComponent dc = new JPanel();
             int vWidth = this.cellLength;
             int vHeight = this.cellLength;
             if (v.getIsVertical()) {
                 vHeight = this.cellLength * v.getLength();
-                if (v.getMain()) block = new ImageIcon(this.getClass().getResource("Assets/vMainBlock.png"));
+                if (v.getID() == 0) block = new ImageIcon(this.getClass().getResource("Assets/vMainBlock.png"));
                 else block = new ImageIcon(this.getClass().getResource("Assets/vBlock.png"));
             } else {
-                if (v.getMain()) block = new ImageIcon(this.getClass().getResource("Assets/hMainBlock.png"));
+                if (v.getID() == 0) block = new ImageIcon(this.getClass().getResource("Assets/hMainBlock.png"));
                 else block = new ImageIcon(this.getClass().getResource("Assets/hBlock.png"));
                 vWidth = this.cellLength * v.getLength();
             }
