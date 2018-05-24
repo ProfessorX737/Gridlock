@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -31,5 +32,9 @@ public class BackFrame extends JPanel {
 		this.add(main, BorderLayout.CENTER);
 
 		this.setSize(new Dimension(main.getWidth(),main.getHeight() + topBarHeight));
+	}
+	
+	public void setController(ActionListener al) {
+		this.backButton.addActionListener(al);
 	}
 }

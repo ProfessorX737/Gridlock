@@ -15,16 +15,32 @@ public class MenuController implements ActionListener {
 	public MenuController(GridlockGame game, JFrame menu) {
 		this.game = game;
 		this.menu = menu;
-		
 		this.puzzleSelect = new JFrame[GridlockGame.NUM_LEVELS];
 		for(int i = 0; i < GridlockGame.NUM_LEVELS; i++) {
 			LevelView lv = new LevelView(this.game.getPuzzles(i),MainMenu.WIDTH,MainMenu.HEIGHT,PuzzleView.DEFAULT_CELL_SIZE);
-			this.puzzleSelect[i] = this.createFrame(new BackFrame("Select A Puzzle",lv, BackFrame.DEFAULT_BAR_HEIGHT));
+			BackFrame puzzleSelectBackPanel = new BackFrame("Select A Puzzle",lv,BackFrame.DEFAULT_BAR_HEIGHT);
+			this.puzzleSelect[i] = this.createFrame(puzzleSelectBackPanel);
+			JFrame currLevel = this.puzzleSelect[i];
+			puzzleSelectBackPanel.setController(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					currLevel.setVisible(false);
+					levelSelect.setVisible(true);
+				}
+			});
 			LevelController puzzleSelectController = new LevelController(this.puzzleSelect[i],this.game.getPuzzles(i));
 			lv.setController(puzzleSelectController);
 		}
     		LevelSelect ls = new LevelSelect(MainMenu.WIDTH,MainMenu.HEIGHT);
-		this.levelSelect = this.createFrame(new BackFrame("Select a Level", ls, BackFrame.DEFAULT_BAR_HEIGHT));
+    		BackFrame levelSelectBackPanel = new BackFrame("Select a Level", ls, BackFrame.DEFAULT_BAR_HEIGHT);
+    		levelSelectBackPanel.setController(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				levelSelect.setVisible(false);
+				menu.setVisible(true);
+			}
+		});
+		this.levelSelect = this.createFrame(levelSelectBackPanel);
 		LevelSelectController lvlContr = new LevelSelectController(this.levelSelect,this.puzzleSelect);
 		ls.setController(lvlContr);
 		
@@ -39,20 +55,6 @@ public class MenuController implements ActionListener {
         frame.setVisible(false);
         return frame;
 	}
-	
-//	private JFrame createGameView(PuzzleGame puzzleGame) {
-//
-//        PuzzleView pv = new PuzzleView(puzzleGame, PuzzleView.DEFAULT_CELL_SIZE);
-//        PuzzleController pc = new PuzzleController(puzzleGame, pv);
-//
-//        ButtonPanel bp = new ButtonPanel();
-//        SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
-//
-//        GameView gameView = new GameView(bp, bc, pv, pc);
-//        new GameController(gameView, pc);
-//        
-//        return this.createFrame(gameView);
-//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
