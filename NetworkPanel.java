@@ -219,4 +219,16 @@ public class NetworkPanel extends JPanel {
     public void setOpponentName(String user){
         setPlayingAgainst(user);
     }
+
+    public void lockConnectBtn(){
+        ConnectBtn.setEnabled(false);
+    }
+
+    public void updateWins(int wins){
+        WinLabel.setText("Wins: " + Integer.toString(wins));
+    }
+
+    public void updateLoss(int losses){
+        LossLabel.setText("Losses: " + Integer.toString((losses)));
+    }
 }

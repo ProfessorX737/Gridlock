@@ -5,6 +5,8 @@ public class ClientInfo {
 	private boolean busy;
 	private boolean isOnline;
 	private String playingAgainst;
+	private int wins;
+	private int losses;
 
 	public void setBusy(boolean busy) {
 		this.busy = busy;
@@ -42,5 +44,20 @@ public class ClientInfo {
 		this.playingAgainst = null;
 	}
 
+	public int getWins(){
+		return wins;
+	}
+
+	public int getLosses(){
+		return losses;
+	}
+
+	public void incrementWins(){
+		this.wins ++;
+	}
+
+	public void incrementLosses(){
+		this.losses ++;
+	}
 
 }

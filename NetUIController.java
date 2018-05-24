@@ -105,6 +105,7 @@ public class NetUIController implements NetworkUIController, Runnable{
                             running = true;
                             np.setUsername(username);
                             new Thread(new NetUIController(np, host, portNumber)).start();
+                            np.lockConnectBtn();
                             return;
                         }
                         else{
@@ -143,7 +144,10 @@ public class NetUIController implements NetworkUIController, Runnable{
             public void actionPerformed(ActionEvent evt) {
                 // Clicked the forfeit button
                 // Notify server of forfeit, close the game, unlock the buttons
-                message("forfeit " + username + " " + opponent);
+//                message("forfeit " + username + " " + opponent);
+                if (lost == false){
+                    message("forfeit " + username + " " + opponent);
+                }
 
                 np.unlockButtons();
 
@@ -269,6 +273,10 @@ public class NetUIController implements NetworkUIController, Runnable{
 
             case "forfeit":
                 forfeit(message);
+                break;
+
+            case "stats":
+                updateStats(message);
                 break;
 
             default:
@@ -413,5 +421,12 @@ public class NetUIController implements NetworkUIController, Runnable{
         createDialogBox("User: " + opponent + ", has forfeited the game");
 
         lost = true; // Flag, to not notify the server once you complete the puzzle
+    }
+
+    private void updateStats(String message){
+        System.out.println("IN UPDATE STATS " + message);
+        String[] parts = message.split(" ");
+        np.updateWins(Integer.parseInt(parts[1]));
+        np.updateLoss(Integer.parseInt(parts[2]));
     }
 }

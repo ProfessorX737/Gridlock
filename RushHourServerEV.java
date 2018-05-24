@@ -84,7 +84,7 @@ public class RushHourServerEV extends Thread{
         for (String names : userList.keySet()){
             builder.append(names + " ");
         }
-
+        sendStats(username);
         String result = builder.toString();
         System.out.println("Event Handler to <" + username + ">: " + result);
 
@@ -173,11 +173,15 @@ public class RushHourServerEV extends Thread{
         ClientInfo usrInfo1 = clients.get(user1);
         ClientInfo usrInfo2 = clients.get(user2);
 
+        usrInfo1.incrementWins();
+        usrInfo2.incrementLosses();
+
         usrInfo1.setBusy(false);
         usrInfo2.setBusy(false);
         usrInfo1.setPlayingAgainst(null);
         usrInfo2.setPlayingAgainst(null);
-
+        sendStats(user1);
+        sendStats(user2);
     }
 
     // forfeit
@@ -189,16 +193,18 @@ public class RushHourServerEV extends Thread{
             String oppo = info.getPlayingAgainst();
             info.resetPlayingAgainst();
             // Increase loss count
+            info.incrementLosses();
+            sendStats(user1);
 
             if (oppo != null){
                 send(user2, "forfeit " + user1);
                 ClientInfo OppoInfo = clients.get(user2);
                 OppoInfo.setBusy(false);
                 OppoInfo.resetPlayingAgainst();
+                OppoInfo.incrementWins();
                 // Increase win count
+                sendStats(user2);
             }
-
-
 
 
         }
@@ -228,5 +234,14 @@ public class RushHourServerEV extends Thread{
     private void declineUser(String user1, String user2){
         // Notify other user he has been declined
         send(user2,"declined " + user1);
+    }
+
+    private void sendStats(String user1){
+        ClientInfo info = clients.get(user1);
+        int losses = info.getLosses();
+        int wins = info.getWins();
+
+        send(user1, "stats " + Integer.toString(wins) + " " + Integer.toString(losses) );
+
     }
 }
