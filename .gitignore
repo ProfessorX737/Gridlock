@@ -5,6 +5,8 @@
 
 \.idea
 
+out/
+
 bin/DirectedWeightedGraph\.class
 
 bin/DirectedWeightedGraph\$Edge\.class
