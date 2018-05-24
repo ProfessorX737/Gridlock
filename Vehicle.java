@@ -59,11 +59,21 @@ public class Vehicle implements Serializable{
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
+	/**
+	 * Gets the ID
+	 * @return id
+	 */
 	
 	public int getID() {
 		return id;
 	}
-	
+
+	/**
+	 * Gets whether the Vehicle vehicle is true or not
+	 * @return
+	 */
+
 	public boolean getIsVertical() {
 		return isVertical;
 	}
@@ -116,6 +126,12 @@ public class Vehicle implements Serializable{
 		return result;
 	}
 
+	/**
+	 * Equals method for comparing two objects
+	 * @param obj the other object to be compared
+	 * @return whether two objects have the same properties
+	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -136,11 +152,16 @@ public class Vehicle implements Serializable{
 		return true;
 	}
 
+	/**
+	 * Takes a string representation of a vehicle and creates a vehicle with those properties
+	 * @param s string representation of a vehicle
+	 * @return a Vehicle object
+	 */
+
 	public static Vehicle strToVehicle(String s){
-		System.out.println("strToVehicle parameter: " + s);
 		s = s.trim();
 		String[] parts = s.split(" ");
-		System.out.println(parts[0]);
+
 
 		Boolean isVert = (parts[0].equals("0")) ? true : false;
 		int length = Integer.parseInt(parts[1]);

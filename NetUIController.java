@@ -248,6 +248,11 @@ public class NetUIController implements NetworkUIController, Runnable{
                 System.out.println(" ----------- PUZZLE CREATION ----------");
                 System.out.println(message);
                 displayPuzzle(message);
+                break;
+
+            case "setopp":
+                setOpponent(message);
+                break;
 
             default:
                 break;
@@ -295,7 +300,7 @@ public class NetUIController implements NetworkUIController, Runnable{
                 ". Do you accept the challenge?", "Challenge notification", dialogButton);
         if(dialogResult == 0) {
             // send acceptance of
-            message("accepted " + username + player);
+            message("accepted " + username + " " + player);
             System.out.println("Sent: " + "accepted " + username + player);
 
         } else {
@@ -306,7 +311,7 @@ public class NetUIController implements NetworkUIController, Runnable{
 
     private void displayPuzzle(String message){
         lost = false;
-        f = new JFrame("GridLock");
+        f = new JFrame("GridLock " + username);
 
         f.setLayout(new BorderLayout());
         f.setBackground(Color.BLACK);
@@ -368,5 +373,15 @@ public class NetUIController implements NetworkUIController, Runnable{
             message("done " + username + " " + opponent);
             lost = true;
         }
+        // Clean up
+        f.setVisible(false);
+        f.removeAll();
+    }
+
+    private void setOpponent(String message){
+        System.out.println(" RECEIVED SETOPP MESSAGE" + message);
+        // setopp opponent's name
+        String[] parts = message.split(" ");
+        opponent = parts[1].toLowerCase();
     }
 }

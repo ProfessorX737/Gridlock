@@ -8,6 +8,8 @@ import java.util.Map;
 
 import java.util.concurrent.BlockingQueue;
 
+
+
 /**
  * Event handler class thread for RushHourServer
  *  - handles all incoming and outgoing messages
@@ -124,6 +126,11 @@ public class RushHourServerEV extends Thread{
         ClientInfo usrInfo1 = clients.get(user1);
         ClientInfo usrInfo2 = clients.get(user2);
 
+        if (usrInfo1 == null || usrInfo2 == null){
+            send(user1, user2 + " does not exist");
+            return;
+        }
+
         usrInfo1.setBusy(true);
         usrInfo2.setBusy(true);
         usrInfo1.setPlayingAgainst(user2);
@@ -138,6 +145,9 @@ public class RushHourServerEV extends Thread{
         // Convert puzzle to String Format and send to both users
         String puzzle = newPuzzle.getStringRep();
         System.out.println("Puzzle output: " + puzzle);
+
+        send(user1, "setopp " + user2);
+        send(user2, "setopp " + user1);
 
         send(user1, "puzzle " + puzzle);
         send(user2, "puzzle " + puzzle);

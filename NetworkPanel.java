@@ -197,4 +197,14 @@ public class NetworkPanel extends JPanel {
     public void setPlayingAgainst(String player){
         OppoLabel.setText("Playing Against: " + player);
     }
+
+    public void lockButtons(){
+        ChallengeBtn.setEnabled(false);
+        UserListBox.setEnabled(false);
+    }
+
+    public void unlockButtons(){
+        ChallengeBtn.setEnabled(true);
+        UserListBox.setEnabled(true);
+    }
 }
