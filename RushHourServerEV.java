@@ -107,7 +107,7 @@ public class RushHourServerEV extends Thread{
         System.out.println("Challenge to " + user2 + "from " + user1);
         if (clients.containsKey(user2)){
             System.out.println(user2 + " exists");
-            ClientInfo otherUser = clients.get("user2");
+            ClientInfo otherUser = clients.get(user2);
             if (!otherUser.isBusy()){
                 send(user1, "challenging " + user2);
                 send(user2, "challenged " + user2 + " from " + user1);
