@@ -14,8 +14,9 @@ public class GridlockGame {
 
 	public final static int NUM_LEVELS = 6;
 	private final static int MAX_PUZZLES_PER_LEVEL = 10;
-	private final static String MAIN_FOLDER_NAME = "puzzles/";
-	private final static String[] LEVEL_NAMES = {"veryEasy","easy","medium","hard","veryHard","ultraHard"};
+	private final static String MAIN_FOLDER_NAME = "src/puzzles/";
+	public final static String[] LEVEL_NAMES = {"veryEasy","easy","medium","hard","veryHard","ultraHard"};
+	public final static String[] DISPLAY_LEVEL_NAMES = {"Newbie","Beginner","Intermediate","Experienced","Advanced","Expert"};
     public final static int[] LEVEL_MIN_MOVES = {7,10,15,20,25,30};
     public static final int DEFAULT_BOARD_SIZE = 6;
     public static final int DEFAULT_CAR_LENGTH = 2;

@@ -5,9 +5,9 @@ public class GameController {
     private GameView gameView;
     private GameListener gameListener;
 
-    public GameController(GameView gameView, PuzzleController puzzleController) {
+    public GameController(GameView gameView, BorderedPuzzleController borderedPuzzleController) {
         this.gameView = gameView;
-        this.gameListener = new GameListener(puzzleController);
+        this.gameListener = new GameListener(borderedPuzzleController);
         gameView.addComponentListener(gameListener);
     }
 }

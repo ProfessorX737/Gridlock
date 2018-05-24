@@ -54,10 +54,10 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 				}
 			} else {
 				minMoves = puzzle.getMinMoves();
+				puzzle.initState();
 				
 				for(int i = 0; i < this.numLevels-1; i++) {
 					if(minMoves >= levelMinMoves[i] && minMoves < levelMinMoves[i+1] && canAdd[i] == true && numLeft[i] != 0) {
-						puzzle.initState();
 						puzzleManager.addNewPuzzle(i, puzzle);
 						canAdd[i] = false;
 						numLeft[i]--;
@@ -66,7 +66,6 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 				}
 				int lastIndex = this.numLevels-1;
 				if(minMoves >= levelMinMoves[lastIndex] && canAdd[lastIndex] == true && numLeft[lastIndex] != 0) {
-					puzzle.initState();
 					puzzleManager.addNewPuzzle(lastIndex, puzzle);
 					canAdd[lastIndex] = false;
 					numLeft[lastIndex]--;
@@ -142,12 +141,11 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
      * Given the parameters generate a random puzzle using those parameters
      * It may be impossible to include numVehicles and moves as params as time to generate would be too long
      *
-     * @param width,      the width of the board
-     * @param height,     the height of the board
-     * @param exitRow,    the row which the vehicle can exit
-     * @param exitCol,    the col which the vehicle can exit
-     * @param numVehicle, the number of vehicles on the board
-     * @param move,       the number of moves required to complete the game
+     * @param width,   the width of the board
+     * @param height,  the height of the board
+     * @param exitRow, the row which the vehicle can exit
+     * @param exitCol, the col which the vehicle can exit
+     * @param moves,   the number of moves required to complete the game
      * @return puzzleGame,
      */
     public PuzzleGame generatePuzzle(int width, int height, int exitRow, int exitCol, int moves) throws Exception {

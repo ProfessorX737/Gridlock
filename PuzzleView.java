@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.util.HashMap;
@@ -10,42 +9,83 @@ import java.util.Map;
  *
  * @author ProfessorX
  */
-public class PuzzleView extends JPanel {
+public class PuzzleView extends JPanel implements Board{
     private PuzzleGame puzzleGame;
     private int width;
     private int height;
     private int cellLength;
     private Map<Integer, JComponent> vehicles;
+    private ImageIcon vMainBlock;
+    private ImageIcon hMainBlock;
+    private ImageIcon vBlock;
+    private ImageIcon hBlock;
+    
+    public static final int DEFAULT_CELL_SIZE = 50;
+    public static final String VERTICAL_MAIN_BLOCK = "Assets/vMainBlock.png";
+    public static final String HORIZONTAL_MAIN_BLOCK = "Assets/hMainBlock.png";
+    public static final String VERTICAL_BLOCK = "Assets/vBlock.png";
+    public static final String HORIZONTAL_BLOCK = "Assets/hBlock.png";
+
+    public PuzzleView(PuzzleGame puzzleGame) {
+        this.setLayout(null);
+        this.puzzleGame = puzzleGame;
+        this.cellLength = DEFAULT_CELL_SIZE;
+        this.vehicles = new HashMap<>();
+        this.setBackground(Color.white);
+        this.vMainBlock = new ImageIcon(this.getClass().getResource(VERTICAL_MAIN_BLOCK));
+        this.hMainBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_MAIN_BLOCK));
+        this.vBlock = new ImageIcon(this.getClass().getResource(VERTICAL_BLOCK));
+        this.hBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_BLOCK));
+        this.updateSize(this.cellLength);
+        this.setOpaque(false);
+    }
 
     public PuzzleView(PuzzleGame puzzleGame, int cellLength) {
+        this.setLayout(null);
         this.puzzleGame = puzzleGame;
         this.cellLength = cellLength;
         this.vehicles = new HashMap<>();
         this.setBackground(Color.white);
+        this.setLayout(null);
+        this.vMainBlock = new ImageIcon(this.getClass().getResource(VERTICAL_MAIN_BLOCK));
+        this.hMainBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_MAIN_BLOCK));
+        this.vBlock = new ImageIcon(this.getClass().getResource(VERTICAL_BLOCK));
+        this.hBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_BLOCK));
         this.updateSize(this.cellLength);
+        this.setOpaque(false);
     }
 
-    public void updateSize(int cellLength){
-        this.cellLength = cellLength;
-        this.setLayout(null);
+    @Override
+    public void updateSize(int cellSize) {
+        this.cellLength = cellSize;
         this.width = puzzleGame.getNumCols() * this.cellLength;
         this.height = puzzleGame.getNumRows() * this.cellLength;
+        this.setSize(this.width,this.height);
         this.setPreferredSize(new Dimension(this.width, this.height));
-        this.setSize(new Dimension(this.width, this.height));
         this.removeAll();
+        draw();
+    }
+
+
+    @Override
+    public void draw() {
         this.vehicles.clear();
+        ImageIcon block;
         for (Vehicle v : puzzleGame.getVehicles()) {
-            JComponent dc = new JPanel();
             int vWidth = this.cellLength;
             int vHeight = this.cellLength;
             if (v.getIsVertical()) {
                 vHeight = this.cellLength * v.getLength();
+                if(v.getID() == 0) block = this.vMainBlock;
+                else block = this.vBlock;
             } else {
                 vWidth = this.cellLength * v.getLength();
+                if(v.getID() == 0) block = this.hMainBlock;
+                else block = this.hBlock;
             }
+            block = new ImageIcon(block.getImage().getScaledInstance(vWidth, vHeight, Image.SCALE_SMOOTH));
+            JComponent dc = new JLabel("", block, JLabel.CENTER);
             dc.setPreferredSize(new Dimension(vWidth, vHeight));
-            dc.setBackground(v.getColor());
-            dc.setBorder(new LineBorder(Color.white, 2));
             dc.setBounds(v.getCol() * this.cellLength, v.getRow() * this.cellLength, vWidth, vHeight);
             this.vehicles.put(v.getID(), dc);
             this.add(dc);
@@ -69,7 +109,11 @@ public class PuzzleView extends JPanel {
         return this.vehicles.get(id);
     }
 
-    public Map<Integer,JComponent> getVehicles() {
+    public Map<Integer, JComponent> getVehicles() {
         return vehicles;
+    }
+
+    public PuzzleGame getPuzzleGame() {
+        return puzzleGame;
     }
 }
