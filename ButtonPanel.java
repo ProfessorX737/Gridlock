@@ -11,8 +11,9 @@ public class ButtonPanel extends JPanel {
     private JLabel jTimeLabel;
     private Timer timer;
     private int cellSize;
-    private GridBagLayout g;
-    private GridBagConstraints c;
+
+    public static final int WIDTH = 150;
+    public static final int HEIGHT = 300;
 
     public ButtonPanel(int cellSize) {
         this.cellSize = cellSize;
@@ -69,9 +70,8 @@ public class ButtonPanel extends JPanel {
         RedoBtn.setIcon(button);
         menuButton.setIcon(button);
 */
-        g = new GridBagLayout();
-        this.setLayout(g);
-        c = new GridBagConstraints();
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = 0;
         c.gridy = 0;
@@ -99,10 +99,6 @@ public class ButtonPanel extends JPanel {
         this.add(jResetBtn, c);
     }
 
-    private void addButtons() {
-
-    }
-
     public void setController(ButtonController c) {
         this.RedoBtn.addActionListener(c.getRedoButtonListener());
         this.UndoBtn.addActionListener(c.getUndoButtonListener());
@@ -111,19 +107,19 @@ public class ButtonPanel extends JPanel {
         this.startTimer();
     }
 
-    public void startTimer() {
+    public void startTimer(){
         this.timer.start();
     }
 
-    public void endTimer() {
+    public void endTimer(){
         this.timer.stop();
     }
 
-    public void displayTime(String time) {
+    public void displayTime(String time){
         jTimeLabel.setText(time);
     }
 
-    public void displayMoves(int moves) {
+    public void displayMoves(int moves){
         MoveCount.setText("Moves: " + Integer.toString(moves));
     }
 

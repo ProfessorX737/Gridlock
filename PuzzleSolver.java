@@ -8,7 +8,7 @@ public class PuzzleSolver {
         Graph<PuzzleState> stateGraph = new TreeGraph<>();
         ShortestPathSearch<PuzzleState> search = new AStar<>(stateGraph, h);
         PuzzleGame goal = new PuzzleGame(game.getNumRows(), game.getNumCols(), game.getExitRow(), game.getExitCol());
-        goal.addVehicle(false, 2, game.getExitRow(), game.getExitCol(), true);
+        goal.addVehicle(false, 2, game.getExitRow(), game.getExitCol(), Color.RED);
         List<PuzzleState> states = search.shortestPath(new PuzzleState(game), new PuzzleState(goal));
         if (states == null) return null;
         List<int[][]> path = new ArrayList<>();

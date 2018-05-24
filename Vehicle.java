@@ -1,11 +1,13 @@
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Represents vehicles on the board
  */
-public class Vehicle {
+public class Vehicle implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id;
-	private final boolean isVertical;
+	private boolean isVertical;
 	private final int length;
 	private int row;
 	private int col;
@@ -49,11 +51,15 @@ public class Vehicle {
 	public void setID(int ID) {
 		this.id = ID;
 	}
-
 	public int getID() {
 		return id;
 	}
-	
+
+	/**
+	 * Gets whether the Vehicle vehicle is true or not
+	 * @return
+	 */
+
 	public boolean getIsVertical() {
 		return isVertical;
 	}
@@ -71,9 +77,17 @@ public class Vehicle {
 		return this.col;
 	}
 
-//	public boolean getMain(){return this.main;}
-
-    public Color getColor(){return this.color;}
+    public Color getColor(){
+    		return this.color;
+    	}
+    
+    public void setColor(Color color) {
+    		this.color = color; 
+    }
+    
+	public void setIsVertical(boolean isVertical) {
+		this.isVertical = isVertical;
+	}
 
 	public void setPos(int row, int col) {
 		this.row = row;
@@ -90,11 +104,72 @@ public class Vehicle {
 	
 	@Override
 	public String toString() {
-		String x = "Vehicle ID: " + this.id + ", isVertical: " + 
-					this.isVertical + ", length: " + this.length + 
-					", row: " + this.row + ", col: " + this.col;
+		String x = "" + this.id + "," + this.isVertical + "," 
+					+ this.length + "," + this.row + ","
+					+ this.col + "," + this.color.toString() + ":";
 		return x;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + col;
+		result = prime * result + (isVertical ? 1231 : 1237);
+		result = prime * result + length;
+		result = prime * result + row;
+		return result;
+	}
+
+	/**
+	 * Equals method for comparing two objects
+	 * @param obj the other object to be compared
+	 * @return whether two objects have the same properties
+	 */
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vehicle other = (Vehicle) obj;
+		if (col != other.col)
+			return false;
+		if (isVertical != other.isVertical)
+			return false;
+		if (length != other.length)
+			return false;
+		if (row != other.row)
+			return false;
+		return true;
+	}
+
+	/**
+	 * Takes a string representation of a vehicle and creates a vehicle with those properties
+	 * @param s string representation of a vehicle
+	 * @return a Vehicle object
+	 */
+
+	public static Vehicle strToVehicle(String s){
+		s = s.trim();
+		String[] parts = s.split(" ");
+
+
+		Boolean isVert = (parts[0].equals("0")) ? true : false;
+		int length = Integer.parseInt(parts[1]);
+		int row = Integer.parseInt(parts[2]);
+		int col = Integer.parseInt(parts[3]);
+		Color colour = (parts[4].equals("red")) ? Color.RED: Color.ORANGE;
+		System.out.println(parts[5]);
+		int id = Integer.parseInt(parts[5]);
+
+		Vehicle v = new Vehicle(id, isVert, length, row, col, colour);
+		return v;
+	}
+	
 }
 
 
