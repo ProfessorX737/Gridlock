@@ -6,6 +6,7 @@ public class GridLock {
     private final static String red_car = "r";
     private final static String road = "-";
     private final static String wall = "W";
+    static int cellSize = 50;
 
     public static void test2() {
         JFrame f = new JFrame("GridLock");
@@ -38,11 +39,11 @@ public class GridLock {
             System.out.println("");
         }
 
-        PuzzleView pv = new PuzzleView(puzzleGame, 50);
+        PuzzleView pv = new PuzzleView(puzzleGame, cellSize);
         PuzzleController pc = new PuzzleController(puzzleGame, pv);
         pv.setController(pc);
 
-        ButtonPanel bp = new ButtonPanel();
+        ButtonPanel bp = new ButtonPanel(cellSize);
         ButtonController bc = new SideButtonController(pv, puzzleGame, bp);
         bp.setController(bc);
         pc.setButtonController(bc);
@@ -74,11 +75,11 @@ public class GridLock {
             System.out.println("");
         }
 
-        PuzzleView pv = new PuzzleView(puzzleGame, 50);
+        PuzzleView pv = new PuzzleView(puzzleGame, cellSize);
         PuzzleController pc = new PuzzleController(puzzleGame, pv);
         // pv.setController(pc);
 
-        ButtonPanel bp = new ButtonPanel();
+        ButtonPanel bp = new ButtonPanel(cellSize);
         SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
         BorderedPuzzleView borderedPuzzleView = new BorderedPuzzleView(pv);
         // bp.setController(bc);
@@ -86,7 +87,7 @@ public class GridLock {
         // pv.setController(bc.getMouseAdapter());
         GameView gameView = new GameView(bp, bc, pv, pc, borderedPuzzleView);
         BorderedPuzzleController borderedPuzzleController = new BorderedPuzzleController(borderedPuzzleView);
-        GameController gameController = new GameController(gameView, borderedPuzzleController);
+        GameController gameController = new GameController(gameView, borderedPuzzleController, bc);
         // f.setMinimumSize(new Dimension(450, 300));
 
 

@@ -4,9 +4,11 @@ import java.awt.event.ComponentListener;
 
 public class GameListener implements ComponentListener {
     private BorderedPuzzleController borderedPuzzleController;
+    private SideButtonController buttonController;
 
-    public GameListener(BorderedPuzzleController borderedPuzzleController) {
+    public GameListener(BorderedPuzzleController borderedPuzzleController, SideButtonController buttonController) {
         this.borderedPuzzleController = borderedPuzzleController;
+        this.buttonController = buttonController;
     }
 
     @Override
@@ -14,7 +16,8 @@ public class GameListener implements ComponentListener {
        GameView g = (GameView) e.getComponent();
        ButtonPanel b = g.getButtonPanel();
        int newCellSize = Math.min(g.getHeight(), g.getWidth() - 150)/8;
-        b.setPreferredSize(new Dimension(newCellSize * 3,g.getHeight()));
+        buttonController.resize(newCellSize);
+//        b.setPreferredSize(new Dimension(newCellSize * 3,g.getHeight()));
        borderedPuzzleController.resize(newCellSize);
 
     }

@@ -124,4 +124,8 @@ public class SideButtonController implements ButtonController {
         return ma;
     }
 
+    public void resize(int newCellSize){
+        bp.resize(newCellSize);
+    }
+
 }

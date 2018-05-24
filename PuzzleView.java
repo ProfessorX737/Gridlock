@@ -23,6 +23,7 @@ public class PuzzleView extends JPanel implements Board{
 //        this.setBackground(Color.white);
         this.setLayout(null);
         this.updateSize(this.cellLength);
+//        this.draw();
         this.setOpaque(false);
     }
 
@@ -43,6 +44,22 @@ public class PuzzleView extends JPanel implements Board{
 //        this.repaint();
         this.removeAll();
         draw();
+//        for( Integer i: vehicles.keySet()){
+//            JLabel l = (JLabel) vehicles.get(i);
+//            Vehicle v = puzzleGame.getVehicle(i);
+//            int vWidth = this.cellLength;
+//            int vHeight = this.cellLength;
+//            if (puzzleGame.getVehicle(i).getIsVertical()) {
+//                vHeight = this.cellLength * v.getLength();
+//            } else {
+//                vWidth = this.cellLength * v.getLength();
+//            }
+//            ImageIcon block = (ImageIcon) l.getIcon();
+//
+//            block = new ImageIcon(block.getImage().getScaledInstance(vWidth, vHeight, Image.SCALE_SMOOTH));
+//            l.setIcon(block);
+//            l.setBounds(v.getCol() * this.cellLength, v.getRow() * this.cellLength, vWidth, vHeight);
+//        }
 
 
     }
@@ -74,7 +91,7 @@ public class PuzzleView extends JPanel implements Board{
             dc.setPreferredSize(new Dimension(vWidth, vHeight));
             //dc.setBackground(v.getColor());
             //dc.setBorder(new LineBorder(Color.black, 2));
-            dc.setBounds((v.getCol() + 0) * this.cellLength, (v.getRow() + 0) * this.cellLength, vWidth, vHeight);
+            dc.setBounds(v.getCol() * this.cellLength, v.getRow() * this.cellLength, vWidth, vHeight);
             this.vehicles.put(v.getID(), dc);
             this.add(dc);
         }
