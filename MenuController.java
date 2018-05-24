@@ -88,4 +88,8 @@ public class MenuController implements ActionListener {
 		}
 	}
 	
+	public void createLevelViewFrame() {
+		
+	}
+	
 }

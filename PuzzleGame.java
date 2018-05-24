@@ -903,10 +903,6 @@ public class PuzzleGame implements Serializable {
             moves += 1;
 
 			if (isSolved()) {
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
 				//show the pop up
 				int i = JOptionPane.showConfirmDialog(null, "You won the game in " + this.moves + " moves!\n" + "Continue to play？","Result:", JOptionPane.YES_NO_OPTION);
 			    if (i==JOptionPane.OK_OPTION) {
@@ -956,10 +952,6 @@ public class PuzzleGame implements Serializable {
 		this.fillVehicleSpace(v, id);
 
 		if (isSolved()){
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
 			if (nuic != null){
 				nuic.puzzleDone();
 			}
