@@ -900,10 +900,6 @@ public class PuzzleGame implements Serializable {
             moves += 1;
 
 			if (isSolved()) {
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
 				if (nuic != null) {
 					nuic.puzzleDone();
 				}
@@ -940,10 +936,6 @@ public class PuzzleGame implements Serializable {
 		this.fillVehicleSpace(v, id);
 
 		if (isSolved()){
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
 			if (nuic != null){
 				nuic.puzzleDone();
 			}

@@ -5,8 +5,8 @@ import java.util.List;
  * @author Xavier Poon
  *
  */
-public class GridlockGame {
-
+public class GridlockGame implements Runnable {
+	private Thread puzzleGenThread;
 	PuzzleGenerator puzzleGenerator;
 	PuzzleManager puzzleManager;
 	FileSystem fileSys;
@@ -28,6 +28,7 @@ public class GridlockGame {
     public static final int ULTRA_HARD = 5;
 
 	public GridlockGame() {
+		
 		fileSys = new FileSystemImp();
 		this.puzzleGenerator = new PuzzleGeneratorAStar();
 		this.puzzleManager = new PuzzleManager(NUM_LEVELS);
@@ -52,6 +53,16 @@ public class GridlockGame {
 	public void savePuzzles() {
 		for(int i = 0; i < NUM_LEVELS; i++) {
 			this.fileSys.savePuzzlesToFolder(this.puzzleManager.getPuzzles(i), MAIN_FOLDER_NAME + LEVEL_NAMES[i]);
+		}
+	}
+	@Override
+	public void run() {
+		this.generatePuzzles();
+	}
+	public void generatePuzzlesInBackground() {
+		if(this.puzzleGenThread == null) {
+			this.puzzleGenThread = new Thread(this,"PuzzleGenThread");
+			this.puzzleGenThread.start();
 		}
 	}
 }

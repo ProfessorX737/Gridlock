@@ -16,30 +16,31 @@ public class LevelSelect extends JPanel {
     private String[] levelNames;
     
     public LevelSelect(int width, int height) {
-    	this.width = width;
-    	this.height = height;
-    	this.numLevels = GridlockGame.NUM_LEVELS;
-    	this.levelNames = GridlockGame.DISPLAY_LEVEL_NAMES;
-    	this.setPreferredSize(new Dimension(this.width,this.height));
-    	this.levels = new ArrayList<>();
-    	this.setLayout(new GridBagLayout());
-        this.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    	
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-    	for(int i = 0; i < this.numLevels; i++) {
-    		JButton button = new JButton(this.levelNames[i]);
-    		button.setActionCommand(GridlockGame.LEVEL_NAMES[i]);
-    		c.gridy += i;
-    		this.add(button,c);
-    		this.levels.add(button);
-    	}
+		this.width = width;
+		this.height = height;
+		this.numLevels = GridlockGame.NUM_LEVELS;
+		this.levelNames = GridlockGame.DISPLAY_LEVEL_NAMES;
+		this.setPreferredSize(new Dimension(this.width,this.height));
+		this.levels = new ArrayList<>();
+		this.setLayout(new GridBagLayout());
+		this.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+			
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+
+		for(int i = 0; i < this.numLevels; i++) {
+			JButton button = new JButton(this.levelNames[i]);
+			button.setActionCommand(GridlockGame.LEVEL_NAMES[i]);
+			c.gridy += i;
+			this.add(button,c);
+			this.levels.add(button);
+		}
     }
     
     public void setController(ActionListener al) {
-    	for(JButton b : this.levels) {
-    		b.addActionListener(al);
-    	}
+		for(JButton b : this.levels) {
+			b.addActionListener(al);
+		}
     }
 }
