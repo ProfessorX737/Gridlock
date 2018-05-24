@@ -11,6 +11,7 @@ public class MenuController implements ActionListener {
 	private JFrame menu;
 	private JFrame levelSelect;
 	private JFrame[] puzzleSelect;
+    private JFrame multiplayer;
 	
 	public MenuController(GridlockGame game, JFrame menu) {
 		this.game = game;
@@ -43,7 +44,11 @@ public class MenuController implements ActionListener {
 		this.levelSelect = this.createFrame(levelSelectBackPanel);
 		LevelSelectController lvlContr = new LevelSelectController(this.levelSelect,this.puzzleSelect);
 		ls.setController(lvlContr);
-		
+
+        NetworkPanel networkPanel = new NetworkPanel();
+        NetUIController controller = new NetUIController(networkPanel, "localhost", 55555);
+        networkPanel.setController(controller);
+        this.multiplayer = this.createFrame(networkPanel);
 	}
 	
 	private JFrame createFrame(Container view) {
@@ -61,12 +66,14 @@ public class MenuController implements ActionListener {
 		String action = e.getActionCommand();
 		if(action == "play") {
 			System.out.println("play pressed");
-		}
-		if(action == "puzzles") {
+		} else if(action == "puzzles") {
 			menu.setVisible(false);
 			this.levelSelect.setVisible(true);
-		}
-		if(action == "exit") {
+		} else if(action == "multiplayer") {
+			System.out.println("multiplayer button pressed");
+			this.menu.setVisible(false);
+			this.multiplayer.setVisible(true);
+		} else if(action == "exit") {
 			menu.dispose();
 			this.levelSelect.dispose();
 			for(int i = 0; i < GridlockGame.NUM_LEVELS; i++) {

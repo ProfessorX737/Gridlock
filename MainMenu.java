@@ -8,21 +8,18 @@ import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
 
 public class MainMenu extends JFrame {
 	private JPanel buttonPanel;
 	private JButton playBtn;
 	private JButton puzzlesBtn;
+	private JButton multiplayerBtn;
 	private JButton exitBtn;
 	
 	public static final int BTN_WIDTH = 100;
@@ -77,6 +74,15 @@ public class MainMenu extends JFrame {
 		c.gridy = 2;
 		this.buttonPanel.add(puzzlesBtn,c);
 		
+		this.multiplayerBtn = new JButton("Multiplayer");
+		this.multiplayerBtn.setIcon(btnImg);
+		this.multiplayerBtn.setActionCommand("multiplayer");
+		this.multiplayerBtn.setHorizontalTextPosition(JButton.CENTER);
+		this.multiplayerBtn.setBorder(BorderFactory.createEmptyBorder());
+		this.multiplayerBtn.setContentAreaFilled(false);
+		c.gridy = 3;
+		this.buttonPanel.add(this.multiplayerBtn, c);
+		
 		this.exitBtn = new JButton("Exit");
 		this.exitBtn.setIcon(btnImg);
 		this.exitBtn.setActionCommand("exit");
@@ -84,7 +90,7 @@ public class MainMenu extends JFrame {
 		this.exitBtn.setHorizontalTextPosition(JButton.CENTER);
 		this.exitBtn.setBorder(BorderFactory.createEmptyBorder());
 		this.exitBtn.setContentAreaFilled(false);
-		c.gridy = 3;
+		c.gridy = 4;
 		this.buttonPanel.add(exitBtn,c);
 		
 		this.buttonPanel.setPreferredSize(new Dimension(WIDTH,HEIGHT));
@@ -99,6 +105,7 @@ public class MainMenu extends JFrame {
 		this.playBtn.addActionListener(al);
 		this.puzzlesBtn.addActionListener(al);
 		this.exitBtn.addActionListener(al);
+		this.multiplayerBtn.addActionListener(al);
 		this.setVisible(true);
 	}
 	
