@@ -27,7 +27,7 @@ public class GridLock {
 
         GameView gameView = new GameView(bp, bc, pv, pc, borderedPuzzleView);
         BorderedPuzzleController borderedPuzzleController = new BorderedPuzzleController(borderedPuzzleView);
-        GameController gameController = new GameController(gameView, borderedPuzzleController);
+        new GameController(gameView, borderedPuzzleController);
 
         f.add(gameView);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
