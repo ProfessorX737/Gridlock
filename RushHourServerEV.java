@@ -65,6 +65,10 @@ public class RushHourServerEV extends Thread{
                         declineUser(parts[1],parts[2]);
                         break;
 
+                    case "forfeit":
+                        forfeit(parts[1],parts[2]);
+                        break;
+
                     default:
                         break;
                 }
@@ -176,7 +180,32 @@ public class RushHourServerEV extends Thread{
 
     }
 
+    // forfeit
+    private void forfeit(String user1, String user2){
+        ClientInfo info = clients.get(user1);
+        // Check if actually in-game
+        if (info.isBusy()){
+            info.setBusy(false);
+            String oppo = info.getPlayingAgainst();
+            info.resetPlayingAgainst();
+            // Increase loss count
+
+            if (oppo != null){
+                send(user2, "forfeit " + user1);
+                ClientInfo OppoInfo = clients.get(user2);
+                OppoInfo.setBusy(false);
+                OppoInfo.resetPlayingAgainst();
+                // Increase win count
+            }
+
+
+
+
+        }
+    }
+
     // Remove online mapping, set user offline
+    // TODO update win and loss
     private void offlineUser(String user){
         userList.remove(user);
         ClientInfo info = clients.get(user);

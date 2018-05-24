@@ -198,13 +198,25 @@ public class NetworkPanel extends JPanel {
         OppoLabel.setText("Playing Against: " + player);
     }
 
+    /**
+     * Locks the buttons when in-game
+     */
+
     public void lockButtons(){
         ChallengeBtn.setEnabled(false);
         UserListBox.setEnabled(false);
     }
 
+    /**
+     * Unlocks the buttons when game is complete
+     */
+
     public void unlockButtons(){
         ChallengeBtn.setEnabled(true);
         UserListBox.setEnabled(true);
+    }
+
+    public void setOpponentName(String user){
+        setPlayingAgainst(user);
     }
 }

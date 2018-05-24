@@ -17,9 +17,9 @@ public class NetUIController implements NetworkUIController, Runnable{
 
     private static NetworkPanel np;
     private static String username;
-    private boolean running;
-    private boolean lost;
-    private String opponent;
+    private static boolean running;
+    private static boolean lost;
+    private static String opponent;
 
 
     // Networking
@@ -33,16 +33,16 @@ public class NetUIController implements NetworkUIController, Runnable{
     private static boolean closed = false;
 
     // Game frame
-    private JFrame f;
-    private PuzzleGame puzzleGame;
-    private PuzzleView pv;
-    private PuzzleController pc;
+    private static JFrame f;
+    private static PuzzleGame puzzleGame;
+    private static PuzzleView pv;
+    private static PuzzleController pc;
 
-    private ButtonPanel bp;
-    private SideButtonController bc;
+    private static ButtonPanel bp;
+    private static SideButtonController bc;
 
-    private GameView gameView;
-    private GameController gameController;
+    private static GameView gameView;
+    private static GameController gameController;
 
     public NetUIController(NetworkPanel np, String host, int portNumber){
         this.np = np;
@@ -141,6 +141,19 @@ public class NetUIController implements NetworkUIController, Runnable{
     public ActionListener ForfeitListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                // Clicked the forfeit button
+                // Notify server of forfeit, close the game, unlock the buttons
+                message("forfeit " + username + " " + opponent);
+
+                np.unlockButtons();
+
+                // Clean up
+                if (f != null){
+                    f.setVisible(false);
+                    f.removeAll();
+
+                }
+                System.out.println("FORFEITING against " + opponent);
 
             }
         };
@@ -254,6 +267,10 @@ public class NetUIController implements NetworkUIController, Runnable{
                 setOpponent(message);
                 break;
 
+            case "forfeit":
+                forfeit(message);
+                break;
+
             default:
                 break;
         }
@@ -290,6 +307,7 @@ public class NetUIController implements NetworkUIController, Runnable{
         lost = true;
         // Notify user, puzzle completed by other person
         // puzzledone by user1
+        np.lockButtons();
     }
 
     private void handleChallenge(String message){
@@ -310,6 +328,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     }
 
     private void displayPuzzle(String message){
+        np.lockButtons();
         lost = false;
         f = new JFrame("GridLock " + username);
 
@@ -349,7 +368,7 @@ public class NetUIController implements NetworkUIController, Runnable{
         puzzleGame.setNUIController(this);
 
         f.add(gameView);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.pack();
         f.setMinimumSize(new Dimension(gameView.getWidth(), gameView.getHeight() + 23));
         f.setVisible(true);
@@ -383,5 +402,16 @@ public class NetUIController implements NetworkUIController, Runnable{
         // setopp opponent's name
         String[] parts = message.split(" ");
         opponent = parts[1].toLowerCase();
+        System.out.println(" THIS IS THE OPPONENTS NAME " + opponent);
+        np.setOpponentName(opponent);
+
+    }
+
+    private void forfeit(String message){
+        String[] parts = message.split(" ");
+        opponent = parts[1].toLowerCase();
+        createDialogBox("User: " + opponent + ", has forfeited the game");
+
+        lost = true; // Flag, to not notify the server once you complete the puzzle
     }
 }
