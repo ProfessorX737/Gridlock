@@ -58,8 +58,8 @@ public class PuzzleView extends JPanel implements Board{
     @Override
     public void updateSize(int cellSize) {
         this.cellLength = cellSize;
-        this.width = (puzzleGame.getNumCols() + 0) * this.cellLength;
-        this.height = (puzzleGame.getNumRows() + 0) * this.cellLength;
+        this.width = puzzleGame.getNumCols() * this.cellLength;
+        this.height = puzzleGame.getNumRows() * this.cellLength;
         this.setSize(this.width,this.height);
         this.setPreferredSize(new Dimension(this.width, this.height));
         this.removeAll();
