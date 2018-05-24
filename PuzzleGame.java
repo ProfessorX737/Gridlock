@@ -10,12 +10,12 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Represent the current board of the game
+ * Represents the current state of the game
  */
 public class PuzzleGame implements Serializable {
 	//puzzle identification
 	private int id;
-	//required for saving
+	//required for saving the puzzle
 	private static final long serialVersionUID = 1L;
 	//sizeRow and sizeCol keeps track of the size of the board
 	private int sizeRow;
@@ -37,7 +37,15 @@ public class PuzzleGame implements Serializable {
     private MoveState initialState;
     private int moves;
 
+    /**
+     * Constructor that only requires the size of the board.
+     * @pre sizeRow > 0 && sizeCol > 0
+     * @post board.size() == (sizeRow, sizeCol)
+     * @param sizeRow height of the board
+     * @param sizeCol width of the board
+     */
     public PuzzleGame(int sizeRow, int sizeCol) {
+		this.id = 0;
     		this.sizeRow = sizeRow;
     		this.sizeCol = sizeCol;
     		this.exitRow = 0;
@@ -52,11 +60,13 @@ public class PuzzleGame implements Serializable {
 
 	/**
 	 * Constructor for the board, when only the size of the board is provided.
+	 * @pre id > 0 && sizeRow > 0 && sizeCol > 0 && 0 <= exitRow < sizeRow && 0 <= exitCol < sizeCol
+	 * @post board.size() == (sizeRow, sizeCol)
 	 * @param sizeRow, the number of rows in the board
 	 * @param sizeCol, the number of columns in the board
 	 */
     public PuzzleGame(int id, int sizeRow, int sizeCol, int exitRow, int exitCol) {
-    	this.id = id;
+		this.id = id;
         this.sizeRow = sizeRow;
         this.sizeCol = sizeCol;
         this.exitRow = exitRow;
@@ -68,41 +78,32 @@ public class PuzzleGame implements Serializable {
         this.moves = 0;
 		this.minMoves = 0;
     }
-
-    public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol) {
-    	this.id = 0;
-        this.sizeRow = sizeRow;
-        this.sizeCol = sizeCol;
-        this.exitRow = exitRow;
-        this.exitCol = exitCol;
-        this.vehicleMap = new HashMap<>();
-        this.undo = new Stack<>();
-        this.redo = new Stack<>();
-        this.initBoard();
-        this.moves = 0;
-		this.minMoves = 0;
-    }
-//	/**
-//	 * Constructor for the board, when the size of the board and map of vehicles is provided
-//	 * @param sizeRow, the number of rows in the board
-//	 * @param sizeCol, the number of columns in the board
-//	 * @param vehicleMap, a map of all the vehicles on the board
-//	 */
-//	public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol, Map<Integer, Vehicle> vehicleMap) {
-//		this.sizeRow = sizeRow;
-//		this.sizeCol = sizeCol;
-//		this.exitRow = exitRow;
-//		this.exitCol = exitCol;
-//		this.vehicleMap = vehicleMap;//does this work
-//		this.initBoard();
-//		for(Vehicle v : this.vehicleMap.values()) {
-//			this.fillVehicleSpace(v, v.getID());
-//		}
-//		this.minMoves = 0;
-//	}
 
 	/**
-	 * Copy constructor
+	 * Constructor for the board, when only the size of the board is provided.
+	 * @pre id > 0 && sizeRow > 0 && sizeCol > 0 && 0 <= exitRow < sizeRow && 0 <= exitCol < sizeCol
+	 * @post board.size() == (sizeRow, sizeCol)
+	 * @param sizeRow, the number of rows in the board
+	 * @param sizeCol, the number of columns in the board
+	 */
+    public PuzzleGame(int sizeRow, int sizeCol, int exitRow, int exitCol) {
+		this.id = 0;
+        this.sizeRow = sizeRow;
+        this.sizeCol = sizeCol;
+        this.exitRow = exitRow;
+        this.exitCol = exitCol;
+        this.vehicleMap = new HashMap<>();
+        this.undo = new Stack<>();
+        this.redo = new Stack<>();
+        this.initBoard();
+        this.moves = 0;
+		this.minMoves = 0;
+    }
+
+	/**
+	 * Copy constructor for puzzleGame
+	 * @pre g != null
+	 * @post true
 	 * @param g, the Puzzle game to copy
 	 */
 	public PuzzleGame(PuzzleGame g) {
@@ -120,6 +121,11 @@ public class PuzzleGame implements Serializable {
         this.redo = new Stack<>();
 	}
 	
+	/**
+	 * Initialize board with -1 on every tile
+	 * @pre true
+	 * @post true
+	 */
 	private void initBoard() {
 		this.board = new int[sizeRow][sizeCol];
 		for (int y = 0; y < sizeRow; y++) {
@@ -129,25 +135,30 @@ public class PuzzleGame implements Serializable {
 		}
 	}
 	
-	/**
-	 * Check whether the vehicle can be added to the location.
-	 * @param vehicle
-	 * @return
-	 */
-	public boolean canAddVehicle(Vehicle v) {
-		boolean isVertical = v.getIsVertical();
-		int length = v.getLength();
-		int row = v.getRow();
-		int col = v.getCol();
-		return canAddVehicle(isVertical, length, row, col);
-	}
+	///**
+	// * Check whether the vehicle can be added to the location.
+	// * @pre v != null
+	// * @post true
+	// * @param vehicle to be tested
+	// * @return true if the vehicle can be added otherwise false
+	// */
+	//public boolean canAddVehicle(Vehicle v) {
+	//	boolean isVertical = v.getIsVertical();
+	//	int length = v.getLength();
+	//	int row = v.getRow();
+	//	int col = v.getCol();
+	//	return canAddVehicle(isVertical, length, row, col);
+	//}
 	
 	/**
 	 * Check whether the vehicle can be added to the location.
+	 * @pre length > 0 && 0 <= row < height && 0 <= col < width
+	 * @post true
+	 * @param isVertical
+	 * @param length
 	 * @param row
 	 * @param col
-	 * @param vehicle
-	 * @return
+	 * @return true if a vehicle of the specified parameters can be added otherwise returns false
 	 */
 	public boolean canAddVehicle(boolean isVertical, int length, int row, int col) {
 		if (isVertical){
@@ -167,6 +178,8 @@ public class PuzzleGame implements Serializable {
 	/**
 	 * Add vehicle to the board. Adds by reference so don't change the vehicle after adding it,
 	 * unless through GamePuzzle methods.
+	 * @pre vehicle != null
+	 * @post true
 	 * @param vehicle
 	 */
 	public void addVehicle(Vehicle vehicle) {
@@ -177,6 +190,9 @@ public class PuzzleGame implements Serializable {
 	}
 
 	/**
+	 * Check whether the current location is occupied.
+	 * @pre 0 <= row < height && 0 <= col < width
+	 * @pre true
 	 * @param row
 	 * @param col
 	 * @return true if the current cell is occupied, also returns true if the cell does not exist
@@ -190,6 +206,14 @@ public class PuzzleGame implements Serializable {
 		}
 	}
 
+	/**
+	 * Check whether the location is out of bounds of the board.
+	 * @pre true
+	 * @post true
+	 * @param row
+	 * @param col
+	 * @return true if the location is outside the bounds of the board
+	 */
 	public boolean isOutOfBounds(int row, int col) {
 		if(row < this.sizeRow && col < this.sizeCol && row >= 0 && col >= 0) {
 			return false;
@@ -289,7 +313,13 @@ public class PuzzleGame implements Serializable {
 		return numLegal;
 	}
 	
-	
+	/**
+	 * Fill the space occupied by the vehicle on the board, with the given id
+	 * @pre v != null
+	 * @post getVehicleIDAtLocation() == id
+	 * @param v
+	 * @param id
+	 */
 	private void fillVehicleSpace(Vehicle v, int id) {
 		int row = v.getRow();
 		int col = v.getCol();
@@ -307,8 +337,10 @@ public class PuzzleGame implements Serializable {
 	}
 	
 	/**
+	 * Check whether the current puzzle is solved
 	 * @pre main car has id 0 and is added to the class
-	 * @return
+	 * @post true
+	 * @return true if the main car has reached the exit otherwise return false
 	 */
 	public boolean isSolved() {
 		if(this.board[exitRow][exitCol] == 0) {
@@ -325,6 +357,13 @@ public class PuzzleGame implements Serializable {
 //		return clone;
 //	}
 
+	/**
+	 * Returns clone of the board.
+	 * @pre board != null
+	 * @post true
+	 * @param board
+	 * @return
+	 */
 	private int[][] cloneBoard(int[][] board) {
 		int[][] clone = new int[this.sizeRow][this.sizeCol];
 		for(int i = 0; i < this.sizeRow; i++) {

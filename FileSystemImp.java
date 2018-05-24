@@ -31,20 +31,18 @@ public class FileSystemImp implements FileSystem {
 			System.out.println("");
 		}
 	}
-	/**
-	 * To save a file you need to specify the file and the filename
-	 * @param puzzle, which is the puzzle you want to save
-	 * @param filename, which will be the name of the file saved
-	 */
+
 	@Override
 	public void savePuzzleGame(PuzzleGame puzzle, String filename) {
 		SaveFile f = new SaveFile(puzzle, filename);
 		try {
+			//open file and object as a stream and write stream to file
 			FileOutputStream fileOutput = new FileOutputStream(filename + ".sav");
 			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
-			//write save file
+
 			objectOutput.writeObject(f);
 			
+			//close file and object stream
 			objectOutput.close();
 			fileOutput.close();
 		} catch (FileNotFoundException e) {
@@ -75,18 +73,19 @@ public class FileSystemImp implements FileSystem {
 	/**
 	 * To load a game you need to specify the name of the file.
 	 * Don't include the .sav extension, this function adds it for you.
-	 * @param filename, name of the file
-	 * @return
+	 * @param filename name of the file
+	 * @return the puzzleGame object stored in that file
 	 */
 	@Override
 	public PuzzleGame loadPuzzleGame(String filename) {
 		try {
+			//open the file and input stream for the object and read into the object
 			FileInputStream fileInput = new FileInputStream(filename);
 			ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 			
-			//reading save file from file
 			SaveFile f = (SaveFile) objectInput.readObject();
 			
+			//close object and file streams
 			objectInput.close();
 			fileInput.close();
 			
