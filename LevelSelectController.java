@@ -18,6 +18,8 @@ public class LevelSelectController implements ActionListener {
 		for(int i = 0; i < GridlockGame.NUM_LEVELS; i++) {
 			if(action.equals(GridlockGame.LEVEL_NAMES[i])) {
 				this.levelSelect.setVisible(false);
+				// set the window to center of the screen
+		        this.levelView[i].setLocationRelativeTo(null);
 				this.levelView[i].setVisible(true);
 			}
 		}

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
+
 import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
@@ -36,7 +39,6 @@ public class PuzzleGame implements Serializable {
     private Stack<MoveState> redo;
     private MoveState initialState;
     private int moves;
-	private NetUIController nuic;
 
     /**
      * Constructor that only requires the size of the board.
@@ -898,16 +900,6 @@ public class PuzzleGame implements Serializable {
             v.setPos(newRow, newCol);
             this.fillVehicleSpace(v, id);
             moves += 1;
-
-			if (isSolved()) {
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
-				System.out.println("PUZZLE SOLVED");
-				if (nuic != null) {
-					nuic.puzzleDone();
-				}
-			}
         }
     }
     
@@ -938,16 +930,18 @@ public class PuzzleGame implements Serializable {
 		this.fillVehicleSpace(v, -1);
 		v.setPos(newRow, newCol);
 		this.fillVehicleSpace(v, id);
-
-		if (isSolved()){
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
-			System.out.println("PUZZLE SOLVED");
-			if (nuic != null){
-				nuic.puzzleDone();
+		System.out.println(newRow);
+		// when moving the red car to exit position 2 , 4
+			if(v.getColor().equals(Color.RED) && newRow == 2 && newCol == 4) {
+				// show the result dialog when finish the game
+				System.out.println(newRow);
+				int i = JOptionPane.showConfirmDialog(null, "You win the game in n moves!\n" + "Continue to paly？","Result:", JOptionPane.YES_NO_OPTION);
+				if(i==JOptionPane.OK_OPTION) {
+					System.out.println("play next puzzle");
+				}else {
+					System.out.println("exit");
+				}
 			}
-		}
     }
 
     //private void printBoard(int[][] board) {
@@ -1049,36 +1043,4 @@ public class PuzzleGame implements Serializable {
     public int getMoves(){
         return moves;
     }
-
-	public String getStringRep(){
-
-		// More efficient string appending
-		StringBuilder sb = new StringBuilder();
-		int vert;
-		int length;
-		int row;
-		int col;
-		String colour;
-		int id;
-
-		for (Vehicle v: getVehicles()){
-			vert = ( v.getIsVertical() ) ? 0 : 1;
-			length = v.getLength();
-			row = v.getRow();
-			col = v.getCol();
-			id = v.getID();
-			colour = (v.getColor().getRGB() == Color.RED.getRGB()) ? "red" : "orange" ;
-			sb.append("- " + Integer.toString(vert));
-			sb.append(" " + Integer.toString(length));
-			sb.append(" " + Integer.toString(row));
-			sb.append(" " + Integer.toString(col));
-			sb.append(" " + colour);
-			sb.append(" " + Integer.toString(id));
-		}
-		return sb.toString();
-	}
-
-	public void setNUIController(NetUIController nuic){
-    	this.nuic = nuic;
-	}
 }

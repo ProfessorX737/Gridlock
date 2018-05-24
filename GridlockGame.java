@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Automatically loads the puzzles when instance of GridlockGame is created
@@ -37,9 +38,6 @@ public class GridlockGame {
 			}
 		}
 	}
-	/**
-	 * generate puzzles until each level has the desired number of levels
-	 */
 	public void generatePuzzles() {
 		this.puzzleGenerator.generateAndAddPuzzles(this.puzzleManager, MAX_PUZZLES_PER_LEVEL);
 	}

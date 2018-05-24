@@ -11,7 +11,6 @@ public class MenuController implements ActionListener {
 	private JFrame menu;
 	private JFrame levelSelect;
 	private JFrame[] puzzleSelect;
-    private JFrame multiplayer;
 	
 	public MenuController(GridlockGame game, JFrame menu) {
 		this.game = game;
@@ -26,6 +25,8 @@ public class MenuController implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					currLevel.setVisible(false);
+					// set the window to center of the screen
+					levelSelect.setLocationRelativeTo(null);
 					levelSelect.setVisible(true);
 				}
 			});
@@ -38,17 +39,15 @@ public class MenuController implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				levelSelect.setVisible(false);
+				// set the window to center of the screen
+				menu.setLocationRelativeTo(null);
 				menu.setVisible(true);
 			}
 		});
 		this.levelSelect = this.createFrame(levelSelectBackPanel);
 		LevelSelectController lvlContr = new LevelSelectController(this.levelSelect,this.puzzleSelect);
 		ls.setController(lvlContr);
-
-        NetworkPanel networkPanel = new NetworkPanel();
-        NetUIController controller = new NetUIController(networkPanel, "localhost", 55555);
-        networkPanel.setController(controller);
-        this.multiplayer = this.createFrame(networkPanel);
+		
 	}
 	
 	private JFrame createFrame(Container view) {
@@ -66,14 +65,14 @@ public class MenuController implements ActionListener {
 		String action = e.getActionCommand();
 		if(action == "play") {
 			System.out.println("play pressed");
-		} else if(action == "puzzles") {
+		}
+		if(action == "puzzles") {
 			menu.setVisible(false);
+			// set the window to center of the screen
+			levelSelect.setLocationRelativeTo(null);
 			this.levelSelect.setVisible(true);
-		} else if(action == "multiplayer") {
-			System.out.println("multiplayer button pressed");
-			this.menu.setVisible(false);
-			this.multiplayer.setVisible(true);
-		} else if(action == "exit") {
+		}
+		if(action == "exit") {
 			menu.dispose();
 			this.levelSelect.dispose();
 			for(int i = 0; i < GridlockGame.NUM_LEVELS; i++) {

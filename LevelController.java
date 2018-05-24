@@ -50,6 +50,8 @@ public class LevelController implements ActionListener {
 		frame.add(view,BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        // set the window to center of the screen
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         return frame;
 	}
