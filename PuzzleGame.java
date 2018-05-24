@@ -374,17 +374,17 @@ public class PuzzleGame implements Serializable {
 		return clone;
 	}
 	
-	/**
-	 * Returns a random vehicle from the map of vehicles.
-	 * Returns the reference to the vehicle.
-	 * @pre vehicleMap.size() >= 1
-	 * @post true
-	 * @return
-	 */
-	public Vehicle getRandomVehicle() {
-		Random rand = new Random();
-		return vehicleMap.get(rand.nextInt(vehicleMap.size()));
-	}
+	///**
+	// * Returns a random vehicle from the map of vehicles.
+	// * Returns the reference to the vehicle.
+	// * @pre vehicleMap.size() >= 1
+	// * @post true
+	// * @return
+	// */
+	//public Vehicle getRandomVehicle() {
+	//	Random rand = new Random();
+	//	return vehicleMap.get(rand.nextInt(vehicleMap.size()));
+	//}
 	
 	/**
 	 * Returns the vehicle given the vehicle ID.
@@ -399,7 +399,9 @@ public class PuzzleGame implements Serializable {
 	}
 	
 	/**
+	 * Get the id of the vehicle at the location.
 	 * @pre this.isOutOfBounds(row,col) == false
+	 * @post true
 	 * @return the vehicle id if the position, if not valid return -1
 	 */
 	public int getVehicleIDAtLocation(int row, int col) {
@@ -409,15 +411,22 @@ public class PuzzleGame implements Serializable {
 		return -1;
 	}
 	
-	/**
-	 * @pre this.isOutOfBounds(row,col) == false
-	 * @pre board[row][col] is in this.vehicleMap.keys()
-	 * @return 
-	 */
-	public Vehicle getVehicleAtLocation(int row, int col) {
-		return this.vehicleMap.get(board[row][col]);
-	}
+	///**
+	// * @pre this.isOutOfBounds(row,col) == false
+	// * @pre board[row][col] is in this.vehicleMap.keys()
+	// * @return 
+	// */
+	//public Vehicle getVehicleAtLocation(int row, int col) {
+	//	return this.vehicleMap.get(board[row][col]);
+	//}
 	
+	/**
+	 * Get the vehicle orientation.
+	 * @pre puzzle.containsVehicle(id) == true
+	 * @post true
+	 * @param id of the vehicle
+	 * @return true if the vehicle is vertical otherwise false
+	 */
 	public boolean isVehicleVertical(int id) {
 		Vehicle v = this.vehicleMap.get(id);
 		if(v == null) return false;
@@ -425,82 +434,161 @@ public class PuzzleGame implements Serializable {
 		return false;
 	}
 	
+	/**
+	 * Return the main vehicle on the board.
+	 * @pre true
+	 * @post true
+	 * @return the main vehicle which has an id of 0
+	 */
 	public Vehicle getMainVehicle() {
 		return vehicleMap.get(0);
 	}
 	
-	/**
-	 * Returns the row of the vehicle
-	 * @pre vehicleMap.contains(id)
-	 * @post true
-	 * @param id, of the vehicle
-	 * @return the row at which the vehicle head occupies
-	 */
-	public int getVehicleRow(int id) {
-		return vehicleMap.get(id).getRow();
-	}
+	///**
+	// * Returns the row of the vehicle
+	// * @pre vehicleMap.contains(id)
+	// * @post true
+	// * @param id, of the vehicle
+	// * @return the row at which the vehicle head occupies
+	// */
+	//public int getVehicleRow(int id) {
+	//	return vehicleMap.get(id).getRow();
+	//}
+	
+	///**
+	// * Return the row of the vehicle
+	// * @pre vehicleMap.contains(id)
+	// * @post true
+	// * @param id, of the vehicle
+	// * @return the column at which the vehicle head occupies
+	// */
+	//public int getVehicleCol(int id) {
+	//	return vehicleMap.get(id).getCol();
+	//}
 	
 	/**
-	 * Return the row of the vehicle
-	 * @pre vehicleMap.contains(id)
+	 * Returns a list of all the vehicles on the board.
+	 * @pre true
 	 * @post true
-	 * @param id, of the vehicle
-	 * @return the column at which the vehicle head occupies
+	 * @return list of vehicles on the board.
 	 */
-	public int getVehicleCol(int id) {
-		return vehicleMap.get(id).getCol();
-	}
-	
 	public Collection<Vehicle> getVehicles() {
 		return vehicleMap.values();
 	}
 	
+	/**
+	 * Returns the height of the board
+	 * @pre true
+	 * @post true
+	 * @return height of the board
+	 */
 	public int getNumRows() {
 		return this.sizeRow;
 	}
 	
+	/**
+	 * Returns the width of the board
+	 * @pre true
+	 * @post true
+	 * @return
+	 */
 	public int getNumCols() {
 		return this.sizeCol;
 	}
 	
+	/**
+	 * Returns the board
+	 * @pre true
+	 * @post true
+	 * @return
+	 */
 	public int[][] getBoard() {
 		return this.board;
 	}
 	
+	/**
+	 * Returns the exit row of the board
+	 * @pre true
+	 * @post true
+	 * @return
+	 */
 	public int getExitRow() {
 		return this.exitRow;
 	}
+	
+	/**
+	 * Returns the exit column of the board
+	 * @pre true
+	 * @post true
+	 * @return
+	 */
 	public int getExitCol() {
 		return this.exitCol;
 	}
 	
+	/**
+	 * Get the minimum number of moves required to solve this board
+	 * @pre true
+	 * @post true
+	 * @return 
+	 */
 	public int getMinMoves() {
 		return this.minMoves;
 	}
 	
+	/**
+	 * Set the minimum number of moves required to solve the board
+	 * @pre minMoves > 0
+	 * @post true
+	 * @param minMoves
+	 */
 	public void setMinMoves(int minMoves) {
 		this.minMoves = minMoves;
 	}
 	
+	/**
+	 * Return the id of the board
+	 * @pre true
+	 * @post true
+	 * @return
+	 */
 	public int getId() {
 		return this.id;
 	}
 	
+	/**
+	 * Set the id of the board
+	 * @pre id >= 0
+	 * @post true
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 	
+	/**
+	 * Set the exit row of the board
+	 * @pre 0 <= row < height
+	 * @post true
+	 * @param row
+	 */
 	public void setExitRow(int row) {
 		this.exitRow = row;
 	}
 	
+	/**
+	 * Set the exit column of the board
+	 * @pre 0 <= col < width
+	 * @post true
+	 * @param col
+	 */
 	public void setExitCol(int col) {
 		this.exitCol = col;
 	}
 	
-	public int getVehicleMapSize() {
-		return vehicleMap.size();
-	}
+	//public int getVehicleMapSize() {
+	//	return vehicleMap.size();
+	//}
 	
 	@Override
 	public int hashCode() {
@@ -536,13 +624,17 @@ public class PuzzleGame implements Serializable {
 		return true;
 	}
 
-
-
 	//Used for printing out to the console
 	private final static String red_car = "r";
 	private final static String road = "-";
 	private final static String wall = "W";
 
+	/**
+	 * Prints out the board onto the console.
+	 * The red car is represented by r while other vehicles are represented by their id.
+	 * @pre true
+	 * @post true
+	 */
 	public void showBoard() {
 		System.out.println("Exit at row: " + exitRow + ", col: " + exitCol);
 		for(int i = -1; i < sizeCol; i++) {
@@ -565,6 +657,13 @@ public class PuzzleGame implements Serializable {
 		}
 	}
 	
+	/**
+	 * Remove vehicle from the location on the board.
+	 * @pre 0 <= row < height && 0 <= col < width
+	 * @post vehicleMap.contains(getVehicle(row,col)) == false
+	 * @param row
+	 * @param col
+	 */
 	public void removeVehicleAtLocation(int row, int col) {
 		int id  = getVehicleIDAtLocation(row, col);
 		if (id > -1) {
@@ -574,6 +673,8 @@ public class PuzzleGame implements Serializable {
 	
 	/**
 	 * Remove vehicle from the vehicleMap and the board.
+	 * @pre vehicleMap.contains(id)
+	 * @post vehicmeMap.contains(id) == false
 	 */
 	public void removeVehicle(int id) {
 		//remove from the board
@@ -582,67 +683,73 @@ public class PuzzleGame implements Serializable {
 		vehicleMap.remove(id);
 	}
 	
-	/**
-	 * This might need to be changed
-	 * Will be very expensive if we had to recalculate this every time
-	 * Generates all possible vehicle spaces
-	 */
-	public List<Vehicle> getPossibleVehicle() {
-		//number of empty spaces found so far
-		int emptySpace = 0;
-		//placeholderID which will be changed it it is the best choice
-		int placeHolderID = 0xDEADBEEF;
-		List<Vehicle> possibleVehicle = new ArrayList<Vehicle>();
-		//exclude spaces that directly block the main vehicle
-		boolean mainIsVertical = vehicleMap.get(0).getIsVertical();
-		int mainRow = vehicleMap.get(0).getRow();
-		int mainCol = vehicleMap.get(0).getCol();
-		
-		//go through the board vertically and find all spaces which are 2 or 3 in length
-		for (int i = sizeCol - 1; i >= 0; i--) {
-			for (int j = sizeRow - 1; j >= 0; j--) {
-				if (mainIsVertical == true && mainCol == i) {
-					//don't return vehicles that directly get in the way
-					continue;
-				}
-				if (!isOccupied(j, i)) {
-					emptySpace++;
-					for (int k = 0; k < vehicleSize.length; k++) {
-						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, Color.ORANGE));
-						}
-					}
-				} else {
-					emptySpace = 0;
-				}
-			}
-			emptySpace = 0;
-		}
-		
-		//go through the board horizontally and find empty spaces
-		emptySpace = 0;
-		for (int j = sizeRow - 1; j >= 0 ; j--) {
-			for (int i = sizeCol - 1; i >= 0; i--) {
-				if (mainIsVertical == false && mainRow == j) {
-					//don't return vehicles that directly get in the way
-					continue;
-				}
-				if (!isOccupied(j, i)) {
-					emptySpace++;
-					for (int k = 0; k < vehicleSize.length; k++) {
-						if (emptySpace >= vehicleSize[k]) {
-							possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, Color.ORANGE));
-						}
-					}
-				} else {
-					emptySpace = 0;
-				}
-			}
-			emptySpace = 0;
-		}
-		return possibleVehicle;
-	}
+	///**
+	// * This might need to be changed
+	// * Will be very expensive if we had to recalculate this every time
+	// * Generates all possible vehicle spaces
+	// */
+	//public List<Vehicle> getPossibleVehicle() {
+	//	//number of empty spaces found so far
+	//	int emptySpace = 0;
+	//	//placeholderID which will be changed it it is the best choice
+	//	int placeHolderID = 0xDEADBEEF;
+	//	List<Vehicle> possibleVehicle = new ArrayList<Vehicle>();
+	//	//exclude spaces that directly block the main vehicle
+	//	boolean mainIsVertical = vehicleMap.get(0).getIsVertical();
+	//	int mainRow = vehicleMap.get(0).getRow();
+	//	int mainCol = vehicleMap.get(0).getCol();
+	//	
+	//	//go through the board vertically and find all spaces which are 2 or 3 in length
+	//	for (int i = sizeCol - 1; i >= 0; i--) {
+	//		for (int j = sizeRow - 1; j >= 0; j--) {
+	//			if (mainIsVertical == true && mainCol == i) {
+	//				//don't return vehicles that directly get in the way
+	//				continue;
+	//			}
+	//			if (!isOccupied(j, i)) {
+	//				emptySpace++;
+	//				for (int k = 0; k < vehicleSize.length; k++) {
+	//					if (emptySpace >= vehicleSize[k]) {
+	//						possibleVehicle.add(new Vehicle(placeHolderID, true, vehicleSize[k], j, i, Color.ORANGE));
+	//					}
+	//				}
+	//			} else {
+	//				emptySpace = 0;
+	//			}
+	//		}
+	//		emptySpace = 0;
+	//	}
+	//	
+	//	//go through the board horizontally and find empty spaces
+	//	emptySpace = 0;
+	//	for (int j = sizeRow - 1; j >= 0 ; j--) {
+	//		for (int i = sizeCol - 1; i >= 0; i--) {
+	//			if (mainIsVertical == false && mainRow == j) {
+	//				//don't return vehicles that directly get in the way
+	//				continue;
+	//			}
+	//			if (!isOccupied(j, i)) {
+	//				emptySpace++;
+	//				for (int k = 0; k < vehicleSize.length; k++) {
+	//					if (emptySpace >= vehicleSize[k]) {
+	//						possibleVehicle.add(new Vehicle(placeHolderID, false, vehicleSize[k], j, i, Color.ORANGE));
+	//					}
+	//				}
+	//			} else {
+	//				emptySpace = 0;
+	//			}
+	//		}
+	//		emptySpace = 0;
+	//	}
+	//	return possibleVehicle;
+	//}
 	
+	/**
+	 * Returns a list of possible vehicles that intersect with the path of the current vehicles.
+	 * @pre true
+	 * @post true
+	 * @return
+	 */
 	public List<Vehicle> getPossibleIntersects() {
 		Set<Vehicle> intersects = new HashSet<>();
 		for(Vehicle v : this.vehicleMap.values()) {
@@ -650,7 +757,14 @@ public class PuzzleGame implements Serializable {
 		}
 		return new ArrayList<Vehicle>(intersects);
 	}
-	
+
+	/**
+	 * Returns a set of possible vehicles that intersect with the path of the current vehicle
+	 * @pre vehicleMap.contains(vID)
+	 * @post true
+	 * @param vId
+	 * @return
+	 */
 	public Set<Vehicle> getPossibleIntersects(int vId) {
 		Set<Vehicle> intersects = new HashSet<>();
 		intersects.addAll(this.getPossibleIntersects(vId, 2));
@@ -658,6 +772,14 @@ public class PuzzleGame implements Serializable {
 		return intersects;
 	}
 	
+	/**
+	 * Returns a set of possible vehicles of give length that intersect with the path of the current vehicle
+	 * @pre vehicleMap.contains(vID)
+	 * @post true
+	 * @param vId
+	 * @param vLength
+	 * @return
+	 */
 	public Set<Vehicle> getPossibleIntersects(int vId, int vLength) {
 		Set<Vehicle> possibleVehicles = new HashSet<>();
 		int newId = this.vehicleMap.size();
@@ -710,6 +832,15 @@ public class PuzzleGame implements Serializable {
 		return possibleVehicles;
 	}
 	
+	/**
+	 * Checks whether the vertical path is clear
+	 * @pre 0 <= fromRow < height && 0 <= toRow < height && 0 <= col < width
+	 * @post true
+	 * @param fromRow
+	 * @param toRow
+	 * @param col
+	 * @return true if there is nothing from fromRow to toRow in that column otherwise returns false
+	 */
 	private boolean isClearVerticalPath(int fromRow, int toRow, int col) {
 		for(int i = fromRow; i <= toRow; i++) {
 			if(this.isOccupied(i, col)) return false;
@@ -717,6 +848,15 @@ public class PuzzleGame implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Checks whether the horizontal path is clear
+	 * @pre 0 <= fromCol < width && 0 <= toCol < width && 0 <= row < height
+	 * @post true
+	 * @param fromCol
+	 * @param toCol
+	 * @param row
+	 * @return true if there is nothing from fromCol to toCol in the give row otherwise returns false
+	 */
 	private boolean isClearHorizontalPath(int fromCol, int toCol, int row) {
 		for(int i = fromCol; i <= toCol; i++) {
 			if(this.isOccupied(row, i)) return false;
@@ -726,7 +866,8 @@ public class PuzzleGame implements Serializable {
 
     /**
      * Add vehicle to the board.
-     *
+     * @pre length > 0 && 0 <= row < height && 0 <= col < width
+     * @param vehicleMap.contains(vehicleLocation(row,col)) == true
      * @param isVertical
      * @param length
      * @param row
@@ -742,13 +883,10 @@ public class PuzzleGame implements Serializable {
 
     /**
      * To move a vehicle specify the vehicle, direction and distance.
-     * * @param id
-     *
+     * @param id
      * @pre checkMove(id, direction, distance) == true
      */
     public void moveVehicleState(int id, int newRow, int newCol) {
-
-
         // Todo currently clicking on the vehicle counts as a move
         // Need to ensure it is not
         Vehicle v = this.vehicleMap.get(id);
@@ -762,6 +900,13 @@ public class PuzzleGame implements Serializable {
         }
     }
     
+    /**
+     * Change the orientation of the specified vehicle
+     * @pre vehicleMap.contains(id)
+     * @post vehicleMap.getIsVertical(id) == isVertical
+     * @param id
+     * @param isVertical
+     */
     public void changeIsVertical(int id, boolean isVertical) {
     		Vehicle v = this.vehicleMap.get(id);
     		this.fillVehicleSpace(v, -1);
@@ -769,6 +914,14 @@ public class PuzzleGame implements Serializable {
     		this.fillVehicleSpace(v, id);
     }
 
+    /**
+     * Move vehicle to new location.
+     * @pre vehicleMap.contains(id)
+     * @post vehicleMap.getVehicle(id).getLocation(newRow, newCol)  
+     * @param id
+     * @param newRow
+     * @param newCol
+     */
     public void moveVehicle(int id, int newRow, int newCol) {
         Vehicle v = this.vehicleMap.get(id);
 		this.fillVehicleSpace(v, -1);
@@ -776,22 +929,22 @@ public class PuzzleGame implements Serializable {
 		this.fillVehicleSpace(v, id);
     }
 
-    private void printBoard(int[][] board) {
-        for (int y = -1; y <= sizeRow; y++) {
-            for (int x = -1; x <= sizeCol; x++) {
-                if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
-                    System.out.print(wall + "\t");
-                } else if (board[y][x] == 0) {
-                    System.out.print(red_car + "\t");
-                } else if (board[y][x] == -1) {
-                    System.out.print(road + "\t");
-                } else {
-                    System.out.print(board[y][x] + "\t");
-                }
-            }
-            System.out.println("");
-        }
-    }
+    //private void printBoard(int[][] board) {
+    //    for (int y = -1; y <= sizeRow; y++) {
+    //        for (int x = -1; x <= sizeCol; x++) {
+    //            if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
+    //                System.out.print(wall + "\t");
+    //            } else if (board[y][x] == 0) {
+    //                System.out.print(red_car + "\t");
+    //            } else if (board[y][x] == -1) {
+    //                System.out.print(road + "\t");
+    //            } else {
+    //                System.out.print(board[y][x] + "\t");
+    //            }
+    //        }
+    //        System.out.println("");
+    //    }
+    //}
 
     /**
      * Resets the board to the starting state
@@ -831,6 +984,13 @@ public class PuzzleGame implements Serializable {
         }
     }
 
+    /**
+     * Copy constructor for the board
+     * @pre board != null
+     * @post true
+     * @param board
+     * @return return a copy of the board
+     */
     private int[][] copyBoard(int[][] board) {
         int[][] copy = new int[sizeRow][sizeCol];
         for (int y = 0; y < sizeRow; y++) {
@@ -839,6 +999,13 @@ public class PuzzleGame implements Serializable {
         return copy;
     }
 
+    /**
+     * Copy constructor for vehicle map 
+     * @pre map != null
+     * @post true
+     * @param map
+     * @return
+     */
     private Map<Integer, Vehicle> copyVehicleMap(Map<Integer,Vehicle> map) {
         Map<Integer, Vehicle> copy = new HashMap<>();
         for (Vehicle v : map.values()) {
@@ -847,10 +1014,17 @@ public class PuzzleGame implements Serializable {
         return copy;
     }
 
+    /**
+     * Generate the initial state 
+     */
     public void initState() {
         initialState = new MoveState(copyBoard(getBoard()), copyVehicleMap(this.vehicleMap));
     }
 
+    /**
+     * Return the moves
+     * @return
+     */
     public int getMoves(){
         return moves;
     }
