@@ -343,35 +343,40 @@ public class NetUIController implements NetworkUIController, Runnable{
         f.setLayout(new BorderLayout());
         f.setBackground(Color.BLACK);
 
-        puzzleGame = new PuzzleGame(6,6,2,5); // NOT SURE ABOUT THE EXIT CONDITION
+        GridlockGame game = new GridlockGame();
+        PuzzleGame puzzleGame = game.getPuzzle(0, 2);
+        //puzzleGame = new PuzzleGame(6,6,2,5); // NOT SURE ABOUT THE EXIT CONDITION
+
         // Create the puzzle
-        System.out.println(message);
+//        System.out.println(message);
+//
+//        System.out.println("---------------------");
+//        String[] parts = message.split("-");
+//        for (String s: parts){
+//            System.out.println(s);
+//
+//        }
+//        System.out.println("---------------------");
+//        boolean skip = false;
+//        for (String s: parts){
+//            if (!skip) {
+//                skip = true;
+//                continue;
+//            }
+//            Vehicle v = Vehicle.strToVehicle(s.trim());
+//            puzzleGame.addVehicle(v);
+//        }
 
-        System.out.println("---------------------");
-        String[] parts = message.split("-");
-        for (String s: parts){
-            System.out.println(s);
+        PuzzleView pv = new PuzzleView(puzzleGame, 50);
+        PuzzleController pc = new PuzzleController(puzzleGame, pv);
 
-        }
-        System.out.println("---------------------");
-        boolean skip = false;
-        for (String s: parts){
-            if (!skip){
-                skip = true;
-                continue;
-            }
-            Vehicle v = Vehicle.strToVehicle(s.trim());
-            puzzleGame.addVehicle(v);
-        }
+        ButtonPanel bp = new ButtonPanel();
+        SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
+        BorderedPuzzleView borderedPuzzleView = new BorderedPuzzleView(pv);
 
-        pv = new PuzzleView(puzzleGame, 50);
-        pc = new PuzzleController(puzzleGame, pv);
-
-        bp = new ButtonPanel();
-        bc = new SideButtonController(pv, puzzleGame, bp);
-
-        gameView = new GameView(bp, bc, pv, pc);
-        gameController = new GameController(gameView, pc);
+        GameView gameView = new GameView(bp, bc, pv, pc, borderedPuzzleView);
+        BorderedPuzzleController borderedPuzzleController = new BorderedPuzzleController(borderedPuzzleView);
+        new GameController(gameView, borderedPuzzleController);
 
         puzzleGame.setNUIController(this);
 
