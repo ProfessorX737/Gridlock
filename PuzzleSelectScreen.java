@@ -3,7 +3,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
-public class PuzzleSelectScreen extends JFrame implements RefreshableFrame {
+public class PuzzleSelectScreen extends JFrame {
 	private GridlockGame game;
 	private int level;
 	private LevelView levelView;
@@ -30,7 +30,6 @@ public class PuzzleSelectScreen extends JFrame implements RefreshableFrame {
 		this.backBar.setController(al);
 	}
 
-	@Override
 	public void refresh() {
 		this.remove(this.levelView);
 		this.levelView = new LevelView(this.game.getPuzzles(this.level),MainMenu.WIDTH,MainMenu.HEIGHT,PuzzleView.DEFAULT_CELL_SIZE);
