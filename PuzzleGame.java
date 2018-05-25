@@ -904,21 +904,24 @@ public class PuzzleGame implements Serializable {
 
 			if (isSolved()) {
 				//show the pop up
-				int i = JOptionPane.showConfirmDialog(null, "You won the game in " + this.moves + " moves!\n" + "Continue to play？","Result:", JOptionPane.YES_NO_OPTION);
-			    if (i==JOptionPane.OK_OPTION) {
-			        System.out.println("play next puzzle");
-					MainMenu menu = new MainMenu();
-					GridlockGame game = new GridlockGame();
-					MenuController menuContr = new MenuController(game,menu);
-					menu.setController(menuContr);
-					menuContr.goToMainMenu();
-			    } else {
-					System.out.println("exit");
-					System.exit(0);
-				}
 				if (nuic != null) {
 					nuic.puzzleDone();
 				}
+				else{
+					int i = JOptionPane.showConfirmDialog(null, "You won the game in " + this.moves + " moves!\n" + "Continue to play？","Result:", JOptionPane.YES_NO_OPTION);
+					if (i==JOptionPane.OK_OPTION) {
+						System.out.println("play next puzzle");
+						MainMenu menu = new MainMenu();
+						GridlockGame game = new GridlockGame();
+						MenuController menuContr = new MenuController(game,menu);
+						menu.setController(menuContr);
+						menuContr.goToMainMenu();
+					} else {
+						System.out.println("exit");
+						System.exit(0);
+					}
+				}
+
 			}
         }
     }
