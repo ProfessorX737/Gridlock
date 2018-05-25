@@ -344,28 +344,36 @@ public class NetUIController implements NetworkUIController, Runnable{
         f.setBackground(Color.BLACK);
 
         GridlockGame game = new GridlockGame();
-        PuzzleGame puzzleGame = game.getPuzzle(0, 2);
+        PuzzleGame puzzleGame = new PuzzleGame(6, 6);
+//        PuzzleGame puzzleGame = game.getPuzzle(0, 2);
         //puzzleGame = new PuzzleGame(6,6,2,5); // NOT SURE ABOUT THE EXIT CONDITION
 
         // Create the puzzle
 //        System.out.println(message);
 //
 //        System.out.println("---------------------");
-//        String[] parts = message.split("-");
-//        for (String s: parts){
-//            System.out.println(s);
-//
-//        }
-//        System.out.println("---------------------");
-//        boolean skip = false;
-//        for (String s: parts){
-//            if (!skip) {
-//                skip = true;
-//                continue;
-//            }
-//            Vehicle v = Vehicle.strToVehicle(s.trim());
-//            puzzleGame.addVehicle(v);
-//        }
+        String[] parts = message.split("-");
+        for (String s: parts){
+            System.out.println(s);
+
+        }
+        System.out.println("---------------------");
+        boolean skip = false;
+        for (String s: parts){
+            if (!skip) {
+                skip = true;
+                continue;
+            }
+            Vehicle v = Vehicle.strToVehicle(s.trim());
+            if (v.getColor().getRGB() == Color.RED.getRGB()) {
+            	System.out.println("RED VEHICLE AT" + v.getRow());
+            	// set the exit conditions
+            	puzzleGame.setExitCol(5);
+            	puzzleGame.setExitRow(v.getRow());
+            }
+            puzzleGame.addVehicle(v);
+        }
+        puzzleGame.initState();
 
         PuzzleView pv = new PuzzleView(puzzleGame, 50);
         PuzzleController pc = new PuzzleController(puzzleGame, pv);
