@@ -16,7 +16,6 @@ public class ButtonPanel extends JPanel {
 
     public ButtonPanel() {
         ImageIcon button = new ImageIcon(this.getClass().getResource("Assets/button.png"));
-//        ImageIcon button = new ImageIcon("Assets/button.png");
         button = new ImageIcon(button.getImage().getScaledInstance(100, 50, Image
                 .SCALE_SMOOTH));
 

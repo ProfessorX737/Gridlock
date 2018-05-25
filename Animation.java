@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 public class Animation extends JPanel implements ActionListener {
 	private JFrame f;
+	private JFrame menu;
 	
 	private Timer timer;
 
@@ -14,8 +15,9 @@ public class Animation extends JPanel implements ActionListener {
 	float size;   
 	double [] limits = new double[] {0,7,4,-1};
 
-	public Animation(JFrame f) {
+	public Animation(JFrame f, JFrame menu) {
 		this.f = f;
+		this.menu = menu;
 		
 		mountain.moveTo(0,-1);  
 		mountain.lineTo(0,0.7);   
@@ -171,10 +173,7 @@ public class Animation extends JPanel implements ActionListener {
 	   public void keyPressed(KeyEvent e) {
 		   int keycode = e.getKeyCode();			
 		   if(keycode == KeyEvent.VK_SPACE) {
-			   MainMenu menu = new MainMenu();
-			   GridlockGame game = new GridlockGame();
-			   MenuController menuContr = new MenuController(game,menu);
-			   menu.setController(menuContr);
+			   menu.setVisible(true);
 			   f.dispose();
 		   }
 	   }

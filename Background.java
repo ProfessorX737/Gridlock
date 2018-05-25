@@ -12,14 +12,11 @@ public class Background extends JPanel {
 
 	public Background(String filename, int width, int height) throws IOException {
         ImageIcon bkgIcon = new ImageIcon(this.getClass().getResource(filename));
-//		background = ImageIO.read(new File(filename));
-//		background = ImageIO.read(new File(this.getClass().getResource(filename)));
 		background = bkgIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
 	}
 	
 	public Background(String filename) throws IOException {
         ImageIcon bkgIcon = new ImageIcon(this.getClass().getResource(filename));
-        //background = ImageIO.read(new File(filename));
         this.background = bkgIcon.getImage();
 	}
 		

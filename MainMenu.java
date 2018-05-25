@@ -97,9 +97,10 @@ public class MainMenu extends JFrame {
 		this.buttonPanel.setOpaque(false);
 		this.add(buttonPanel,BorderLayout.CENTER);
 		
-		this.setLocationRelativeTo(null);
 		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(false);
 	}
 	
 	public void setController(ActionListener al) {
@@ -107,8 +108,6 @@ public class MainMenu extends JFrame {
 		this.puzzlesBtn.addActionListener(al);
 		this.exitBtn.addActionListener(al);
 		this.multiplayerBtn.addActionListener(al);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
 	}
 	
 }
