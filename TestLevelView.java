@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class TestLevelView {
 
@@ -15,7 +14,7 @@ public class TestLevelView {
     	game.generatePuzzles();
     	game.savePuzzles();
     	
-    	LevelSelect ls = new LevelSelect(150,300);
+    	LevelSelect ls = new LevelSelect();
 
         f.add(ls, BorderLayout.CENTER);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,7 +74,7 @@ public class TestLevelView {
     	int cellSize = 50;
     	int height = cellSize * GridlockGame.DEFAULT_BOARD_SIZE;
     	int width = height + ButtonPanel.WIDTH;
-    	LevelSelect ls = new LevelSelect(width,height);
+    	LevelSelect ls = new LevelSelect();
 
 		BackFrame bframe = new BackFrame("Select Difficulty", ls, 25);
 
