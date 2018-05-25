@@ -17,4 +17,10 @@ public interface ButtonController {
 	public ActionListener getTimerListener();
 	
 	public MouseAdapter getMouseAdapter();
+
+    ActionListener getMenuButtonListener();
+
+    void setMenuButtonController(ActionListener actionListener);
+
+//    ActionListener getMenuButtonListener();
 }

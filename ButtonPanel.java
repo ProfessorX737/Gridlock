@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel {
 
@@ -62,7 +63,22 @@ public class ButtonPanel extends JPanel {
         RedoBtn.setVerticalTextPosition(JButton.CENTER);
 
 
+        menuButton.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        jTimeLabel.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        MoveCount.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        jResetBtn.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        UndoBtn.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        RedoBtn.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
 
+        menuButton.setForeground(new Color(245,222,179));
+        jResetBtn.setForeground(new Color(245,222,179));
+        UndoBtn.setForeground(new Color(245,222,179));
+        RedoBtn.setForeground(new Color(245,222,179));
+
+
+
+        jTimeLabel.setForeground(new Color(128,0,0));
+        MoveCount.setForeground(new Color(128,0,0));
         /*jTimeLabel.setIcon(button);
         jResetBtn.setIcon(button);
         MoveCount.setIcon(button);
@@ -103,6 +119,7 @@ public class ButtonPanel extends JPanel {
         this.RedoBtn.addActionListener(c.getRedoButtonListener());
         this.UndoBtn.addActionListener(c.getUndoButtonListener());
         this.jResetBtn.addActionListener(c.getResetButtonListener());
+        this.menuButton.addActionListener(c.getMenuButtonListener());
         this.timer = new Timer(1000, c.getTimerListener());
         this.startTimer();
     }
@@ -134,7 +151,6 @@ public class ButtonPanel extends JPanel {
     }
 
     public void resize(int newCellSize) {
-        System.out.println("Resizing");
         this.cellSize = newCellSize;
 
         setPreferredSize(new Dimension(newCellSize * 3, newCellSize * 8));
@@ -144,12 +160,12 @@ public class ButtonPanel extends JPanel {
         ImageIcon label = new ImageIcon(this.getClass().getResource("Assets/textBg.png"));
         label = new ImageIcon(label.getImage().getScaledInstance(cellSize * 2, cellSize, Image.SCALE_SMOOTH));
 
-        menuButton.setIcon(button);
+        /*menuButton.setIcon(button);
         jResetBtn.setIcon(button);
         MoveCount.setIcon(label);
         UndoBtn.setIcon(button);
         RedoBtn.setIcon(button);
-        jTimeLabel.setIcon(label);
+        jTimeLabel.setIcon(label);*/
 
        /*menuButton.setPreferredSize(buttonSize);
         jResetBtn.setPreferredSize(buttonSize);
@@ -159,7 +175,7 @@ public class ButtonPanel extends JPanel {
         jTimeLabel.setPreferredSize(buttonSize);*/
 
         for (Component c : this.getComponents()){
-            c.setFont(new Font("Arial", Font.PLAIN, cellSize/5));
+            c.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
             if(c.getClass() == menuButton.getClass()) {
                 JButton b = (JButton) c;
                 b.setIcon(button);
@@ -172,5 +188,9 @@ public class ButtonPanel extends JPanel {
             }
         }
 
+    }
+
+    public void setMenuButtonListener(ActionListener actionListener) {
+        menuButton.addActionListener(actionListener);
     }
 }

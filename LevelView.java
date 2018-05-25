@@ -23,14 +23,16 @@ public class LevelView extends JPanel {
     public static final int SCROLL_SPEED = 16;
 
 	public LevelView(List<PuzzleGame> puzzles, int width, int height, int puzzleSize) {
-		this.width = width;
-		this.height = height;
+		this.width = width * 27/40;
+		this.height = height * 27/40;
 		this.buttons = new HashMap<>();
 		this.puzzleSize = puzzleSize;
+		this.setOpaque(false);
 
 		JPanel main = new JPanel();
 		main.setLayout(new GridLayout(puzzles.size(),1));
 		main.setSize(new Dimension(this.width,this.puzzleSize*puzzles.size()));
+		main.setOpaque(false);
 		
 		for(PuzzleGame puzzle : puzzles) {
 			PuzzleView pv = new PuzzleView(puzzle,puzzleSize/GridlockGame.DEFAULT_BOARD_SIZE);
@@ -45,6 +47,7 @@ public class LevelView extends JPanel {
 		scroll.setSize(new Dimension(this.width,this.height));
 		scroll.setPreferredSize(new Dimension(this.width,this.height));
 		scroll.getVerticalScrollBar().setUnitIncrement(SCROLL_SPEED);
+		scroll.setOpaque(false);
 		this.add(scroll);
 	}
 	

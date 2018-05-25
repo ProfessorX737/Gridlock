@@ -5,14 +5,14 @@ import java.util.List;
  * @author Xavier Poon
  *
  */
-public class GridlockGame {
-
+public class GridlockGame implements Runnable {
+	private Thread puzzleGenThread;
 	PuzzleGenerator puzzleGenerator;
 	PuzzleManager puzzleManager;
 	FileSystem fileSys;
 
 	public final static int NUM_LEVELS = 6;
-	private final static int MAX_PUZZLES_PER_LEVEL = 10;
+	private final static int MAX_PUZZLES_PER_LEVEL = 20;
 	private final static String MAIN_FOLDER_NAME = "cs2511/puzzles/";
 	public final static String[] LEVEL_NAMES = {"veryEasy","easy","medium","hard","veryHard","ultraHard"};
 	public final static String[] DISPLAY_LEVEL_NAMES = {"Newbie","Beginner","Intermediate","Experienced","Advanced","Expert"};
@@ -28,6 +28,7 @@ public class GridlockGame {
     public static final int ULTRA_HARD = 5;
 
 	public GridlockGame() {
+		
 		fileSys = new FileSystemImp();
 		this.puzzleGenerator = new PuzzleGeneratorAStar();
 		this.puzzleManager = new PuzzleManager(NUM_LEVELS);
@@ -52,6 +53,16 @@ public class GridlockGame {
 	public void savePuzzles() {
 		for(int i = 0; i < NUM_LEVELS; i++) {
 			this.fileSys.savePuzzlesToFolder(this.puzzleManager.getPuzzles(i), MAIN_FOLDER_NAME + LEVEL_NAMES[i]);
+		}
+	}
+	@Override
+	public void run() {
+		this.generatePuzzles();
+	}
+	public void generatePuzzlesInBackground() {
+		if(this.puzzleGenThread == null) {
+			this.puzzleGenThread = new Thread(this,"PuzzleGenThread");
+			this.puzzleGenThread.start();
 		}
 	}
 }

@@ -10,7 +10,6 @@ public class GameView extends JPanel {
 
 
         this.buttonPanel = buttonPanel;
-//        this.puzzleView = puzzleView;
         puzzleView.setController(puzzleController);
         this.buttonPanel.setController(sideButtonController);
         puzzleController.setButtonController(sideButtonController);

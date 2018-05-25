@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Background extends JPanel {
 	private Image background;
@@ -15,12 +14,16 @@ public class Background extends JPanel {
 //		background = ImageIO.read(new File(filename));
 //		background = ImageIO.read(new File(this.getClass().getResource(filename)));
 		background = bkgIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		setBorder(BorderFactory.createEmptyBorder());
+		this.setOpaque(false);
 	}
 	
 	public Background(String filename) throws IOException {
         ImageIcon bkgIcon = new ImageIcon(this.getClass().getResource(filename));
         //background = ImageIO.read(new File(filename));
         this.background = bkgIcon.getImage();
+		setBorder(BorderFactory.createEmptyBorder());
+		this.setOpaque(false);
 	}
 		
 	public void paintComponent(Graphics g) {

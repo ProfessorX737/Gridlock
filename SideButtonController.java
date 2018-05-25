@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -9,6 +11,7 @@ public class SideButtonController implements ButtonController {
     private PuzzleView puzzleView;
     private PuzzleGame puzzleGame;
     private ButtonPanel bp;
+//    private JFrame menu;
 
     private long time;
 
@@ -18,6 +21,7 @@ public class SideButtonController implements ButtonController {
         this.puzzleGame = puzzleGame;
         this.bp = bp;
         this.time = System.currentTimeMillis();
+//        this.menu = menu;
 
     }
 
@@ -124,7 +128,23 @@ public class SideButtonController implements ButtonController {
         return ma;
     }
 
-    public void resize(int newCellSize){
+    @Override
+    public ActionListener getMenuButtonListener() {
+       return new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+//               MenuController.changeFrame("menu");
+           }
+       };
+    }
+
+    @Override
+    public void setMenuButtonController(ActionListener actionListener) {
+        bp.setMenuButtonListener(actionListener);
+
+    }
+
+    public void resize(int newCellSize) {
         bp.resize(newCellSize);
     }
 

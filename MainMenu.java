@@ -27,14 +27,15 @@ public class MainMenu extends JFrame {
 	public static final String MENU_BKG_PIC = "pictures/MainMenu_bg.png";
 	public static final String MENU_BTN_PIC = "pictures/MainMenu_bt.png";
 	
-	public static final int HEIGHT = PuzzleView.DEFAULT_CELL_SIZE * GridlockGame.NUM_LEVELS + BackFrame.DEFAULT_BAR_HEIGHT;
+	public static final int HEIGHT = PuzzleView.DEFAULT_CELL_SIZE * (GridlockGame.NUM_LEVELS + 2);
 	public static final int WIDTH = HEIGHT + ButtonPanel.WIDTH;
 	
 	public MainMenu() {
 		this.setTitle("Gridlock");
 		this.setLayout(new BorderLayout());
         ImageIcon btnImg = new ImageIcon(this.getClass().getResource(MENU_BTN_PIC));
-		btnImg = new ImageIcon(btnImg.getImage().getScaledInstance(BTN_WIDTH,BTN_HEIGHT,Image.SCALE_SMOOTH)); 
+		btnImg = new ImageIcon(btnImg.getImage().getScaledInstance(BTN_WIDTH,BTN_HEIGHT,Image.SCALE_SMOOTH));
+
 		
 		try {
 			this.setContentPane(new Background(MENU_BKG_PIC, WIDTH, HEIGHT));
