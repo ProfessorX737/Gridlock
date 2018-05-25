@@ -61,7 +61,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 						puzzleManager.addNewPuzzle(i, puzzle);
 						canAdd[i] = false;
 						numLeft[i]--;
-						System.out.printf("%d%n",i);
+						System.out.printf("Generated %s puzzle%n",GridlockGame.DISPLAY_LEVEL_NAMES[i]);
 					}
 				}
 				int lastIndex = this.numLevels-1;
@@ -69,7 +69,7 @@ public class PuzzleGeneratorAStar implements PuzzleGenerator {
 					puzzleManager.addNewPuzzle(lastIndex, puzzle);
 					canAdd[lastIndex] = false;
 					numLeft[lastIndex]--;
-					System.out.printf("%d%n",lastIndex);
+					System.out.printf("Generated %s puzzle%n",GridlockGame.DISPLAY_LEVEL_NAMES[lastIndex]);
 				}
 				
 			}

@@ -12,7 +12,7 @@ public class GridlockGame implements Runnable {
 	FileSystem fileSys;
 
 	public final static int NUM_LEVELS = 6;
-	private final static int MAX_PUZZLES_PER_LEVEL = 10;
+	private final static int MAX_PUZZLES_PER_LEVEL = 20;
 	private final static String MAIN_FOLDER_NAME = "src/puzzles/";
 	public final static String[] LEVEL_NAMES = {"veryEasy","easy","medium","hard","veryHard","ultraHard"};
 	public final static String[] DISPLAY_LEVEL_NAMES = {"Newbie","Beginner","Intermediate","Experienced","Advanced","Expert"};

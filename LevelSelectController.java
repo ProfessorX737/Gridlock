@@ -7,10 +7,10 @@ import java.awt.event.ActionListener;
 
 public class LevelSelectController implements ActionListener {
 	private JFrame levelSelect;
-	private JFrame[] levelView;
+	private PuzzleSelectScreen[] levelView;
 	private GridlockGame game;
 	
-	public LevelSelectController(JFrame levelSelect, JFrame[] levelViews) {
+	public LevelSelectController(JFrame levelSelect, PuzzleSelectScreen[] levelViews) {
 		this.levelSelect = levelSelect;
 		this.levelView = levelViews;
 	}
@@ -26,19 +26,9 @@ public class LevelSelectController implements ActionListener {
 		for(int i = 0; i < GridlockGame.NUM_LEVELS; i++) {
 			if(action.equals(GridlockGame.LEVEL_NAMES[i])) {
 				this.levelSelect.setVisible(false);
+				this.levelView[i].refresh();
 				this.levelView[i].setVisible(true);
 			}
 		}
 	}
-
-	private JFrame createFrame(Container view) {
-		JFrame frame = new JFrame();
-		frame.setLayout(new BorderLayout());
-		frame.add(view,BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(false);
-        return frame;
-	}
-
 }
