@@ -2,6 +2,14 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Network Panel (GUI) for GridLock
+ * Allows users to connect to server after setting a username
+ * Contains a list of currently active users
+ * Allows users to challenge and forfeit games and keep track of their current stats
+ *
+ */
+
 public class NetworkPanel extends JPanel {
     private JButton ChallengeBtn;
     private JButton ConnectBtn;
@@ -17,7 +25,137 @@ public class NetworkPanel extends JPanel {
     private JTextField UserTxtField;
     private JLabel WinLabel;
     private String currentOppo;
+
+    /**
+     * Constructor for Network Panel
+     */
+
     public NetworkPanel(){
+        initialize();
+    }
+
+    /**
+     * Uses NetworkUIController to create all listeners for the Network Panel
+     * @param c
+     */
+
+    public void setController(NetworkUIController c) {
+        this.ChallengeBtn.addActionListener(c.getChallengeBtnListener());
+        this.SetUserBtn.addActionListener(c.getSetUserBtnListener());
+        this.UpdateBtn.addActionListener(c.getUpdateBtnListener());
+        this.ConnectBtn.addActionListener(c.ConnectBtnListener());
+        this.QuitBtn.addActionListener(c.QuitBtnListener());
+        this.ForfeitBtn.addActionListener(c.ForfeitListener());
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Networking");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        NetworkPanel panel = new NetworkPanel();
+        NetUIController controller = new NetUIController(panel, "localhost", 55555);
+        panel.setController(controller);
+
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    /**
+     * 
+     * @param name
+     */
+
+    // Username approved, username locked for session
+    public void setUsername(String name){
+        UserTxtField.setEditable(false);
+        UserTxtField.setText(name);
+        SetUserBtn.setEnabled(false);
+    }
+
+    public String getUsername(){
+        return UserTxtField.getText();
+    }
+
+    public void setUserListBox(String[] users){
+        UserListBox.setModel(new DefaultComboBoxModel<>(users));
+        if (users.length > 0){
+            currentOppo = users[0];
+        }
+    }
+
+    public String getOpponentName(){
+        return (String) UserListBox.getSelectedItem();
+    }
+
+    public void resetPlayingAgainst(){
+        OppoLabel.setText("Playing Against:");
+    }
+
+    public void setPlayingAgainst(String player){
+        OppoLabel.setText("Playing Against: " + player);
+    }
+
+    /**
+     * Locks the buttons when in-game
+     */
+
+    public void lockButtons(){
+        ChallengeBtn.setEnabled(false);
+        UserListBox.setEnabled(false);
+    }
+
+    /**
+     * Unlocks the buttons when game is complete
+     */
+
+    public void unlockButtons(){
+        ChallengeBtn.setEnabled(true);
+        UserListBox.setEnabled(true);
+    }
+
+    /**
+     * Displays the username of the GUI
+     * @param user, the username of the opponent
+     */
+
+    public void setOpponentName(String user){
+        setPlayingAgainst(user);
+    }
+
+    /**
+     * Locks the connect so after connecting the server, you cannot reconnect to the server
+     */
+
+    public void lockConnectBtn(){
+        ConnectBtn.setEnabled(false);
+    }
+
+    /**
+     * Updates the win count in the GUI JPanel
+     * @param wins, number of current wins for user
+     */
+
+    public void updateWins(int wins){
+        WinLabel.setText("Wins: " + Integer.toString(wins));
+    }
+
+    /**
+     * Updates the win count in the GUI JPanel
+     * @param losses, number of the current losses for user
+     */
+
+    public void updateLoss(int losses){
+        LossLabel.setText("Losses: " + Integer.toString((losses)));
+    }
+
+
+    /**
+     * Initializes and displays the GUI Network Application
+     */
+
+    private void initialize(){
+
         GridBagConstraints gridBagConstraints;
 
         UserListBox = new JComboBox<>();
@@ -36,7 +174,7 @@ public class NetworkPanel extends JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        UserListBox.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        UserListBox.setModel(new DefaultComboBoxModel<>(new String[] { "" }));
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -143,92 +281,5 @@ public class NetworkPanel extends JPanel {
         gridBagConstraints.anchor = GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         add(ForfeitBtn, gridBagConstraints);
-
-    }
-
-    public void setController(NetworkUIController c) {
-        this.ChallengeBtn.addActionListener(c.getChallengeBtnListener());
-        this.SetUserBtn.addActionListener(c.getSetUserBtnListener());
-        this.UpdateBtn.addActionListener(c.getUpdateBtnListener());
-        this.ConnectBtn.addActionListener(c.ConnectBtnListener());
-        this.QuitBtn.addActionListener(c.QuitBtnListener());
-        this.ForfeitBtn.addActionListener(c.ForfeitListener());
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Networking");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        NetworkPanel panel = new NetworkPanel();
-        NetUIController controller = new NetUIController(panel, "localhost", 55555);
-        panel.setController(controller);
-
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    // Username approved, username locked for session
-    public void setUsername(String name){
-        UserTxtField.setEditable(false);
-        UserTxtField.setText(name);
-        SetUserBtn.setEnabled(false);
-    }
-
-    public String getUsername(){
-        return UserTxtField.getText();
-    }
-
-    public void setUserListBox(String[] users){
-        UserListBox.setModel(new DefaultComboBoxModel<>(users));
-        if (users.length > 0){
-            currentOppo = users[0];
-        }
-    }
-
-    public String getOpponentName(){
-        return (String) UserListBox.getSelectedItem();
-    }
-
-    public void resetPlayingAgainst(){
-        OppoLabel.setText("Playing Against:");
-    }
-
-    public void setPlayingAgainst(String player){
-        OppoLabel.setText("Playing Against: " + player);
-    }
-
-    /**
-     * Locks the buttons when in-game
-     */
-
-    public void lockButtons(){
-        ChallengeBtn.setEnabled(false);
-        UserListBox.setEnabled(false);
-    }
-
-    /**
-     * Unlocks the buttons when game is complete
-     */
-
-    public void unlockButtons(){
-        ChallengeBtn.setEnabled(true);
-        UserListBox.setEnabled(true);
-    }
-
-    public void setOpponentName(String user){
-        setPlayingAgainst(user);
-    }
-
-    public void lockConnectBtn(){
-        ConnectBtn.setEnabled(false);
-    }
-
-    public void updateWins(int wins){
-        WinLabel.setText("Wins: " + Integer.toString(wins));
-    }
-
-    public void updateLoss(int losses){
-        LossLabel.setText("Losses: " + Integer.toString((losses)));
     }
 }

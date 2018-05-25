@@ -59,6 +59,12 @@ public class MenuController implements ActionListener {
         return frame;
 	}
 
+	public void goToMainMenu() {
+		menu.setVisible(false);
+		this.levelSelect.setLocationRelativeTo(null);
+		this.levelSelect.setVisible(true);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();

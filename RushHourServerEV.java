@@ -1,9 +1,10 @@
 import java.awt.*;
+import java.util.List;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Map;
-
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 
@@ -18,13 +19,27 @@ public class RushHourServerEV extends Thread{
     private static BlockingQueue<String> eventQueue = null;
     private static Map<String,ClientInfo> clients = null;
     private static Map<String, Socket> userList = null;
+    private static Random rand;
+    private static PuzzleGame puzzleGame;
+    
+    /**
+     * Rush hour event handler
+     * @param eventQueue Queue to receive the events
+     * @param clients A map which manages the client information
+     * @param userList A list of currently online users
+     */
 
     public RushHourServerEV(BlockingQueue eventQueue,  Map<String,ClientInfo> clients, Map<String, Socket> userList){
         this.eventQueue = eventQueue;
         this.clients = clients;
         this.userList = userList;
+        this.rand = new Random();
+        this.puzzleGame = null;
     }
 
+    /**
+     * Main event handler thread function, determines what commands user have sent
+     */
     @Override
     public void run(){
         System.out.println("Event handler thread started");
@@ -76,6 +91,11 @@ public class RushHourServerEV extends Thread{
             }
         }
     }
+    
+    /**
+     * Sends the list of online users to the user who requested it
+     * @param username
+     */
 
     private void getList(String username){
         StringBuilder builder = new StringBuilder("userList ");
@@ -89,6 +109,12 @@ public class RushHourServerEV extends Thread{
         // Get socket to send to user
         send(username, result);
     }
+    
+    /**
+     * Sends a messenger to designated user
+     * @param username, name of the user
+     * @param message, the Message to be sent
+     */
 
     private void send(String username, String message){
         Socket receiver = userList.get(username);
@@ -99,6 +125,12 @@ public class RushHourServerEV extends Thread{
             System.out.println("Connection to" + username + " created I/O exception");
         }
     }
+    
+    /**
+     * Deals with user1 challenging user2
+     * @param user1
+     * @param user2
+     */
 
     private void challenge(String user1, String user2){
 
@@ -123,7 +155,11 @@ public class RushHourServerEV extends Thread{
 
     }
 
-    // User 1 accepted user 2
+    /**
+     * Server handles the event where one user accepts the other's request
+     * @param user1
+     * @param user2
+     */
     private void acceptChallenge(String user1, String user2){
         ClientInfo usrInfo1 = clients.get(user1);
         ClientInfo usrInfo2 = clients.get(user2);
@@ -141,6 +177,12 @@ public class RushHourServerEV extends Thread{
         send(user2, "accepted " + user2 + " " + user1);
         sendPuzzle(user1, user2);
     }
+    
+    /**
+     * Sends a string representation of the puzzle to two given users
+     * @param user1
+     * @param user2
+     */
 
     private void sendPuzzle(String user1, String user2){
         PuzzleGame newPuzzle = createPuzzle();
@@ -155,11 +197,25 @@ public class RushHourServerEV extends Thread{
         send(user2, "puzzle " + puzzle);
     }
 
-    // Hard coded for now
+    /**
+     * Grab a random puzzle from very easy, easy, medium and hard
+     * Return the puzzle
+     * @return
+     */
     private PuzzleGame createPuzzle(){
+    	System.out.println("In CREATE PUZZLE");
         GridlockGame game = new GridlockGame();
-        PuzzleGame puzzleGame = game.getPuzzle(GridlockGame.VERY_EASY, 1);
-        puzzleGame.initState();
+//        puzzleGame = game.getPuzzle(0, 2);
+        int randomNum = (int )(Math.random() * 2 + 1);
+//        
+//
+        List<PuzzleGame> gameList = game.getPuzzles(randomNum);
+//        System.out.println(gameList.size());
+        int ran = (int )(Math.random() * gameList.size());
+        puzzleGame = gameList.get(ran);
+//        System.out.println(puzzleGame.getStringRep());
+
+//        System.out.println("random num" + randomNum + " " + ran);
         return puzzleGame;
     }
 
@@ -209,7 +265,6 @@ public class RushHourServerEV extends Thread{
     }
 
     // Remove online mapping, set user offline
-    // TODO update win and loss
     private void offlineUser(String user){
         userList.remove(user);
         ClientInfo info = clients.get(user);
@@ -217,7 +272,7 @@ public class RushHourServerEV extends Thread{
         // Notify other user if they were ingame that other user disconnected, make them the winner
         String opponent = info.getPlayingAgainst();
         if (opponent != null){
-            send(info.getPlayingAgainst(), "DC" + user + " has disconnected");
+            send(info.getPlayingAgainst(), "DC " + user + " has disconnected");
             ClientInfo otherUser = clients.get(opponent);
             info.resetPlayingAgainst();
             info.setBusy(false);

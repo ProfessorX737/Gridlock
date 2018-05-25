@@ -9,6 +9,15 @@ public class GridLock {
 		MainMenu menu = new MainMenu();
 		MenuController menuContr = new MenuController(game,menu);
 		menu.setController(menuContr);
+		
+    	JFrame f = new JFrame("GridLock");
+		Animation animation = new Animation(f,menu);
+		f.add(animation);
+		f.pack();
+		f.setSize(new Dimension(500,500));
+		f.setLocationRelativeTo(null);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setVisible(true);
     }
 
     public static void main(String args[]) {

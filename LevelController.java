@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
-import java.util.List;
-
 public class LevelController implements ActionListener {
 	private JFrame levelView;
 	private GridlockGame game;
@@ -50,6 +48,8 @@ public class LevelController implements ActionListener {
         GameController gameController = new GameController(gameView, borderedPuzzleController, bc);
 
         this.gameView = this.createFrame(gameView);
+        PuzzleSolvedPopUpController popUpController = new PuzzleSolvedPopUpController(this.game,this.level,puzzleGame.getId(),this.gameView,this.levelView);
+        pv.setController(popUpController);
 		this.gameView.setLocation(levelView.getLocation());
 		this.gameView.setSize(levelView.getSize());
         bc.setMenuButtonController(e -> {
@@ -74,6 +74,7 @@ public class LevelController implements ActionListener {
         frame.add(view, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         return frame;
     }
