@@ -4,14 +4,13 @@ import java.awt.*;
 public class GridLock {
     
     public static void test0() {
-
 		GridlockGame game = new GridlockGame();
 		game.generatePuzzlesInBackground();
 		MainMenu menu = new MainMenu();
 		MenuController menuContr = new MenuController(game,menu);
 		menu.setController(menuContr);
 		
-    		JFrame f = new JFrame("GridLock");
+    	JFrame f = new JFrame("GridLock");
 		Animation animation = new Animation(f,menu);
 		f.add(animation);
 		f.pack();
