@@ -4,7 +4,7 @@ import java.awt.*;
 public class GridLock {
     
     public static void test0() {
-    		JFrame f = new JFrame("GridLock");
+    	JFrame f = new JFrame("GridLock");
 		f.add(new Animation(f));
 		f.setSize(500, 400);                       // set the size of the window
         f.setLocationRelativeTo(null);             // set the window to center of the screen
