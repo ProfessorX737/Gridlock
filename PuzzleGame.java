@@ -958,23 +958,6 @@ public class PuzzleGame implements Serializable {
 		}
     }
 
-    //private void printBoard(int[][] board) {
-    //    for (int y = -1; y <= sizeRow; y++) {
-    //        for (int x = -1; x <= sizeCol; x++) {
-    //            if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
-    //                System.out.print(wall + "\t");
-    //            } else if (board[y][x] == 0) {
-    //                System.out.print(red_car + "\t");
-    //            } else if (board[y][x] == -1) {
-    //                System.out.print(road + "\t");
-    //            } else {
-    //                System.out.print(board[y][x] + "\t");
-    //            }
-    //        }
-    //        System.out.println("");
-    //    }
-    //}
-
     /**
      * Resets the board to the starting state
      */
