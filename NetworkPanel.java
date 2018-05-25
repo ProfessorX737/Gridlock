@@ -160,7 +160,7 @@ public class NetworkPanel extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         NetworkPanel panel = new NetworkPanel();
-        NetUIController controller = new NetUIController(panel, "localhost", 55555);
+        NetUIController controller = new NetUIController(panel, "52.14.61.47", 12467);
         panel.setController(controller);
 
         frame.getContentPane().add(panel, BorderLayout.CENTER);
