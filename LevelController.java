@@ -9,18 +9,21 @@ import java.util.List;
 
 public class LevelController implements ActionListener {
 	private JFrame levelView;
-	private List<PuzzleGame> puzzles;
+	private GridlockGame game;
+	private int level;
 	private JFrame gameView;
 	
-	public LevelController(JFrame levelView, List<PuzzleGame> puzzles) {
+	public LevelController(GridlockGame game, int level, JFrame levelView) {
 		this.levelView = levelView;
-		this.puzzles = puzzles;
+		this.game = game;
+		this.level = level;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		for(PuzzleGame p : this.puzzles) {
+		System.out.println(action);
+		for(PuzzleGame p : this.game.getPuzzles(this.level)) {
 			if(action.equals(Integer.toString(p.getId()))) {
 				this.levelView.setVisible(false);
 				this.setGameView(p);

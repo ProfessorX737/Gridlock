@@ -27,7 +27,7 @@ public class MainMenu extends JFrame {
 	public static final String MENU_BKG_PIC = "pictures/MainMenu_bg.png";
 	public static final String MENU_BTN_PIC = "pictures/MainMenu_bt.png";
 	
-	public static final int HEIGHT = PuzzleView.DEFAULT_CELL_SIZE * GridlockGame.NUM_LEVELS + BackFrame.DEFAULT_BAR_HEIGHT;
+	public static final int HEIGHT = PuzzleView.DEFAULT_CELL_SIZE * GridlockGame.NUM_LEVELS + BackBar.DEFAULT_HEIGHT;
 	public static final int WIDTH = HEIGHT + ButtonPanel.WIDTH;
 	
 	public MainMenu() {
