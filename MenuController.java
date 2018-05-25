@@ -59,13 +59,14 @@ public class MenuController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if(action == "play") {
-			System.out.println("play pressed");
-		} else if(action == "puzzles") {
+			levelSelect.setLocation(menu.getLocation());
+			levelSelect.setSize(menu.getSize());
 			menu.setVisible(false);
 			this.levelSelect.setVisible(true);
 		} else if(action == "multiplayer") {
 			System.out.println("multiplayer button pressed");
 			this.menu.setVisible(false);
+			multiplayer.setLocation(menu.getLocation());
 			this.multiplayer.setVisible(true);
 		} else if(action == "exit") {
 			menu.dispose();

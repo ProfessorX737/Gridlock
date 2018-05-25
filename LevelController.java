@@ -27,6 +27,7 @@ public class LevelController implements ActionListener {
 		System.out.println(action);
 		for(PuzzleGame p : this.game.getPuzzles(this.level)) {
 			if(action.equals(Integer.toString(p.getId()))) {
+
 				this.levelView.setVisible(false);
 				this.setGameView(p);
 			}
@@ -49,10 +50,12 @@ public class LevelController implements ActionListener {
         GameController gameController = new GameController(gameView, borderedPuzzleController, bc);
 
         this.gameView = this.createFrame(gameView);
+		this.gameView.setLocation(levelView.getLocation());
+		this.gameView.setSize(levelView.getSize());
         bc.setMenuButtonController(e -> {
-			menu.setLocation(gameView.getLocation());
-			menu.setSize(gameView.getSize());
-			gameView.setVisible(false);
+			menu.setLocation(this.gameView.getLocation());
+			menu.setSize(this.gameView.getSize());
+			this.gameView.dispose();
 			menu.setVisible(true);
 		});
     }

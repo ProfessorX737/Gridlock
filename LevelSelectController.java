@@ -25,6 +25,8 @@ public class LevelSelectController implements ActionListener {
 		String action = e.getActionCommand();
 		for(int i = 0; i < GridlockGame.NUM_LEVELS; i++) {
 			if(action.equals(GridlockGame.LEVEL_NAMES[i])) {
+				levelView[i].setLocation(levelSelect.getLocation());
+				levelView[i].setSize(levelSelect.getSize());
 				this.levelSelect.setVisible(false);
 				this.levelView[i].refresh();
 				this.levelView[i].setVisible(true);

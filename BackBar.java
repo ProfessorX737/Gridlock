@@ -78,7 +78,7 @@ public class BackBar extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponents(g);
         ImageIcon bg = new ImageIcon(this.getClass().getResource("Assets/board.png"));
-        bg = new ImageIcon(bg.getImage().getScaledInstance(this.getWidth(), this.getWidth(), Image.SCALE_SMOOTH));
+        bg = new ImageIcon(bg.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH));
         g.drawImage(bg.getImage(), 0, 0, null);
     }
 
