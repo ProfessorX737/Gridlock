@@ -366,6 +366,7 @@ public class NetUIController implements NetworkUIController, Runnable{
             }
             Vehicle v = Vehicle.strToVehicle(s.trim());
             if (v.getColor().getRGB() == Color.RED.getRGB()) {
+            	System.out.println("RED VEHICLE AT" + v.getRow());
             	// set the exit conditions
             	puzzleGame.setExitCol(5);
             	puzzleGame.setExitRow(v.getRow());
