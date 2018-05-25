@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class GridlockGame implements Runnable {
     public final static int[] LEVEL_MIN_MOVES = {7,10,15,20,25,30};
     public static final int DEFAULT_BOARD_SIZE = 6;
     public static final int DEFAULT_CAR_LENGTH = 2;
+    public static final Dimension MINIMUM_SIZE = new Dimension(PuzzleView.DEFAULT_CELL_SIZE * 11, PuzzleView.DEFAULT_CELL_SIZE * 17/2);
     
     public static final int VERY_EASY = 0;
     public static final int EASY = 1;

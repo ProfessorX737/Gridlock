@@ -8,6 +8,7 @@ public class GameView extends JPanel {
     GameView(ButtonPanel buttonPanel, SideButtonController sideButtonController, PuzzleView puzzleView,
              PuzzleController puzzleController, BorderedPuzzleView borderedPuzzleView) {
 
+
         this.buttonPanel = buttonPanel;
         puzzleView.setController(puzzleController);
         this.buttonPanel.setController(sideButtonController);
@@ -26,6 +27,7 @@ public class GameView extends JPanel {
         c.weightx = 0.5;
         c.fill = GridBagConstraints.VERTICAL;
         this.add(this.buttonPanel);
+        this.setMinimumSize(new Dimension(PuzzleView.DEFAULT_CELL_SIZE * 11, PuzzleView.DEFAULT_CELL_SIZE * 8));
     }
 
     public ButtonPanel getButtonPanel() {

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel {
 
@@ -10,17 +11,19 @@ public class ButtonPanel extends JPanel {
     private JButton jResetBtn;
     private JLabel jTimeLabel;
     private Timer timer;
-    
+    private int cellSize;
+
     public static final int WIDTH = 150;
     public static final int HEIGHT = 300;
 
-    public ButtonPanel() {
-        ImageIcon button = new ImageIcon(this.getClass().getResource("Assets/button.png"));
-        button = new ImageIcon(button.getImage().getScaledInstance(100, 50, Image
-                .SCALE_SMOOTH));
+    public ButtonPanel(int cellSize) {
+        this.cellSize = cellSize;
+        setPreferredSize(new java.awt.Dimension(cellSize * 3, cellSize * 8));
 
+        ImageIcon button = new ImageIcon(this.getClass().getResource("Assets/button.png"));
+        button = new ImageIcon(button.getImage().getScaledInstance(cellSize * 2, cellSize, Image.SCALE_SMOOTH));
         ImageIcon label = new ImageIcon(this.getClass().getResource("Assets/textBg.png"));
-        label = new ImageIcon(label.getImage().getScaledInstance(100,50,Image.SCALE_SMOOTH));
+        label = new ImageIcon(label.getImage().getScaledInstance(cellSize * 2, cellSize, Image.SCALE_SMOOTH));
 
         jResetBtn = new JButton(button);
         jTimeLabel = new JLabel(label);
@@ -30,8 +33,6 @@ public class ButtonPanel extends JPanel {
         menuButton = new JButton(button);
         this.setOpaque(false);
 
-
-        this.setPreferredSize(new java.awt.Dimension(150, 400));
 
         jTimeLabel.setText("00:00:00");
         MoveCount.setText("Moves: 0");
@@ -54,7 +55,30 @@ public class ButtonPanel extends JPanel {
         UndoBtn.setHorizontalTextPosition(JButton.CENTER);
         RedoBtn.setHorizontalTextPosition(JButton.CENTER);
 
+        menuButton.setVerticalTextPosition(JButton.CENTER);
+        jTimeLabel.setVerticalTextPosition(JButton.CENTER);
+        MoveCount.setVerticalTextPosition(JButton.CENTER);
+        jResetBtn.setVerticalTextPosition(JButton.CENTER);
+        UndoBtn.setVerticalTextPosition(JButton.CENTER);
+        RedoBtn.setVerticalTextPosition(JButton.CENTER);
 
+
+        menuButton.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        jTimeLabel.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        MoveCount.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        jResetBtn.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        UndoBtn.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+        RedoBtn.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+
+        menuButton.setForeground(new Color(245,222,179));
+        jResetBtn.setForeground(new Color(245,222,179));
+        UndoBtn.setForeground(new Color(245,222,179));
+        RedoBtn.setForeground(new Color(245,222,179));
+
+
+
+        jTimeLabel.setForeground(new Color(128,0,0));
+        MoveCount.setForeground(new Color(128,0,0));
         /*jTimeLabel.setIcon(button);
         jResetBtn.setIcon(button);
         MoveCount.setIcon(button);
@@ -67,6 +91,7 @@ public class ButtonPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 0;
+        c.insets = new Insets(cellSize/10, 0,cellSize/10,0);
         this.add(jTimeLabel, c);
 
         c.gridx = 0;
@@ -94,6 +119,7 @@ public class ButtonPanel extends JPanel {
         this.RedoBtn.addActionListener(c.getRedoButtonListener());
         this.UndoBtn.addActionListener(c.getUndoButtonListener());
         this.jResetBtn.addActionListener(c.getResetButtonListener());
+        this.menuButton.addActionListener(c.getMenuButtonListener());
         this.timer = new Timer(1000, c.getTimerListener());
         this.startTimer();
     }
@@ -122,5 +148,49 @@ public class ButtonPanel extends JPanel {
         // Image board = bg.getImage();
         // board = board.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
         g.drawImage(bg.getImage(), 0, 0, null);
+    }
+
+    public void resize(int newCellSize) {
+        this.cellSize = newCellSize;
+
+        setPreferredSize(new Dimension(newCellSize * 3, newCellSize * 8));
+
+        ImageIcon button = new ImageIcon(this.getClass().getResource("Assets/button.png"));
+        button = new ImageIcon(button.getImage().getScaledInstance(cellSize * 2, cellSize, Image.SCALE_SMOOTH));
+        ImageIcon label = new ImageIcon(this.getClass().getResource("Assets/textBg.png"));
+        label = new ImageIcon(label.getImage().getScaledInstance(cellSize * 2, cellSize, Image.SCALE_SMOOTH));
+
+        /*menuButton.setIcon(button);
+        jResetBtn.setIcon(button);
+        MoveCount.setIcon(label);
+        UndoBtn.setIcon(button);
+        RedoBtn.setIcon(button);
+        jTimeLabel.setIcon(label);*/
+
+       /*menuButton.setPreferredSize(buttonSize);
+        jResetBtn.setPreferredSize(buttonSize);
+        MoveCount.setPreferredSize(buttonSize);
+        UndoBtn.setPreferredSize(buttonSize);
+        RedoBtn.setPreferredSize(buttonSize);
+        jTimeLabel.setPreferredSize(buttonSize);*/
+
+        for (Component c : this.getComponents()){
+            c.setFont(new Font("Arial", Font.PLAIN, cellSize/4));
+            if(c.getClass() == menuButton.getClass()) {
+                JButton b = (JButton) c;
+                b.setIcon(button);
+                b.setForeground(new Color(245,222,179));
+            }
+            else {
+                JLabel l = (JLabel) c;
+                l.setIcon(label);
+                l.setForeground(new Color(128,0,0));
+            }
+        }
+
+    }
+
+    public void setMenuButtonListener(ActionListener actionListener) {
+        menuButton.addActionListener(actionListener);
     }
 }

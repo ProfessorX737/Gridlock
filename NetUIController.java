@@ -446,16 +446,17 @@ public class NetUIController implements NetworkUIController, Runnable{
         }
         puzzleGame.initState();
 
-        PuzzleView pv = new PuzzleView(puzzleGame, 50);
+        PuzzleView pv = new PuzzleView(puzzleGame, PuzzleView.DEFAULT_CELL_SIZE);
         PuzzleController pc = new PuzzleController(puzzleGame, pv);
 
-        ButtonPanel bp = new ButtonPanel();
+        ButtonPanel bp = new ButtonPanel(PuzzleView.DEFAULT_CELL_SIZE);
         SideButtonController bc = new SideButtonController(pv, puzzleGame, bp);
         BorderedPuzzleView borderedPuzzleView = new BorderedPuzzleView(pv);
 
         GameView gameView = new GameView(bp, bc, pv, pc, borderedPuzzleView);
+        gameView.setMinimumSize(new Dimension(PuzzleView.DEFAULT_CELL_SIZE * 11, PuzzleView.DEFAULT_CELL_SIZE * 8));
         BorderedPuzzleController borderedPuzzleController = new BorderedPuzzleController(borderedPuzzleView);
-        new GameController(gameView, borderedPuzzleController);
+        new GameController(gameView, borderedPuzzleController, bc);
 
         puzzleGame.setNUIController(this);
 

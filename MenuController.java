@@ -12,21 +12,25 @@ public class MenuController implements ActionListener {
 	private LevelSelectScreen levelSelect;
 	private PuzzleSelectScreen[] puzzleSelect;
     private JFrame multiplayer;
-	
+
 	public MenuController(GridlockGame game, JFrame menu) {
 		this.game = game;
 		this.menu = menu;
 		this.puzzleSelect = new PuzzleSelectScreen[GridlockGame.NUM_LEVELS];
 		for(int i = 0; i < GridlockGame.NUM_LEVELS; i++) {
-			this.puzzleSelect[i] = new PuzzleSelectScreen(this.game,i);
+			this.puzzleSelect[i] = new PuzzleSelectScreen(this.game,i, menu);
 			PuzzleSelectScreen currScreen = this.puzzleSelect[i];
 			currScreen.setBackBarController(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					currScreen.setVisible(false);
+                    System.out.println("back pressed");
+                    levelSelect.setSize(currScreen.getSize());
+                    levelSelect.setLocation(currScreen.getLocation());
+					// currScreen.setVisible(false);
 					//
-					levelSelect.setLocationRelativeTo(null);
+					// levelSelect.setLocationRelativeTo(null);
 					levelSelect.setVisible(true);
+					currScreen.setVisible(false);
 				}
 			});
 		}
@@ -34,10 +38,13 @@ public class MenuController implements ActionListener {
     		this.levelSelect.setBackBarController(new ActionListener() {
     			@Override
     			public void actionPerformed(ActionEvent e) {
+					menu.setSize(levelSelect.getSize());
+					menu.setLocation(levelSelect.getLocation());
+					menu.setVisible(true);
     				levelSelect.setVisible(false);
     				//
-    				menu.setLocationRelativeTo(null);
-    				menu.setVisible(true);
+    				// menu.setLocationRelativeTo(null);
+    				// menu.setVisible(true);
     			}
     		});
 		this.levelSelect.setLevelSelectController(new LevelSelectController(this.levelSelect, this.puzzleSelect));
@@ -68,18 +75,18 @@ public class MenuController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if(action == "play") {
-			System.out.println("play pressed");
-		} else if(action == "puzzles") {
-			menu.setVisible(false);
-			//
-			this.levelSelect.setLocationRelativeTo(null);
+			levelSelect.setLocation(menu.getLocation());
+			levelSelect.setSize(menu.getSize());
 			this.levelSelect.setVisible(true);
+			menu.setVisible(false);
 		} else if(action == "multiplayer") {
 			System.out.println("multiplayer button pressed");
 			this.menu.setVisible(false);
 			//
 			this.levelSelect.setLocationRelativeTo(null);
 			this.multiplayer.setVisible(true);
+			this.menu.setVisible(false);
+			multiplayer.setLocation(menu.getLocation());
 		} else if(action == "exit") {
 			menu.dispose();
 			this.levelSelect.dispose();

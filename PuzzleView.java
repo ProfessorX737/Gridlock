@@ -19,7 +19,7 @@ public class PuzzleView extends JPanel implements Board{
     private ImageIcon hMainBlock;
     private ImageIcon vBlock;
     private ImageIcon hBlock;
-    
+
     public static final int DEFAULT_CELL_SIZE = 50;
     public static final String VERTICAL_MAIN_BLOCK = "Assets/vMainBlock.png";
     public static final String HORIZONTAL_MAIN_BLOCK = "Assets/hMainBlock.png";
@@ -45,7 +45,7 @@ public class PuzzleView extends JPanel implements Board{
         this.puzzleGame = puzzleGame;
         this.cellLength = cellLength;
         this.vehicles = new HashMap<>();
-        this.setBackground(Color.white);
+//        this.setBackground(Color.white);
         this.setLayout(null);
         this.vMainBlock = new ImageIcon(this.getClass().getResource(VERTICAL_MAIN_BLOCK));
         this.hMainBlock = new ImageIcon(this.getClass().getResource(HORIZONTAL_MAIN_BLOCK));
