@@ -107,6 +107,7 @@ public class MainMenu extends JFrame {
 		this.puzzlesBtn.addActionListener(al);
 		this.exitBtn.addActionListener(al);
 		this.multiplayerBtn.addActionListener(al);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 	

@@ -24,6 +24,8 @@ public class MenuController implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					currScreen.setVisible(false);
+					//
+					levelSelect.setLocationRelativeTo(null);
 					levelSelect.setVisible(true);
 				}
 			});
@@ -33,6 +35,8 @@ public class MenuController implements ActionListener {
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				levelSelect.setVisible(false);
+    				//
+    				menu.setLocationRelativeTo(null);
     				menu.setVisible(true);
     			}
     		});
@@ -47,8 +51,7 @@ public class MenuController implements ActionListener {
 	private JFrame createFrame(Container view) {
 		JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
-		frame.add(view,BorderLayout.CENTER);
-		frame.setLocationRelativeTo(null);
+		frame.add(view,BorderLayout.CENTER);		
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(false);
@@ -57,6 +60,7 @@ public class MenuController implements ActionListener {
 	
 	public void goToMainMenu() {
 		menu.setVisible(false);
+		this.levelSelect.setLocationRelativeTo(null);
 		this.levelSelect.setVisible(true);
 	}
 
@@ -67,10 +71,14 @@ public class MenuController implements ActionListener {
 			System.out.println("play pressed");
 		} else if(action == "puzzles") {
 			menu.setVisible(false);
+			//
+			this.levelSelect.setLocationRelativeTo(null);
 			this.levelSelect.setVisible(true);
 		} else if(action == "multiplayer") {
 			System.out.println("multiplayer button pressed");
 			this.menu.setVisible(false);
+			//
+			this.levelSelect.setLocationRelativeTo(null);
 			this.multiplayer.setVisible(true);
 		} else if(action == "exit") {
 			menu.dispose();

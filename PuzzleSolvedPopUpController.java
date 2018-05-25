@@ -28,12 +28,14 @@ public class PuzzleSolvedPopUpController extends MouseAdapter {
 		if(this.puzzleGame.isSolved()) {
 			System.out.println("Puzzle solved!");
 			this.view = new PuzzleSolvedPopUpScreen(puzzleGame);
+			this.view.setLocationRelativeTo(null);
 			this.view.setVisible(true);
 			this.view.setOkButtonController(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					view.dispose();
 					currGameScreen.dispose();
+					selectPuzzleScreen.setLocationRelativeTo(null);
 					selectPuzzleScreen.setVisible(true);
 				}
 			});
