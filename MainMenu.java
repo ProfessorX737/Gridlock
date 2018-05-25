@@ -1,10 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
@@ -15,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainMenu extends JFrame {
+public class MainMenu extends JPanel {
 	private JPanel buttonPanel;
 	private JButton playBtn;
 	private JButton puzzlesBtn;
@@ -31,17 +25,9 @@ public class MainMenu extends JFrame {
 	public static final int WIDTH = HEIGHT + ButtonPanel.WIDTH;
 	
 	public MainMenu() {
-		this.setTitle("Gridlock");
 		this.setLayout(new BorderLayout());
         ImageIcon btnImg = new ImageIcon(this.getClass().getResource(MENU_BTN_PIC));
 		btnImg = new ImageIcon(btnImg.getImage().getScaledInstance(BTN_WIDTH,BTN_HEIGHT,Image.SCALE_SMOOTH));
-
-		
-		try {
-			this.setContentPane(new Background(MENU_BKG_PIC, WIDTH, HEIGHT));
-		} catch(IOException e) {
-			System.out.println("Could not open menu background image");
-		}
 
 		JLabel gameName = new JLabel("Gridlock");
 		gameName.setFont(new Font(Font.SERIF,Font.PLAIN,30));
@@ -98,8 +84,6 @@ public class MainMenu extends JFrame {
 		this.buttonPanel.setOpaque(false);
 		this.add(buttonPanel,BorderLayout.CENTER);
 		
-		this.pack();
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void setController(ActionListener al) {
@@ -109,5 +93,12 @@ public class MainMenu extends JFrame {
 		this.multiplayerBtn.addActionListener(al);
 		this.setVisible(true);
 	}
-	
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		ImageIcon bg = new ImageIcon(this.getClass().getResource("Assets/board.png"));
+		bg = new ImageIcon(bg.getImage().getScaledInstance(this.getWidth(), this.getWidth(), Image.SCALE_SMOOTH));
+		g.drawImage(bg.getImage(), 0, 0, null);
+	}
 }
