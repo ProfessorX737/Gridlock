@@ -46,6 +46,13 @@ public class GridlockGame implements Runnable {
 	public void generatePuzzles() {
 		this.puzzleGenerator.generateAndAddPuzzles(this.puzzleManager, MAX_PUZZLES_PER_LEVEL);
 	}
+	
+	/**
+	 * 
+	 * @param level
+	 * @param puzzleId
+	 * @return
+	 */
 	public PuzzleGame getPuzzle(int level, int puzzleId) {
 		return this.puzzleManager.getPuzzle(level, puzzleId);
 	}

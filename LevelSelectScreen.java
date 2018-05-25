@@ -24,6 +24,7 @@ public class LevelSelectScreen extends JFrame {
 		this.add(this.backBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(false);
 	}
 	
