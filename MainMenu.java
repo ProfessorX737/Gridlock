@@ -30,7 +30,7 @@ public class MainMenu extends JFrame {
 	public MainMenu() {
 		this.setTitle("Gridlock");
 //		this.setLayout(new GridBagLayout());
-		this.setMinimumSize(new Dimension(PuzzleView.DEFAULT_CELL_SIZE * 11, PuzzleView.DEFAULT_CELL_SIZE * 8 + 22));
+		this.setMinimumSize(GridlockGame.MINIMUM_SIZE);
 
 		this.menuButtons = new MenuButtons();
 

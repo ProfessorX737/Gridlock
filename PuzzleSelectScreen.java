@@ -11,10 +11,9 @@ public class PuzzleSelectScreen extends JFrame implements RefreshableFrame {
 	private BackBar backBar;
 	private JFrame menu;
 	
-	public static final String TITLE = "Select A Puzzle";
-	
 	public PuzzleSelectScreen(GridlockGame game, int level, JFrame menu) {
-		this.setLayout(new BorderLayout());
+		this.setMinimumSize(GridlockGame.MINIMUM_SIZE);
+//		this.setLayout(new BorderLayout());
 		this.game = game;
 		this.level = level;
 		this.levelView = new LevelView(this.game.getPuzzles(this.level),MainMenu.WIDTH,MainMenu.HEIGHT,PuzzleView.DEFAULT_CELL_SIZE);

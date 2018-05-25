@@ -24,8 +24,10 @@ public class MenuController implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
                     System.out.println("back pressed");
-					currScreen.setVisible(false);
+                    levelSelect.setSize(currScreen.getSize());
+                    levelSelect.setLocation(currScreen.getLocation());
 					levelSelect.setVisible(true);
+					currScreen.setVisible(false);
 				}
 			});
 		}
@@ -33,8 +35,10 @@ public class MenuController implements ActionListener {
     		this.levelSelect.setBackBarController(new ActionListener() {
     			@Override
     			public void actionPerformed(ActionEvent e) {
+					menu.setSize(levelSelect.getSize());
+					menu.setLocation(levelSelect.getLocation());
+					menu.setVisible(true);
     				levelSelect.setVisible(false);
-    				menu.setVisible(true);
     			}
     		});
 		this.levelSelect.setLevelSelectController(new LevelSelectController(this.levelSelect, this.puzzleSelect));
@@ -61,13 +65,13 @@ public class MenuController implements ActionListener {
 		if(action == "play") {
 			levelSelect.setLocation(menu.getLocation());
 			levelSelect.setSize(menu.getSize());
-			menu.setVisible(false);
 			this.levelSelect.setVisible(true);
+			menu.setVisible(false);
 		} else if(action == "multiplayer") {
 			System.out.println("multiplayer button pressed");
+			this.multiplayer.setVisible(true);
 			this.menu.setVisible(false);
 			multiplayer.setLocation(menu.getLocation());
-			this.multiplayer.setVisible(true);
 		} else if(action == "exit") {
 			menu.dispose();
 			this.levelSelect.dispose();

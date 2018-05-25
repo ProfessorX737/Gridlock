@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 public class BackBar extends JPanel {
     public final static int DEFAULT_HEIGHT = 25;
@@ -10,32 +12,24 @@ public class BackBar extends JPanel {
     private JButton backButton;
     private int width;
     private int height;
+    private int cellSize;
     private JComponent main;
 
     public BackBar(JComponent main) {
-//		this.width = DEFAULT_WIDTH;
-//		this.height = DEFAULT_HEIGHT;
-//        this.setLayout(new BorderLayout(height, 0));
+//       cellSize = Math.min(SwingUtilities.getRoot(this).getWidth()/12, SwingUtilities.getRoot(this).getHeight()/8);
+        cellSize = PuzzleView.DEFAULT_CELL_SIZE;
         this.title = new JLabel();
         this.backButton = new JButton();
         this.main = main;
-        this.setPreferredSize(new Dimension(PuzzleView.DEFAULT_CELL_SIZE * 11, PuzzleView.DEFAULT_CELL_SIZE * 8));
+        this.setPreferredSize(new Dimension(cellSize * 11, cellSize * 8));
 
         ImageIcon back = new ImageIcon(this.getClass().getResource("Assets/back.png"));
-        back = new ImageIcon(back.getImage().getScaledInstance((int) Math.round(PuzzleView.DEFAULT_CELL_SIZE * 1.5),
-                PuzzleView.DEFAULT_CELL_SIZE, Image.SCALE_SMOOTH));
+        back = new ImageIcon(back.getImage().getScaledInstance((int) Math.round(cellSize * 1.5),
+                cellSize, Image.SCALE_SMOOTH));
 
         this.backButton = new JButton(back);
 
-//		this.backButton.setText("Back");
         this.backButton.setBorder(BorderFactory.createEmptyBorder());
-
-       /* topBar.setLayout(new BorderLayout(topBarHeight, 0));
-        topBar.add(backButton, BorderLayout.WEST);
-        topBar.add(this.title, BorderLayout.CENTER);
-        topBar.setPreferredSize(new Dimension(main.getWidth(), topBarHeight));
-        this.add(topBar, BorderLayout.PAGE_START);
-        this.add(main, BorderLayout.CENTER);*/
 
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -54,21 +48,34 @@ public class BackBar extends JPanel {
         c.insets = new Insets(10, 10, 0, 0);
         this.add(backButton, c);
 
+        this.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                updateCellSize();
+                ImageIcon back = new ImageIcon(this.getClass().getResource("Assets/back.png"));
+                back = new ImageIcon(back.getImage().getScaledInstance((int) Math.round(cellSize * 1.5),
+                        cellSize, Image.SCALE_SMOOTH));
+                backButton.setIcon(back);
+//                resizeMain();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+
+            }
+        });
+
     }
-
-    /*public BackBar(JComponent main, int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.setLayout(new BorderLayout(height, 0));
-        this.title = new JLabel();
-        this.backButton = new JButton();
-
-        this.backButton.setText("Back");
-        this.title.setText(title);
-        this.add(this.backButton, BorderLayout.WEST);
-        this.add(this.title, BorderLayout.CENTER);
-        this.setPreferredSize(new Dimension(width, height));
-    }*/
 
     public void setController(ActionListener al) {
         this.backButton.addActionListener(al);
@@ -93,4 +100,12 @@ public class BackBar extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         this.add(newMain, c);
     }
+
+    private void updateCellSize(){
+        this.cellSize = Math.min(this.getHeight() / 8, this.getWidth() / 12);
+    }
+
+    /*private void resizeMain(){
+       main.updateSize();
+    }*/
 }

@@ -27,9 +27,9 @@ public class LevelSelectController implements ActionListener {
 			if(action.equals(GridlockGame.LEVEL_NAMES[i])) {
 				levelView[i].setLocation(levelSelect.getLocation());
 				levelView[i].setSize(levelSelect.getSize());
-				this.levelSelect.setVisible(false);
 				this.levelView[i].refresh();
 				this.levelView[i].setVisible(true);
+				this.levelSelect.setVisible(false);
 			}
 		}
 	}
