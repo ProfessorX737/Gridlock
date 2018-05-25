@@ -44,16 +44,27 @@ public class NetUIController implements NetworkUIController, Runnable{
     private static GameView gameView;
     private static GameController gameController;
 
+    /** Constructor for NetUIController
+     * 
+     * @param np, N
+     * @param host
+     * @param portNumber
+     */
     public NetUIController(NetworkPanel np, String host, int portNumber){
         this.np = np;
         this.portNumber = portNumber;
         this.host = host;
         this.running = false;
     }
+    
+    /**
+     * ActionListener for the Challenge Button
+     */
 
     public ActionListener getChallengeBtnListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+            	if (!running) return;
                 System.out.println(" THIS IS OPPONENT's NAME" + np.getOpponentName());
                 message("challenge " + username + " " + np.getOpponentName());
                 createDialogBox("You have challenged" + np.getOpponentName());
@@ -76,6 +87,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         };
         return al;
     };
+    
+    /**
+     * Update Button Action Listener
+     */
 
     public ActionListener getUpdateBtnListener(){
         ActionListener al = new ActionListener() {
@@ -86,7 +101,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         return al;
     };
 
-    // See if username is set, then attempt to connect
+    /**
+     * Connect Button Listener
+     * See if username is set, then attempt to connect
+     */
     public ActionListener ConnectBtnListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -129,6 +147,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         };
         return al;
     };
+    
+    /**
+     * Quit button listener
+     */
 
     public ActionListener QuitBtnListener(){
         ActionListener al = new ActionListener() {
@@ -139,9 +161,14 @@ public class NetUIController implements NetworkUIController, Runnable{
         return al;
     };
 
+    /**
+     * Forfeit Button Listener
+     */
     public ActionListener ForfeitListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+            	if (!running) return;
+            	
                 // Clicked the forfeit button
                 // Notify server of forfeit, close the game, unlock the buttons
 //                message("forfeit " + username + " " + opponent);
@@ -164,6 +191,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         return al;
     }
 
+    /**
+     * Handshaking message with server, announcing username
+     * @return whether connection to server was successful
+     */
     private boolean sendUsername(){
         String newLine = "user " + username;
         os.println(newLine);
@@ -189,12 +220,19 @@ public class NetUIController implements NetworkUIController, Runnable{
         return true;
     }
 
+    /**
+     * Requests list of online users from server
+     */
     private void getList(){
             os.println("getlist " + username);
             os.flush();
 
     }
 
+    /**
+     * Grabs the list from the server
+     * @param users
+     */
     private void updateList(String users){
 //        createDialogBox("You got the list");
         // remove userList
@@ -214,8 +252,9 @@ public class NetUIController implements NetworkUIController, Runnable{
 
     }
 
-    // Separate which handles the events that the server sends to client
-    // Runs on a separate thread which operates on the same class
+    /**
+     * Function which event handler thread runs
+     */
     public void run() {
         System.out.println("Listener activated");
         String responseLine;
@@ -234,6 +273,10 @@ public class NetUIController implements NetworkUIController, Runnable{
 
     }
 
+    /**
+     * Main event handler for client side, when it receives messages from the server
+     * 
+     */
     private void processMessage(String message){
         String[] parts = message.trim().split(" ");
         switch(parts[0].toLowerCase()){
@@ -284,11 +327,19 @@ public class NetUIController implements NetworkUIController, Runnable{
         }
     }
 
+    /**
+     * Sends a message to the server
+     * @param message
+     */
     private void message(String message){
         os.println(message);
         os.flush();
     }
 
+    /**
+     * A challenge user sent has been accepted
+     * @param message
+     */
     private void acceptChallenge(String message){
         // Notify challenge has been accepted
         String[] oppo = message.trim().split(" ");
@@ -297,11 +348,19 @@ public class NetUIController implements NetworkUIController, Runnable{
         np.setPlayingAgainst(oppo[2]);
     }
 
+    /**
+     * No user to challenge for that name exists
+     * @param message
+     */
     private void noUser(String message){
         // Notify person no user exists for that
         createDialogBox("Sorry but no user named " + message.trim().split(" ")[1] + " exists");
     }
 
+    /**
+     * Server notifes another user is ingame
+     * @param message
+     */
     private void userBusy(String message){
         // Notify person user currently busy
         // userbusy user2 currently busy
@@ -309,6 +368,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         createDialogBox("User: " + player + " is currently busy, please try again later");
     }
 
+    /**
+     * 	Server notfies puzzle has been completed
+     * @param message
+     */
     private void puzzleDone(String message){
         String player = message.trim().split(" ")[2];
         createDialogBox("Puzzle has been completed by " + player);
@@ -318,6 +381,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         np.lockButtons();
     }
 
+    /**
+     * Handles a challenge from another user from the server
+     * @param message
+     */
     private void handleChallenge(String message){
         // Pop up window, see if message is accepted or declined
         String player = message.trim().split(" ")[3];
@@ -335,6 +402,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         // User can wish to accept or decline the challenge
     }
 
+    /**
+     * Creates a new JFrame Window with GridLock Puzzle
+     * @param message, message to be turned into puzzle
+     */
     private void displayPuzzle(String message){
         np.lockButtons();
         lost = false;
@@ -395,15 +466,29 @@ public class NetUIController implements NetworkUIController, Runnable{
         f.setVisible(true);
 
     }
+    
+    /**
+     * Creates a pop up message
+     * @param message
+     */
 
     private void createDialogBox(String message){
         JOptionPane.showMessageDialog(null, message);
     }
 
+    /**
+     * Notification from server, a challenge has been denied
+     * @param message
+     */
     private void declined(String message){
         String player = message.trim().split(" ")[1];
         createDialogBox("Your challenge with " + player + " has been declined");
     }
+    
+    /**
+     * Puzzle Complete Method, 
+     * called by PuzzleGame when puzzle is complete
+     */
 
     public void puzzleDone(){
         System.out.println("PUZZLE DONE CALLED");
@@ -418,6 +503,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         f.dispose();
     }
 
+    /**
+     * Displays the opponen'ts name
+     * @param message
+     */
     private void setOpponent(String message){
         System.out.println(" RECEIVED SETOPP MESSAGE" + message);
         // setopp opponent's name
@@ -428,6 +517,10 @@ public class NetUIController implements NetworkUIController, Runnable{
 
     }
 
+    /**
+     * Forfeit
+     * @param message
+     */
     private void forfeit(String message){
         String[] parts = message.split(" ");
         opponent = parts[1].toLowerCase();
@@ -436,6 +529,10 @@ public class NetUIController implements NetworkUIController, Runnable{
         lost = true; // Flag, to not notify the server once you complete the puzzle
     }
 
+    /**
+     * Get new wins and losses
+     * @param message
+     */
     private void updateStats(String message){
         System.out.println("IN UPDATE STATS " + message);
         String[] parts = message.split(" ");

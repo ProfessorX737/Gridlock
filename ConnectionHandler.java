@@ -8,6 +8,13 @@ public class ConnectionHandler extends Thread{
     private static BlockingQueue<String> queue;
     private ClientInfo info = null;
     private DataInputStream is = null;
+    
+    /**
+     * Constuctor for ConnectionHandler
+     * @param info, ClientInfo tracking data for each user
+     * @param q, a blocking queue for event handler
+     * @param sock, current socket connection of user
+     */
 
     public ConnectionHandler(ClientInfo info, BlockingQueue<String> q, Socket sock){
         this.sock = sock;
@@ -15,6 +22,10 @@ public class ConnectionHandler extends Thread{
         this.queue = q;
 
     }
+    
+    /**
+     * Main method that handles incoming messages for a specific user
+     */
 
     @Override
     public void run(){
