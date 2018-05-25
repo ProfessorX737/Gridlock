@@ -64,7 +64,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     public ActionListener getChallengeBtnListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	if (!running) return;
+//            	if (!running) return;
                 System.out.println(" THIS IS OPPONENT's NAME" + np.getOpponentName());
                 message("challenge " + username + " " + np.getOpponentName());
                 createDialogBox("You have challenged " + np.getOpponentName());
@@ -167,7 +167,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     public ActionListener ForfeitListener(){
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	if (!running) return;
+//            	if (!running) return;
             	
                 // Clicked the forfeit button
                 // Notify server of forfeit, close the game, unlock the buttons
