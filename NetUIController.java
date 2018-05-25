@@ -67,7 +67,7 @@ public class NetUIController implements NetworkUIController, Runnable{
             	if (!running) return;
                 System.out.println(" THIS IS OPPONENT's NAME" + np.getOpponentName());
                 message("challenge " + username + " " + np.getOpponentName());
-                createDialogBox("You have challenged" + np.getOpponentName());
+                createDialogBox("You have challenged " + np.getOpponentName());
             }
         };
         return al;
@@ -343,7 +343,7 @@ public class NetUIController implements NetworkUIController, Runnable{
     private void acceptChallenge(String message){
         // Notify challenge has been accepted
         String[] oppo = message.trim().split(" ");
-        createDialogBox("Your challenge with " + oppo[2] + "has been accepted");
+        createDialogBox("Your challenge with " + oppo[2] + " has been accepted");
         // Update playing against
         np.setPlayingAgainst(oppo[2]);
     }
