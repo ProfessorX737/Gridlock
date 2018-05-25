@@ -904,21 +904,24 @@ public class PuzzleGame implements Serializable {
 
 			if (isSolved()) {
 				//show the pop up
-				int i = JOptionPane.showConfirmDialog(null, "You won the game in " + this.moves + " moves!\n" + "Continue to play？","Result:", JOptionPane.YES_NO_OPTION);
-			    if (i==JOptionPane.OK_OPTION) {
-			        System.out.println("play next puzzle");
-					MainMenu menu = new MainMenu();
-					GridlockGame game = new GridlockGame();
-					MenuController menuContr = new MenuController(game,menu);
-					menu.setController(menuContr);
-					menuContr.goToMainMenu();
-			    } else {
-					System.out.println("exit");
-					System.exit(0);
-				}
 				if (nuic != null) {
 					nuic.puzzleDone();
 				}
+				else{
+					int i = JOptionPane.showConfirmDialog(null, "You won the game in " + this.moves + " moves!\n" + "Continue to play？","Result:", JOptionPane.YES_NO_OPTION);
+					if (i==JOptionPane.OK_OPTION) {
+						System.out.println("play next puzzle");
+						MainMenu menu = new MainMenu();
+						GridlockGame game = new GridlockGame();
+						MenuController menuContr = new MenuController(game,menu);
+						menu.setController(menuContr);
+						menuContr.goToMainMenu();
+					} else {
+						System.out.println("exit");
+						System.exit(0);
+					}
+				}
+
 			}
         }
     }
@@ -957,23 +960,6 @@ public class PuzzleGame implements Serializable {
 			}
 		}
     }
-
-    //private void printBoard(int[][] board) {
-    //    for (int y = -1; y <= sizeRow; y++) {
-    //        for (int x = -1; x <= sizeCol; x++) {
-    //            if (y == -1 || y == sizeRow || x == -1 || x == sizeCol) {
-    //                System.out.print(wall + "\t");
-    //            } else if (board[y][x] == 0) {
-    //                System.out.print(red_car + "\t");
-    //            } else if (board[y][x] == -1) {
-    //                System.out.print(road + "\t");
-    //            } else {
-    //                System.out.print(board[y][x] + "\t");
-    //            }
-    //        }
-    //        System.out.println("");
-    //    }
-    //}
 
     /**
      * Resets the board to the starting state

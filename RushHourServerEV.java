@@ -217,7 +217,7 @@ public class RushHourServerEV extends Thread{
         // Notify other user if they were ingame that other user disconnected, make them the winner
         String opponent = info.getPlayingAgainst();
         if (opponent != null){
-            send(info.getPlayingAgainst(), "DC" + user + " has disconnected");
+            send(info.getPlayingAgainst(), "DC " + user + " has disconnected");
             ClientInfo otherUser = clients.get(opponent);
             info.resetPlayingAgainst();
             info.setBusy(false);
