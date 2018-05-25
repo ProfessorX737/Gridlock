@@ -20,6 +20,7 @@ public class PuzzleSelectScreen extends JFrame implements RefreshableFrame {
 		this.backBar = new BackBar(TITLE);
 		this.add(backBar, BorderLayout.NORTH);
 		this.add(levelView, BorderLayout.CENTER);
+		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(false);

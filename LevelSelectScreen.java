@@ -23,6 +23,7 @@ public class LevelSelectScreen extends JFrame {
 		this.add(this.backBar,BorderLayout.NORTH);
 		this.add(this.view, BorderLayout.CENTER);
 
+		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(false);

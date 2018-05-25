@@ -48,6 +48,7 @@ public class MenuController implements ActionListener {
 		JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.add(view,BorderLayout.CENTER);
+		frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(false);

@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
-import java.util.List;
-
 public class LevelController implements ActionListener {
 	private JFrame levelView;
 	private GridlockGame game;
@@ -45,12 +43,15 @@ public class LevelController implements ActionListener {
         GameController gameController = new GameController(gameView, borderedPuzzleController);
         
         this.gameView = this.createFrame(gameView);
+        PuzzleSolvedPopUpController popUpController = new PuzzleSolvedPopUpController(this.game,this.level,puzzleGame.getId(),this.gameView,this.levelView);
+        pv.setController(popUpController);
 	}
 
 	private JFrame createFrame(Container view) {
 		JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.add(view,BorderLayout.CENTER);
+		frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

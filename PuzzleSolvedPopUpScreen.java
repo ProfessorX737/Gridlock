@@ -19,6 +19,7 @@ public class PuzzleSolvedPopUpScreen extends JFrame {
 		this.add(this.solvedMessage,BorderLayout.NORTH);
 		this.add(this.okBtn, BorderLayout.CENTER);
 
+		this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
         this.setVisible(false);

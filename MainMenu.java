@@ -97,6 +97,7 @@ public class MainMenu extends JFrame {
 		this.buttonPanel.setOpaque(false);
 		this.add(buttonPanel,BorderLayout.CENTER);
 		
+		this.setLocationRelativeTo(null);
 		this.pack();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
