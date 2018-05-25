@@ -20,6 +20,7 @@ public class RushHourServerEV extends Thread{
     private static Map<String,ClientInfo> clients = null;
     private static Map<String, Socket> userList = null;
     private static Random rand;
+    private static PuzzleGame puzzleGame;
     
     /**
      * Rush hour event handler
@@ -33,6 +34,7 @@ public class RushHourServerEV extends Thread{
         this.clients = clients;
         this.userList = userList;
         this.rand = new Random();
+        this.puzzleGame = null;
     }
 
     /**
@@ -203,14 +205,14 @@ public class RushHourServerEV extends Thread{
     private PuzzleGame createPuzzle(){
     	System.out.println("In CREATE PUZZLE");
         GridlockGame game = new GridlockGame();
-        PuzzleGame puzzleGame = game.getPuzzle(0, 2);
-//        int randomNum = (int )(Math.random() * 2 + 1);
+//        puzzleGame = game.getPuzzle(0, 2);
+        int randomNum = (int )(Math.random() * 2 + 1);
 //        
 //
-//        List<PuzzleGame> gameList = game.getPuzzles(randomNum);
+        List<PuzzleGame> gameList = game.getPuzzles(randomNum);
 //        System.out.println(gameList.size());
-//        int ran = (int )(Math.random() * gameList.size());
-//        PuzzleGame puzzleGame = gameList.get(3);
+        int ran = (int )(Math.random() * gameList.size());
+        puzzleGame = gameList.get(ran);
 //        System.out.println(puzzleGame.getStringRep());
 
 //        System.out.println("random num" + randomNum + " " + ran);

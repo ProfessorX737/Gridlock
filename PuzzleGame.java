@@ -901,6 +901,9 @@ public class PuzzleGame implements Serializable {
             v.setPos(newRow, newCol);
             this.fillVehicleSpace(v, id);
             moves += 1;
+        if (nuic != null) {
+			nuic.puzzleDone();
+		}
 
 //			if (isSolved()) {
 //				//show the pop up
