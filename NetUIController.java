@@ -407,7 +407,7 @@ public class NetUIController implements NetworkUIController, Runnable{
         }
         // Clean up
         f.setVisible(false);
-        f.removeAll();
+        f.dispose();
     }
 
     private void setOpponent(String message){
